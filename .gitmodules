@@ -1,0 +1,6 @@
+[submodule "Hound/vendor/glfw"]
+	path = Hound/vendor/glfw
+	url = https://github.com/glfw/glfw.git
+[submodule "Hound/vendor/spdlog"]
+	path = Hound/vendor/spdlog
+	url = https://github.com/gabime/spdlog.git

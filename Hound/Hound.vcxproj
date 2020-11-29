@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Dist|x64">
+      <Configuration>Dist</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C3C2540D-2FD7-7CBE-F858-201E642C79EF}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Hound</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>..\_bin\Debug-windows-x86_64\Hound\</OutDir>
+    <IntDir>..\_bin_temp\Debug-windows-x86_64\Hound\</IntDir>
+    <TargetName>Hound</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>..\_bin\Release-windows-x86_64\Hound\</OutDir>
+    <IntDir>..\_bin_temp\Release-windows-x86_64\Hound\</IntDir>
+    <TargetName>Hound</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <OutDir>..\_bin\Dist-windows-x86_64\Hound\</OutDir>
+    <IntDir>..\_bin_temp\Dist-windows-x86_64\Hound\</IntDir>
+    <TargetName>Hound</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>hound/hnd_pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>HND_PLATFORM_WINDOWS;HND_BUILD_DLL;HND_ENABLE_ASSERT;GLFW_INCLUDE_NONE;_GLFW_WIN32;_GLFW_WGL;_GLFW_USE_OPENGL;HND_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>hound/hnd_pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>HND_PLATFORM_WINDOWS;HND_BUILD_DLL;HND_ENABLE_ASSERT;GLFW_INCLUDE_NONE;_GLFW_WIN32;_GLFW_WGL;_GLFW_USE_OPENGL;HND_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>hound/hnd_pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>HND_PLATFORM_WINDOWS;HND_BUILD_DLL;HND_ENABLE_ASSERT;GLFW_INCLUDE_NONE;_GLFW_WIN32;_GLFW_WGL;_GLFW_USE_OPENGL;HND_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="camera_manager.h" />
+    <ClInclude Include="src\hound\core\event\window_event.h" />
+    <ClInclude Include="src\hound\core\input\input_system.h" />
+    <ClInclude Include="src\hound\core\object\object_database.h" />
+    <ClInclude Include="src\hound\core\event\event.h" />
+    <ClInclude Include="src\hound\platform\open_gl\open_gl_logger.h" />
+    <ClInclude Include="src\hound\core\object\object.h" />
+    <ClInclude Include="src\hound\core\scene\render_target\render_target.h" />
+    <ClInclude Include="src\hound\core\scene\camera\camera.h" />
+    <ClInclude Include="src\hound\core\input\input_event.h" />
+    <ClInclude Include="src\hound\core\bit.h" />
+    <ClInclude Include="src\hound\core\input\key_codes.h" />
+    <ClInclude Include="src\hound\platform\open_gl\open_gl_core.h" />
+    <ClInclude Include="src\hound\platform\windows\display_manager_windows.h" />
+    <ClInclude Include="src\hound\main\application.h" />
+    <ClInclude Include="src\hound\platform\windows\os_windows.h" />
+    <ClInclude Include="src\hound\core\create_function.h" />
+    <ClInclude Include="src\hound\core\os\os.h" />
+    <ClInclude Include="src\hound\config\engine.h" />
+    <ClInclude Include="src\hound\config\platform_identifier.h" />
+    <ClInclude Include="src\hound\core\assertion.h" />
+    <ClInclude Include="src\hound\platform\open_gl\open_gl_context.h" />
+    <ClInclude Include="src\hound\drivers\graphics_context.h" />
+    <ClInclude Include="src\hound\core\base.h" />
+    <ClInclude Include="src\hound\core\error_code.h" />
+    <ClInclude Include="src\hound\core\property.h" />
+    <ClInclude Include="src\hound\core\template.h" />
+    <ClInclude Include="src\hound\hnd_pch.h" />
+    <ClInclude Include="src\hound\logging\logger.h" />
+    <ClInclude Include="src\hound\main\main.h" />
+    <ClInclude Include="src\hound\managers\display_manager.h" />
+    <ClInclude Include="src\hound\math\math.h" />
+    <ClInclude Include="src\hound\math\math_functions.h" />
+    <ClInclude Include="src\hound\math\matrix\mat4.h" />
+    <ClInclude Include="src\hound\math\quaternion\quaternion.h" />
+    <ClInclude Include="src\hound\math\rect\rect.h" />
+    <ClInclude Include="src\hound\math\vector\vec2.h" />
+    <ClInclude Include="src\hound\math\vector\vec3.h" />
+    <ClInclude Include="src\hound\math\vector\vec4.h" />
+    <ClInclude Include="src\hound\core\scene\render_target\viewport.h" />
+    <ClInclude Include="src\hound\core\scene\render_target\window\window.h" />
+    <ClInclude Include="src\hound\platform\windows\window_glfw_helper.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="camera_manager.cpp" />
+    <ClCompile Include="src\hound\core\input\input_system.cpp" />
+    <ClCompile Include="src\hound\core\object\object_database.cpp" />
+    <ClCompile Include="src\hound\platform\open_gl\open_gl_logger.cpp" />
+    <ClCompile Include="src\hound\core\object\object.cpp" />
+    <ClCompile Include="src\hound\core\scene\render_target\render_target.cpp" />
+    <ClCompile Include="src\hound\core\scene\camera\camera.cpp" />
+    <ClCompile Include="src\hound\platform\windows\display_manager_windows.cpp" />
+    <ClCompile Include="src\hound\main\application.cpp" />
+    <ClCompile Include="src\hound\platform\windows\os_windows.cpp" />
+    <ClCompile Include="src\hound\core\os\os.cpp" />
+    <ClCompile Include="src\hound\config\engine.cpp" />
+    <ClCompile Include="src\hound\config\platform_identifier.cpp" />
+    <ClCompile Include="src\hound\platform\open_gl\open_gl_context.cpp" />
+    <ClCompile Include="src\hound\drivers\graphics_context.cpp" />
+    <ClCompile Include="src\hound\hnd_pch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\hound\logging\logger.cpp" />
+    <ClCompile Include="src\hound\main\main.cpp" />
+    <ClCompile Include="src\hound\managers\display_manager.cpp" />
+    <ClCompile Include="src\hound\math\math_functions.cpp" />
+    <ClCompile Include="src\hound\core\scene\render_target\viewport.cpp" />
+    <ClCompile Include="src\hound\core\scene\render_target\window\window.cpp" />
+    <ClCompile Include="src\hound\platform\windows\window_glfw_helper.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="vendor\glfw\GLFW.vcxproj">
+      <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="vendor\glad\Glad.vcxproj">
+      <Project>{BDD6857C-A90D-870D-52FA-6C103E10030F}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
