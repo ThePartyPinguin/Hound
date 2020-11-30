@@ -1,15 +1,15 @@
 #pragma once
 
 
-#define HND_PLATFORM_UNKNOWN platform::unknown
-#define HND_PLATFORM_WINDOWS_64 platform::windows_x64
-#define HND_PLATFORM_WINDOWS_32 platform::windows_x32
-#define HND_PLATFORM_LINUX platform::linux
-#define HND_PLATFORM_OSX platform::osx
-#define HND_PLATFORM_IOS platform::ios
-#define HND_PLATFORM_ANDROID platform::android
+#define HND_PLATFORM_UNKNOWN os::platform::unknown
+#define HND_PLATFORM_WINDOWS_64 os::platform::windows_x64
+#define HND_PLATFORM_WINDOWS_32 os::platform::windows_x32
+#define HND_PLATFORM_LINUX os::platform::linux
+#define HND_PLATFORM_OSX os::platform::osx
+#define HND_PLATFORM_IOS os::platform::ios
+#define HND_PLATFORM_ANDROID os::platform::android
 
-
+#define HND_PLATFORM HND_PLATFORM_UNKNOWN
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 //define something for Windows (32-bit and 64-bit, this part is common)

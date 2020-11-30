@@ -1,5 +1,8 @@
 #pragma once
 #include <spdlog/spdlog.h>
+#include <spdlog/fmt/ostr.h>
+
+#include "hound/core/object/object.h"
 
 class logger
 {

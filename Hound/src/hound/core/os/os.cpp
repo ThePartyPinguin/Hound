@@ -1,14 +1,14 @@
 #include "hound/hnd_pch.h"
 #include "os.h"
-
 #include "hound/config/engine.h"
+#include "hound/config/platform_identifier.h"
 #include "hound/core/scene/render_target/window/window.h"
+
 os* os::s_instance_ = nullptr;
 
-platform os::get_platform()
+os::platform os::get_platform()
 {
-	HND_CORE_LOG_ERROR("Could not get platform!");
-	return platform::unknown;
+	return HND_PLATFORM;
 }
 
 os::os()

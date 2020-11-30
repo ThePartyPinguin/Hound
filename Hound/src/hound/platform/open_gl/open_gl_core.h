@@ -2,7 +2,7 @@
 #include "hound/core/base.h"
 #include <glad/glad.h>
 
-typedef long GL_OBJECT_ID;
+typedef unsigned int gl_object_id;
 
 #define HND_GL_MAJOR_VERSION 4
 #define HND_GL_MINOR_VERSION 3
