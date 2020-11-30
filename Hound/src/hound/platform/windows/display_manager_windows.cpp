@@ -299,7 +299,7 @@ void windows_display_manager::set_native_window_maximized(window_id window, bool
 {
 	GLFWwindow* native_window = m_id_native_window_map_[window];
 	
-	if(glfwGetWindowAttrib(native_window, GLFW_MAXIMIZED) != maximized)
+	if(glfwGetWindowAttrib(native_window, GLFW_MAXIMIZED) != (maximized ? GLFW_TRUE : GLFW_FALSE))
 		glfwMaximizeWindow(native_window);
 }
 
@@ -307,7 +307,7 @@ void windows_display_manager::set_native_window_minimized(window_id window, bool
 {
 	GLFWwindow* native_window = m_id_native_window_map_[window];
 	
-	if(glfwGetWindowAttrib(native_window, GLFW_ICONIFIED) != minimized)
+	if(glfwGetWindowAttrib(native_window, GLFW_ICONIFIED) != (minimized ? GLFW_TRUE : GLFW_FALSE))
 		glfwIconifyWindow(native_window);
 }
 
@@ -315,14 +315,14 @@ void windows_display_manager::set_native_window_is_always_on_top(window_id windo
 {
 	GLFWwindow* native_window = m_id_native_window_map_[window];
 
-	if(glfwGetWindowAttrib(native_window, GLFW_FLOATING) != is_always_on_top)
+	if(glfwGetWindowAttrib(native_window, GLFW_FLOATING) != (is_always_on_top ? GLFW_TRUE : GLFW_FALSE))
 		glfwSetWindowAttrib(native_window, GLFW_FLOATING, is_always_on_top ? GLFW_TRUE : GLFW_FALSE);
 }
 
 void windows_display_manager::set_native_window_border_style(window_id window, window_border_style style)
 {
 	GLFWwindow* native_window = m_id_native_window_map_[window];
-	if (glfwGetWindowAttrib(native_window, GLFW_DECORATED) != (style == bordered))
+	if (glfwGetWindowAttrib(native_window, GLFW_DECORATED) != ((style == bordered) ? GLFW_TRUE : GLFW_FALSE))
 		glfwSetWindowAttrib(native_window, GLFW_DECORATED, (style == bordered) ? GLFW_TRUE : GLFW_FALSE);
 }
 
@@ -343,8 +343,7 @@ void windows_display_manager::glfw_callback_close(GLFWwindow* window)
 	{
 		return;
 	}
-	HND_LOG_TRACE("Window Event captured!\r\n\t- Event: CLOSE\r\n\t- WindowID: ", id, "\r\n\t- Is main: ", id == MAIN_WINDOW_ID);
-
+	
 	wd.window_object->set_should_close(true);
 }
 
@@ -355,18 +354,11 @@ void windows_display_manager::glfw_callback_size(GLFWwindow* window, int width, 
 	const window_id id = _this->m_native_window_id_map_[window];
 	const window_data& wd = _this->get_window_data(id);
 
-	if (wd.window_object == nullptr)
-	{
-		//Window not bound yet don't fire events
-		return;
-	}
-
-	if (id == INVALID_WINDOW_ID)
+	if (wd.window_object == nullptr || id == INVALID_WINDOW_ID)
 	{
 		return;
 	}
-	HND_LOG_TRACE("Window Event captured!\r\n\t- Event: RESIZE\r\n\t- WindowID: ", id, "\r\n\t- Is main: ", id == MAIN_WINDOW_ID);
-
+	
 	int pos_x, pos_y;
 
 	glfwGetWindowPos(window, &pos_x, &pos_y);
@@ -385,8 +377,6 @@ void windows_display_manager::glfw_callback_frame_buffer_size(GLFWwindow* window
 	{
 		return;
 	}
-	HND_LOG_TRACE("Window Event captured!\r\n\t- Event: FRAME_BUFFER_RESIZE\r\n\t- WindowID: ", id, "\r\n\t- Is main: ", id == MAIN_WINDOW_ID);
-
 	_this->set_window_frame_buffer(id, { 0, 0, width, height });
 }
 
@@ -401,7 +391,6 @@ void windows_display_manager::glfw_callback_content_scale(GLFWwindow* window, fl
 	{
 		return;
 	}
-	HND_LOG_TRACE("Window Event captured!\r\n\t- Event: SCALE\r\n\t- WindowID: ", id, "\r\n\t- Is main: ", id == MAIN_WINDOW_ID);
 
 	_this->set_window_content_scale(id, { scale_x, scale_y });
 }
@@ -417,8 +406,7 @@ void windows_display_manager::glfw_callback_position(GLFWwindow* window, int pos
 	{
 		return;
 	}
-	HND_LOG_TRACE("Window Event captured!\r\n\t- Event: POSITION\r\n\t- WindowID: ", id, "\r\n\t- Is main: ", id == MAIN_WINDOW_ID);
-
+	
 	int width, height;
 
 	glfwGetWindowSize(window, &width, &height);
@@ -437,7 +425,7 @@ void windows_display_manager::glfw_callback_iconified(GLFWwindow* window, int ic
 	{
 		return;
 	}
-	HND_LOG_TRACE("Window Event captured!\r\n\t- Event: MINIMIZED\r\n\t- WindowID: ", id, "\r\n\t- Is main: ", id == MAIN_WINDOW_ID);	
+	
 	wd.window_object->set_is_minimized(iconified);
 }
 
@@ -452,7 +440,6 @@ void windows_display_manager::glfw_callback_maximized(GLFWwindow* window, int ma
 	{
 		return;
 	}
-	HND_LOG_TRACE("Window Event captured!\r\n\t- Event: MAXIMIZED\r\n\t- WindowID: ", id, "\r\n\t- Is main: ", id == MAIN_WINDOW_ID);
 
 	wd.window_object->set_is_maximized(maximized);
 }
@@ -468,7 +455,6 @@ void windows_display_manager::glfw_callback_focus(GLFWwindow* window, int focuse
 	{
 		return;
 	}
-	HND_LOG_TRACE("Window Event captured!\r\n\t- Event: FOCUS\r\n\t- WindowID: ", id, "\r\n\t- Is main: ", id == MAIN_WINDOW_ID);
 
 	wd.window_object->set_is_focused(focused);
 }
@@ -484,7 +470,6 @@ void windows_display_manager::glfw_callback_key_input(GLFWwindow* window, int ke
 	{
 		return;
 	}
-	HND_LOG_TRACE("Window Event captured!\r\n\t- Event: KEY\r\n\t- WindowID: ", id, "\r\n\t- Is main: ", id == MAIN_WINDOW_ID, "\r\n\t- Key:", key, "\r\n\t- Action:", action, "\r\n\t- Mods:", mods);
 
 	const key_code kc = windows_glfw_helper::get_key_code(key);
 	const key_action ka = windows_glfw_helper::get_key_action(action);
@@ -503,7 +488,6 @@ void windows_display_manager::glfw_callback_mouse_position(GLFWwindow* window, d
 	{
 		return;
 	}
-	HND_LOG_TRACE("Window Event captured!\r\n\t- Event: FOCUS\r\n\t- WindowID: ", id, "\r\n\t- Is main: ", id == MAIN_WINDOW_ID);
 
 	_this->pass_mouse_position_event(wd.window_object, id, pos_x, pos_y);
 }
@@ -519,7 +503,6 @@ void windows_display_manager::glfw_callback_mouse_button_input(GLFWwindow* windo
 	{
 		return;
 	}
-	HND_LOG_TRACE("Window Event captured!\r\n\t- Event: FOCUS\r\n\t- WindowID: ", id, "\r\n\t- Is main: ", id == MAIN_WINDOW_ID);
 
 	const key_code bc = windows_glfw_helper::get_mouse_button(button);
 	const key_action ka = windows_glfw_helper::get_key_action(action);

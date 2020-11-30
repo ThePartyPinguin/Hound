@@ -1,6 +1,6 @@
 #pragma once
 #include "hound/core/property.h"
-#include "hound/math/math_functions.h"
+#include "hound/core/math/math_functions.h"
 
 template<typename T>
 struct vec3;

@@ -37,24 +37,6 @@
     <ClInclude Include="src\hound\managers\display_manager.h">
       <Filter>managers</Filter>
     </ClInclude>
-    <ClInclude Include="src\hound\math\math.h">
-      <Filter>math</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hound\math\math_functions.h">
-      <Filter>math</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hound\math\vector\vec2.h">
-      <Filter>math\vector</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hound\math\vector\vec3.h">
-      <Filter>math\vector</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hound\math\vector\vec4.h">
-      <Filter>math\vector</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hound\math\matrix\mat4.h" />
-    <ClInclude Include="src\hound\math\quaternion\quaternion.h" />
-    <ClInclude Include="src\hound\math\rect\rect.h" />
     <ClInclude Include="src\hound\drivers\graphics_context.h" />
     <ClInclude Include="src\hound\platform\open_gl\open_gl_context.h" />
     <ClInclude Include="src\hound\config\platform_identifier.h" />
@@ -87,14 +69,29 @@
     <ClInclude Include="src\hound\platform\windows\window_glfw_helper.h" />
     <ClInclude Include="src\hound\core\input\input_system.h" />
     <ClInclude Include="src\hound\core\event\window_event.h" />
+    <ClInclude Include="src\hound\core\math\matrix\mat4.h" />
+    <ClInclude Include="src\hound\core\math\quaternion\quaternion.h" />
+    <ClInclude Include="src\hound\core\math\rect\rect.h" />
+    <ClInclude Include="src\hound\core\math\vector\vec2.h">
+      <Filter>math\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\math\vector\vec3.h">
+      <Filter>math\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\math\vector\vec4.h">
+      <Filter>math\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\math\math.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\math\math_functions.h">
+      <Filter>math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hound\hnd_pch.cpp" />
     <ClCompile Include="src\hound\managers\display_manager.cpp">
       <Filter>managers</Filter>
-    </ClCompile>
-    <ClCompile Include="src\hound\math\math_functions.cpp">
-      <Filter>math</Filter>
     </ClCompile>
     <ClCompile Include="src\hound\drivers\graphics_context.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\open_gl_context.cpp" />
@@ -120,5 +117,8 @@
     <ClCompile Include="src\hound\core\object\object.cpp" />
     <ClCompile Include="src\hound\platform\windows\window_glfw_helper.cpp" />
     <ClCompile Include="src\hound\core\input\input_system.cpp" />
+    <ClCompile Include="src\hound\core\math\math_functions.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

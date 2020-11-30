@@ -1,16 +1,16 @@
 #pragma once
 
-#include "hound/math/math_functions.h"
+#include "hound/core/math/math_functions.h"
 
-#include "hound/math/vector/vec2.h"
-#include "hound/math/vector/vec3.h"
-#include "hound/math/vector/vec4.h"
+#include "hound/core/math/vector/vec2.h"
+#include "hound/core/math/vector/vec3.h"
+#include "hound/core/math/vector/vec4.h"
 
-#include "hound/math/matrix/mat4.h"
+#include "hound/core/math/matrix/mat4.h"
 
-#include "hound/math/quaternion/quaternion.h"
+#include "hound/core/math/quaternion/quaternion.h"
 
-#include "hound/math/rect/rect.h"
+#include "hound/core/math/rect/rect.h"
 
 
 typedef vec2<float> vec2_f;

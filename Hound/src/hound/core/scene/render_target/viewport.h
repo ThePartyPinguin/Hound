@@ -3,7 +3,7 @@
 #include "hound/core/object/object.h"
 #include "hound/core/scene/camera/camera.h"
 
-class viewport : public object
+class viewport : public render_target
 {
 public:
 	ref<viewport> create(const ref<camera>& camera, vec2_i size);

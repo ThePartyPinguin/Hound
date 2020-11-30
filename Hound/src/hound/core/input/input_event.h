@@ -2,7 +2,7 @@
 #include "hound/core/base.h"
 #include "hound/core/property.h"
 #include "hound/core/input/key_codes.h"
-#include "hound/math/math.h"
+#include "hound/core/math/math.h"
 
 class window;
 

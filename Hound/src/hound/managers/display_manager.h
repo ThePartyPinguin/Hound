@@ -3,7 +3,7 @@
 #include "hound/core/os/os.h"
 #include "hound/core/bit.h"
 #include "hound/core/object/object.h"
-#include "hound/math/math.h"
+#include "hound/core/math/math.h"
 
 class window;
 class input_event_with_modifier;

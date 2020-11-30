@@ -1,5 +1,6 @@
 #pragma once
 #include "hound/core/property.h"
+#include "hound/core/math/math.h"
 
 struct object_id
 {

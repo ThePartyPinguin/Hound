@@ -1,5 +1,5 @@
 #pragma once
-#include "hound/math/math_functions.h"
+#include "hound/core/math/math_functions.h"
 
 template<typename T>
 struct vec3;

@@ -3,7 +3,7 @@
 #include "hound/core/input/input_event.h"
 
 #include "hound/core/property.h"
-#include "hound/math/math.h"
+#include "hound/core/math/math.h"
 
 class window_close_event : public input_event
 {
