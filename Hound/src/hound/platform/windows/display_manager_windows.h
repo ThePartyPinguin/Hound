@@ -14,7 +14,7 @@ private:
 	uint32_t m_window_count_;
 
 	void on_init() override;
-	
+	void redraw_windows() override;
 	void init_glfw();
 	void identify_monitors();
 	
@@ -43,16 +43,21 @@ private:
 	
 	void set_native_window_title(window_id window, const std::string& title) override;
 	void set_native_window_rect(window_id window, const rect_i& rect) override;
+	void set_native_window_frame_buffer_rect(window_id window, const rect_i& rect) override;
 	void set_native_window_min_size(window_id window, const vec2_i& min_size) override;
 	void set_native_window_max_size(window_id window, const vec2_i& max_size) override;
 	void set_native_window_mode(window_id window, window_mode mode) override;
 	void set_native_window_visible(window_id window, bool visible) override;
 	void set_native_window_focused(window_id window, bool focused) override;
+	void set_native_window_resizable(window_id window, bool is_resizable) override;
+	void set_native_window_content_scale(window_id window, const vec2_f& scale) override;
+	void set_native_window_aspect(window_id window, const vec2_i& aspect) override;
 	void set_native_window_maximized(window_id window, bool maximized) override;
 	void set_native_window_minimized(window_id window, bool minimized) override;
 	void set_native_window_is_always_on_top(window_id window, bool is_always_on_top) override;
 	void set_native_window_border_style(window_id window, window_border_style style) override;
-
+	void native_window_request_attention(window_id window) override;
+	
 	std::unordered_map<monitor_id, monitor_data> m_monitors_;
 	monitor_id m_monitor_counter_ = MAIN_MONITOR_ID;
 
@@ -72,6 +77,7 @@ private:
 	static void glfw_callback_iconified(GLFWwindow* window, int iconified);
 	static void glfw_callback_maximized(GLFWwindow* window, int maximized);
 	static void glfw_callback_focus(GLFWwindow* window, int focused);
+	
 	static void glfw_callback_key_input(GLFWwindow* window, int key, int scan_code, int action, int mods);
 	static void glfw_callback_mouse_position(GLFWwindow* window, double pos_x, double pos_y);
 	static void glfw_callback_mouse_button_input(GLFWwindow* window, int button, int action, int mods);

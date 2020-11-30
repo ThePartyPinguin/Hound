@@ -1,6 +1,7 @@
 #pragma once
 #include "hound/core/base.h"
 #include "hound/core/event/event.h"
+#include "hound/core/event/window_event.h"
 #include "hound/core/input/input_event.h"
 #include "hound/core/object/object.h"
 #include "hound/main/application.h"
@@ -21,7 +22,11 @@ enum class platform
 };
 
 
-class os : public object, public event_handler<window_close_event>, public event_handler<input_event_key>, public event_handler<input_event_mouse_move>, public event_handler<input_event_mouse>
+class os : public object,
+	public event_handler<window_close_event>,
+	public event_handler<input_event_key>,
+	public event_handler<input_event_mouse_move>,
+	public event_handler<input_event_mouse>
 {
 public:
 	static os* get_instance() { return s_instance_; }

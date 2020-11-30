@@ -7,24 +7,6 @@
 
 bool windows_display_manager::s_glfw_initialized = false;
 
-void windows_display_manager::initialize(const window_properties& main_window_properties, graphics_context* p_graphics_context)
-{
-	m_graphics_context_ = p_graphics_context;
-	init_glfw();
-	identify_monitors();
-
-	window* main_window_object_instance = object_database::get_instance()->create_object_instance<window>();
-	
-	const window_id main_window_id = create_window(main_window_properties);
-	
-	attach_window_object(main_window_object_instance, main_window_id);
-	
-	show_window(main_window_id);
-	
-	set_main_window(main_window_object_instance, main_window_id);
-}
-
-
 windows_display_manager::windows_display_manager()
 {
 	m_window_count_ = 0;
@@ -42,6 +24,19 @@ void windows_display_manager::on_init()
 {
 	init_glfw();
 	identify_monitors();
+}
+
+void windows_display_manager::redraw_windows()
+{
+	for (auto& pair : m_id_native_window_map_)
+	{
+		const window_data& data = get_window_data(pair.first);
+		if(data.is_visible)
+		{
+			glfwMakeContextCurrent(pair.second);
+			glfwSwapBuffers(pair.second);
+		}
+	}
 }
 
 void windows_display_manager::init_glfw()
@@ -113,7 +108,7 @@ GLFWwindow* windows_display_manager::create_glfw_window(const window_data& windo
 		parent_window = m_id_native_window_map_[window_data.parent_id];
 	}
 		
-	monitor_data& md = m_monitors_[window_data.monitor];
+	monitor_data& md = m_monitors_[window_data.monitor_id];
 	const GLFWvidmode* current_vid_mode = glfwGetVideoMode(md.native_monitor);
 
 	glfwWindowHint(GLFW_RESIZABLE, window_data.is_resizable ? GLFW_TRUE : GLFW_FALSE);
@@ -206,6 +201,11 @@ void windows_display_manager::set_native_window_rect(window_id window, const rec
 	glfwSetWindowSize(native_window, rect.get_width(), rect.get_height());
 }
 
+void windows_display_manager::set_native_window_frame_buffer_rect(window_id window, const rect_i& rect)
+{
+	
+}
+
 void windows_display_manager::set_native_window_min_size(window_id window, const vec2_i& min_size)
 {
 	const window_data& md = get_window_data(window);
@@ -225,7 +225,7 @@ void windows_display_manager::set_native_window_mode(window_id window, window_mo
 	GLFWwindow* native_window = m_id_native_window_map_[window];
 	const window_data& wd = get_window_data(window);
 
-	monitor_data md = m_monitors_[wd.monitor];
+	monitor_data& md = m_monitors_[wd.monitor_id];
 
 	const GLFWvidmode* vid_mode = glfwGetVideoMode(md.native_monitor);
 
@@ -279,28 +279,57 @@ void windows_display_manager::set_native_window_focused(window_id window, bool f
 	}
 }
 
+void windows_display_manager::set_native_window_resizable(window_id window, bool is_resizable)
+{
+	GLFWwindow* native_window = m_id_native_window_map_[window];
+	glfwSetWindowAttrib(native_window, GLFW_RESIZABLE, is_resizable ? GLFW_TRUE : GLFW_FALSE);
+}
+
+void windows_display_manager::set_native_window_content_scale(window_id window, const vec2_f& scale)
+{
+}
+
+void windows_display_manager::set_native_window_aspect(window_id window, const vec2_i& aspect)
+{
+	GLFWwindow* native_window = m_id_native_window_map_[window];
+	glfwSetWindowAspectRatio(native_window, aspect.get_x(), aspect.get_y());
+}
+
 void windows_display_manager::set_native_window_maximized(window_id window, bool maximized)
 {
 	GLFWwindow* native_window = m_id_native_window_map_[window];
-	glfwMaximizeWindow(native_window);
+	
+	if(glfwGetWindowAttrib(native_window, GLFW_MAXIMIZED) != maximized)
+		glfwMaximizeWindow(native_window);
 }
 
 void windows_display_manager::set_native_window_minimized(window_id window, bool minimized)
 {
 	GLFWwindow* native_window = m_id_native_window_map_[window];
-	glfwIconifyWindow(native_window);
+	
+	if(glfwGetWindowAttrib(native_window, GLFW_ICONIFIED) != minimized)
+		glfwIconifyWindow(native_window);
 }
 
 void windows_display_manager::set_native_window_is_always_on_top(window_id window, bool is_always_on_top)
 {
 	GLFWwindow* native_window = m_id_native_window_map_[window];
-	glfwSetWindowAttrib(native_window, GLFW_FLOATING, is_always_on_top ? GLFW_TRUE : GLFW_FALSE);
+
+	if(glfwGetWindowAttrib(native_window, GLFW_FLOATING) != is_always_on_top)
+		glfwSetWindowAttrib(native_window, GLFW_FLOATING, is_always_on_top ? GLFW_TRUE : GLFW_FALSE);
 }
 
 void windows_display_manager::set_native_window_border_style(window_id window, window_border_style style)
 {
 	GLFWwindow* native_window = m_id_native_window_map_[window];
-	glfwSetWindowAttrib(native_window, GLFW_DECORATED, (style == bordered) ? GLFW_TRUE : GLFW_FALSE);
+	if (glfwGetWindowAttrib(native_window, GLFW_DECORATED) != (style == bordered))
+		glfwSetWindowAttrib(native_window, GLFW_DECORATED, (style == bordered) ? GLFW_TRUE : GLFW_FALSE);
+}
+
+void windows_display_manager::native_window_request_attention(window_id window)
+{
+	GLFWwindow* native_window = m_id_native_window_map_[window];
+	glfwRequestWindowAttention(native_window);
 }
 
 void windows_display_manager::glfw_callback_close(GLFWwindow* window)
@@ -316,7 +345,7 @@ void windows_display_manager::glfw_callback_close(GLFWwindow* window)
 	}
 	HND_LOG_TRACE("Window Event captured!\r\n\t- Event: CLOSE\r\n\t- WindowID: ", id, "\r\n\t- Is main: ", id == MAIN_WINDOW_ID);
 
-	wd.window_object->close();
+	wd.window_object->set_should_close(true);
 }
 
 void windows_display_manager::glfw_callback_size(GLFWwindow* window, int width, int height)
@@ -342,8 +371,7 @@ void windows_display_manager::glfw_callback_size(GLFWwindow* window, int width, 
 
 	glfwGetWindowPos(window, &pos_x, &pos_y);
 
-	vec2_i size = wd.window_object->get_rect().get_size();
-	wd.window_object->resize({ pos_x, pos_y, size });
+	wd.window_object->set_rect({ pos_x, pos_y, width, height });
 }
 
 void windows_display_manager::glfw_callback_frame_buffer_size(GLFWwindow* window, int width, int height)
@@ -359,7 +387,7 @@ void windows_display_manager::glfw_callback_frame_buffer_size(GLFWwindow* window
 	}
 	HND_LOG_TRACE("Window Event captured!\r\n\t- Event: FRAME_BUFFER_RESIZE\r\n\t- WindowID: ", id, "\r\n\t- Is main: ", id == MAIN_WINDOW_ID);
 
-	wd.window_object->resize_frame_buffer({ 0, 0, width, height });
+	_this->set_window_frame_buffer(id, { 0, 0, width, height });
 }
 
 void windows_display_manager::glfw_callback_content_scale(GLFWwindow* window, float scale_x, float scale_y)
@@ -375,7 +403,7 @@ void windows_display_manager::glfw_callback_content_scale(GLFWwindow* window, fl
 	}
 	HND_LOG_TRACE("Window Event captured!\r\n\t- Event: SCALE\r\n\t- WindowID: ", id, "\r\n\t- Is main: ", id == MAIN_WINDOW_ID);
 
-	wd.window_object->set_content_scale({ scale_x, scale_y });
+	_this->set_window_content_scale(id, { scale_x, scale_y });
 }
 
 void windows_display_manager::glfw_callback_position(GLFWwindow* window, int pos_x, int pos_y)
@@ -395,8 +423,7 @@ void windows_display_manager::glfw_callback_position(GLFWwindow* window, int pos
 
 	glfwGetWindowSize(window, &width, &height);
 
-	vec2_i size = wd.rect.get_size();
-	wd.window_object->resize({ pos_x, pos_y, size });
+	wd.window_object->set_rect({ pos_x, pos_y, width, height });
 }
 
 void windows_display_manager::glfw_callback_iconified(GLFWwindow* window, int iconified)
@@ -410,9 +437,8 @@ void windows_display_manager::glfw_callback_iconified(GLFWwindow* window, int ic
 	{
 		return;
 	}
-	HND_LOG_TRACE("Window Event captured!\r\n\t- Event: MINIMIZED\r\n\t- WindowID: ", id, "\r\n\t- Is main: ", id == MAIN_WINDOW_ID);
-
-	wd.window_object->minimize();
+	HND_LOG_TRACE("Window Event captured!\r\n\t- Event: MINIMIZED\r\n\t- WindowID: ", id, "\r\n\t- Is main: ", id == MAIN_WINDOW_ID);	
+	wd.window_object->set_is_minimized(iconified);
 }
 
 void windows_display_manager::glfw_callback_maximized(GLFWwindow* window, int maximized)
@@ -428,7 +454,7 @@ void windows_display_manager::glfw_callback_maximized(GLFWwindow* window, int ma
 	}
 	HND_LOG_TRACE("Window Event captured!\r\n\t- Event: MAXIMIZED\r\n\t- WindowID: ", id, "\r\n\t- Is main: ", id == MAIN_WINDOW_ID);
 
-	wd.window_object->maximize();
+	wd.window_object->set_is_maximized(maximized);
 }
 
 void windows_display_manager::glfw_callback_focus(GLFWwindow* window, int focused)
@@ -444,7 +470,7 @@ void windows_display_manager::glfw_callback_focus(GLFWwindow* window, int focuse
 	}
 	HND_LOG_TRACE("Window Event captured!\r\n\t- Event: FOCUS\r\n\t- WindowID: ", id, "\r\n\t- Is main: ", id == MAIN_WINDOW_ID);
 
-	wd.window_object->grab_focus();
+	wd.window_object->set_is_focused(focused);
 }
 
 void windows_display_manager::glfw_callback_key_input(GLFWwindow* window, int key, int scan_code, int action, int mods)

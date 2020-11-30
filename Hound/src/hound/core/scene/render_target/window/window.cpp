@@ -33,83 +33,47 @@ window::~window()
 {
 }
 
-void window::on_input_event(const input_event_with_modifier& event)
+void window::dpm_set_frame_buffer_rect(const rect_i& rect)
 {
-}
-
-void window::on_window_event(const window_event& event)
-{
-	HND_CORE_LOG_INFO("Event received in window class");
-}
-
-void window::close()
-{
-	if (m_window_id_ == display_manager::INVALID_WINDOW_ID)
-	{
-		return;
-	}
-	window_close_event e{};
-	e.set_window_id(m_window_id_);
-	e.set_window_object(this);
-	e.set_is_main_window(m_window_id_ == display_manager::MAIN_WINDOW_ID);
-
-	publish_event<window_close_event>(e);
-}
-
-void window::show()
-{
-	m_is_visible_ = true;
+	m_frame_buffer_rect_ = rect;
 	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
 	{
 		return;
 	}
-	display_manager::get_instance()->show_window(m_window_id_);
+
+	window_frame_buffer_resize_event e{};
+	e.set_window_id(m_window_id_);
+	e.set_window_object(this);
+	e.set_rect(rect);
+
+	publish_event(e);
+}
+
+void window::dpm_set_aspect(const vec2_i& aspect)
+{
+	m_aspect_ = aspect;
+	on_set_aspect(aspect);
+}
+
+void window::dpm_set_content_scale(const vec2_f& scale)
+{
+	m_content_scale_ = scale;
 	
-	window_visibility_event e{};
-	e.set_window_id(m_window_id_);
-	e.set_window_object(this);
-	e.set_is_visible(m_is_visible_);
-	publish_event<window_visibility_event>(e);
-}
-
-void window::hide()
-{
-	m_is_visible_ = false;
-	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
-	{
-		return;
-	}
-	display_manager::get_instance()->hide_window(m_window_id_);
-
-	window_visibility_event e{};
-	e.set_window_id(m_window_id_);
-	e.set_window_object(this);
-	e.set_is_visible(m_is_visible_);
-	publish_event<window_visibility_event>(e);
-}
-
-void window::grab_focus()
-{
-	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
-	{
-		return;
-	}
-	display_manager::get_instance()->grab_focus(m_window_id_);
 }
 
 void window::on_set_title(const std::string& title)
 {
-	if(m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
+	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
 	{
 		return;
 	}
-	display_manager::get_instance()->set_window_title(m_window_id_, title);
-
+	
 	window_title_event e{};
 	e.set_window_id(m_window_id_);
 	e.set_window_object(this);
 	e.set_title(title);
-	publish_event<window_title_event>(e);
+
+	publish_event(e);
 }
 
 void window::on_set_rect(const rect_i& rect)
@@ -118,45 +82,13 @@ void window::on_set_rect(const rect_i& rect)
 	{
 		return;
 	}
-	display_manager::get_instance()->set_window_rect(m_window_id_, rect);
 
 	window_resize_event e{};
 	e.set_window_id(m_window_id_);
 	e.set_window_object(this);
-	e.set_type(window_event::RESIZE);
-	e.set_rect(m_rect_);
-	
-	publish_event<window_resize_event>(e);
-}
+	e.set_rect(rect);
 
-void window::on_set_frame_buffer_rect(const rect_i& rect)
-{
-	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
-	{
-		return;
-	}
-	window_frame_buffer_resize_event e{};
-	e.set_window_id(m_window_id_);
-	e.set_window_object(this);
-	e.set_type(window_event::RESIZE);
-	e.set_size(m_rect_.get_size());
-
-	publish_event<window_frame_buffer_resize_event>(e);
-}
-
-void window::on_set_content_scale(const vec2_f& scale)
-{
-	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
-	{
-		return;
-	}
-	window_content_scale_update_event e{};
-	e.set_window_id(m_window_id_);
-	e.set_window_object(this);
-	e.set_type(window_event::RESIZE);
-	e.set_scale(scale);
-
-	publish_event<window_content_scale_update_event>(e);
+	publish_event(e);
 }
 
 void window::on_set_min_size(const vec2_i& size)
@@ -165,7 +97,13 @@ void window::on_set_min_size(const vec2_i& size)
 	{
 		return;
 	}
-	display_manager::get_instance()->set_window_min_size(m_window_id_, size);
+
+	window_min_size_change_event e{};
+	e.set_window_id(m_window_id_);
+	e.set_window_object(this);
+	e.set_min_size_(size);
+
+	publish_event(e);
 }
 
 void window::on_set_max_size(const vec2_i& size)
@@ -174,7 +112,28 @@ void window::on_set_max_size(const vec2_i& size)
 	{
 		return;
 	}
-	display_manager::get_instance()->set_window_max_size(m_window_id_, size);
+
+	window_max_size_change_event e{};
+	e.set_window_id(m_window_id_);
+	e.set_window_object(this);
+	e.set_max_size_(size);
+
+	publish_event(e);
+}
+
+void window::on_set_aspect(const vec2_i& aspect)
+{
+	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
+	{
+		return;
+	}
+
+	window_aspect_change_event e{};
+	e.set_window_id(m_window_id_);
+	e.set_window_object(this);
+	e.set_aspect(aspect);
+
+	publish_event(e);
 }
 
 void window::on_set_mode(const mode& mode)
@@ -183,37 +142,52 @@ void window::on_set_mode(const mode& mode)
 	{
 		return;
 	}
-	display_manager::get_instance()->set_window_mode(m_window_id_, static_cast<display_manager::window_mode>(mode));
 
 	window_mode_change_event e{};
 	e.set_window_id(m_window_id_);
 	e.set_window_object(this);
-	e.set_type(window_event::RESIZE);
 	e.set_mode(static_cast<int>(mode));
 
-	publish_event<window_mode_change_event>(e);
+	publish_event(e);
 }
 
-void window::on_set_flags(const int& flags)
+void window::on_set_should_close(bool close)
 {
-	m_window_flags_ = flags;
+	if (m_window_id_ == display_manager::INVALID_WINDOW_ID)
+	{
+		return;
+	}
+
+	window_close_event e{};
+	e.set_window_id(m_window_id_);
+	e.set_window_object(this);
+	e.set_is_main_window(m_window_id_ == display_manager::MAIN_WINDOW_ID);
+	e.set_should_close(close);
+	publish_event(e);
+}
+
+void window::on_set_resizable(bool resizable)
+{
 	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
 	{
 		return;
 	}
-	display_manager::get_instance()->set_window_flags(m_window_id_, flags);
+
+	window_resizable_event e{};
+	e.set_window_id(m_window_id_);
+	e.set_window_object(this);
+	e.set_is_resizable(resizable);
+
+	publish_event(e);
 }
 
 void window::on_set_visible(const bool& visible)
 {
-	m_is_visible_ = visible;
 	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
 	{
 		return;
 	}
 	
-	display_manager::get_instance()->set_window_visible(m_window_id_, visible);
-
 	window_visibility_event e{};
 	e.set_window_id(m_window_id_);
 	e.set_window_object(this);
@@ -224,17 +198,75 @@ void window::on_set_visible(const bool& visible)
 
 void window::on_set_focus(const bool& focus)
 {
-	m_is_focused_ = focus;
 	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
 	{
 		return;
 	}
-	display_manager::get_instance()->set_window_focus(m_window_id_, focus);
 
 	window_focused_event e{};
 	e.set_window_id(m_window_id_);
 	e.set_window_object(this);
 	e.set_is_focused(focus);
+
+	publish_event(e);
+}
+
+void window::on_set_maximized(const bool& is_maximized)
+{
+	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
+	{
+		return;
+	}
+
+	window_maximize_event e{};
+	e.set_window_id(m_window_id_);
+	e.set_window_object(this);
+	e.set_is_maximized(is_maximized);
+
+	publish_event(e);
+}
+
+void window::on_set_minimized(const bool& is_minimized)
+{
+	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
+	{
+		return;
+	}
+
+	window_minimize_event e{};
+	e.set_window_id(m_window_id_);
+	e.set_window_object(this);
+	e.set_is_minimized(is_minimized);
+
+	publish_event(e);
+}
+
+void window::on_set_always_on_top(const bool& is_always_on_top)
+{
+	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
+	{
+		return;
+	}
+
+	window_always_on_top_change_event e{};
+	e.set_window_id(m_window_id_);
+	e.set_window_object(this);
+	e.set_always_on_top(is_always_on_top);
+
+	publish_event(e);
+}
+
+void window::on_set_border_style(const border_style& style)
+{
+	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
+	{
+		return;
+	}
+
+	window_border_style_change_event e{};
+	e.set_window_id(m_window_id_);
+	e.set_window_object(this);
+	e.set_border_style(static_cast<int>(style));
 
 	publish_event(e);
 }

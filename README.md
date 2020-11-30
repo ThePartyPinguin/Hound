@@ -13,16 +13,16 @@ The plan during this year is to create a basic game engine. That I can optimize 
 ### Roadmap
 
 - Logging :heavy_check_mark:
-- OpenGL rendering :heavy_check_mark:
+- OpenGL rendering
 - Window system :heavy_check_mark:
 - Input handling :heavy_check_mark:
 - Window events :heavy_check_mark:
 - Input events :heavy_check_mark:
-- FrameBuffers :heavy_check_mark:
-- Shader loading :heavy_check_mark:
-- Shader parser (Partialy working)
-- File handling api (Partialy working)
-- Math library (WIP)
+- FrameBuffers
+- Shader loading
+- Shader parser
+- File handling api
+- Math library :heavy_check_mark:
 - 2D rendering
 - Text rendering
 - 3D rendering

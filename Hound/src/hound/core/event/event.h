@@ -78,4 +78,3 @@ template <typename TEvent>
 void event_handler<TEvent>::on_event(const TEvent& e)
 {
 }
-

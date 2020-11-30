@@ -48,7 +48,7 @@ public:
 	HND_PROP_GET_REF_FUNC(object_id, object_id, m_id_)
 
 	object() = default;
-	virtual ~object() = default;	
+	virtual ~object() = default;
 private:
 	HND_PROP_SET_FUNC(object_id, object_id, m_id_)
 	

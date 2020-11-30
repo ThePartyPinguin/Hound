@@ -9,12 +9,29 @@ class window;
 class input_event_with_modifier;
 class window_event;
 
-class display_manager : public object
+class display_manager : public object,
+	public event_handler<window_close_event>,
+	public event_handler<window_visibility_event>,
+	public event_handler<window_title_event>,
+	public event_handler<window_resize_event>,
+	public event_handler<window_maximize_event>,
+	public event_handler<window_minimize_event>,
+	public event_handler<window_resizable_event>,
+	public event_handler<window_frame_buffer_resize_event>,
+	public event_handler<window_content_scale_change_event>,
+	public event_handler<window_min_size_change_event>,
+	public event_handler<window_max_size_change_event>,
+	public event_handler<window_aspect_change_event>,
+	public event_handler<window_border_style_change_event>,
+	public event_handler<window_always_on_top_change_event>,
+	public event_handler<window_move_event>,
+	public event_handler<window_mode_change_event>,
+	public event_handler<window_focused_event>
 {
 protected:
 	static display_manager* s_instance_;
 
-public:
+public:	
 	typedef int window_id;
 	typedef int monitor_id;
 	
@@ -56,15 +73,20 @@ public:
 	
 	struct window_properties
 	{
+		std::string title;
 		rect_i rect;
 		vec2_i min_size;
 		vec2_i max_size;
-		vec2_i aspect;
-
-		int flags;
+		
 		window_mode mode;
-
-		std::string title;
+		bool is_resizable;
+		bool is_visible;
+		bool is_focused;
+		bool is_maximized;
+		bool is_minimized;
+		bool is_always_on_top;
+		window_border_style border_style;
+		
 		monitor_id monitor_id = MAIN_MONITOR_ID;
 	};
 
@@ -82,9 +104,9 @@ public:
 		vec2_i min_size;
 		vec2_i max_size;
 		vec2_i aspect;
+		
 		window_mode mode;
-
-		bool is_centered;
+		bool should_close;
 		bool is_resizable;
 		bool is_visible;
 		bool is_focused;
@@ -94,7 +116,7 @@ public:
 		window_border_style border_style;
 
 		window* window_object;
-		monitor_id monitor = MAIN_MONITOR_ID;
+		monitor_id monitor_id = MAIN_MONITOR_ID;
 	};
 	
 	static display_manager* get_instance() { return s_instance_; }
@@ -102,26 +124,16 @@ public:
 	virtual void initialize(const window_properties& main_window_properties, graphics_context* graphics_context);
 	virtual void redraw_windows() = 0;
 
-	virtual window_id get_main_window() = 0;
+	window_id get_main_window();
 	window_id request_sub_window(window_id parent_id, const window_properties& properties);
 	
-	void show_window(window_id window);
-	void hide_window(window_id window);
-	void maximize_window(window_id window);
-	void minimize_window(window_id window);
-	void resize_window(window_id window, const rect_i& rect);
-	void set_window_min_size(window_id window, const vec2_i& min_size);
-	void set_window_max_size(window_id window, const vec2_i& max_size);
-	void window_set_border_style(window_id window, window_border_style style);
-	void window_grab_focus(window_id window);
-	void window_request_attention(window_id window);
-	
-	virtual bool destroy_sub_window(window_id id) = 0;
+	virtual bool destroy_sub_window(window_id id);
 
-	virtual void attach_window_object(window*, window_id id = MAIN_WINDOW_ID) = 0;
-	virtual window* get_attached_window_object(window_id id = MAIN_WINDOW_ID) = 0;
+	void attach_window_object(window* window_object, window_id window = MAIN_WINDOW_ID);
+	window* get_attached_window_object(window_id id = MAIN_WINDOW_ID);
 
-	virtual void process_all_window_events() = 0;
+	void subscribe_to_window_events(window* window);
+	virtual void process_all_window_events();
 
 	typedef void (*input_event_callback)(const input_event_with_modifier& e);
 	typedef void (*window_event_callback)(const window_event& e);
@@ -136,6 +148,24 @@ private:
 	std::unordered_map<window_id, window_data> m_window_data_;
 
 	const window_data& create_window_data(const window_properties& properties, window* window_object);
+
+	void on_event(const window_close_event& e) override;
+	void on_event(const window_visibility_event& e) override;
+	void on_event(const window_title_event& e) override;
+	void on_event(const window_resize_event& e) override;
+	void on_event(const window_maximize_event& e) override;
+	void on_event(const window_minimize_event& e) override;
+	void on_event(const window_resizable_event& e) override;
+	void on_event(const window_frame_buffer_resize_event& e) override;
+	void on_event(const window_content_scale_change_event& e) override;
+	void on_event(const window_min_size_change_event& e) override;
+	void on_event(const window_max_size_change_event& e) override;
+	void on_event(const window_aspect_change_event& e) override;
+	void on_event(const window_border_style_change_event& e) override;
+	void on_event(const window_move_event& e) override;
+	void on_event(const window_mode_change_event& e) override;
+	void on_event(const window_focused_event& e) override;
+	void on_event(const window_always_on_top_change_event& e) override;
 	
 protected:
 	graphics_context* m_graphics_context_;
@@ -146,6 +176,10 @@ protected:
 	void pass_key_event(window* window, uint32_t window_id, key_code key, key_action action, int modifiers);
 	void pass_mouse_position_event(window* window, uint32_t window_id, double pos_x, double pos_y);
 	void pass_mouse_button_event(window* window, uint32_t window_id, key_code button, key_action action, int modifiers);
+
+	void set_window_frame_buffer(window_id window_id, const rect_i& rect);
+	void set_window_aspect(window_id window_id, const vec2_i& aspect);
+	void set_window_content_scale(window_id window_id, const vec2_f& scale);
 
 	virtual void on_init() = 0;
 	
@@ -158,14 +192,19 @@ protected:
 	
 	virtual void set_native_window_title(window_id window, const std::string& title) = 0;
 	virtual void set_native_window_rect(window_id window, const rect_i& rect) = 0;
+	virtual void set_native_window_frame_buffer_rect(window_id window, const rect_i& rect) = 0;
 	virtual void set_native_window_min_size(window_id window, const vec2_i& min_size) = 0;
 	virtual void set_native_window_max_size(window_id window, const vec2_i& max_size) = 0;
 	virtual void set_native_window_mode(window_id window, window_mode mode) = 0;
 	virtual void set_native_window_visible(window_id window, bool visible) = 0;
 	virtual void set_native_window_focused(window_id window, bool focused) = 0;
+	virtual void set_native_window_resizable(window_id window, bool is_resizable) = 0;
+	virtual void set_native_window_content_scale(window_id window, const vec2_f& scale) = 0;
+	virtual void set_native_window_aspect(window_id window, const vec2_i& aspect) = 0;
 	virtual void set_native_window_maximized(window_id window, bool maximized) = 0;
 	virtual void set_native_window_minimized(window_id window, bool minimized) = 0;
 	virtual void set_native_window_is_always_on_top(window_id window, bool is_always_on_top) = 0;
 	virtual void set_native_window_border_style(window_id window, window_border_style style) = 0;
+	virtual void native_window_request_attention(window_id window) = 0;
 };
 
