@@ -6,8 +6,10 @@ struct object_id
 {
 	friend class object_database;
 	
-	object_id() = default;
+	object_id() { m_id_ = 0; };
 
+	static object_id null();
+	
 	inline bool is_valid() { return m_id_ != 0; }
 	inline bool is_null() { return m_id_ == 0; }
 	
@@ -17,7 +19,7 @@ struct object_id
 	inline bool operator==(const object_id& other ) const { return m_id_ == other.m_id_; }	
 	inline bool operator!=(const object_id& other ) const { return m_id_ != other.m_id_; }
 	inline bool operator<(const object_id& other ) const { return m_id_ < other.m_id_; }
-
+	
 private:
 	explicit object_id(uint64_t id) { m_id_ = id; }
 	explicit object_id(int64_t id) { m_id_ = id; }

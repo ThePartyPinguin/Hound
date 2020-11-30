@@ -10,18 +10,6 @@ class window;
 class display_manager;
 class graphics_context;
 
-enum class platform
-{
-	unknown = 0x00,
-	windows_x64 = 0x01,
-	windows_x32 = 0x02,
-	linux = 0x03,
-	osx = 0x04,
-	ios = 0x05,
-	android = 0x06
-};
-
-
 class os : public object,
 	public event_handler<window_close_event>,
 	public event_handler<input_event_key>,
@@ -29,13 +17,22 @@ class os : public object,
 	public event_handler<input_event_mouse>
 {
 public:
+
+	enum class platform
+	{
+		unknown = 0x00,
+		windows_x64 = 0x01,
+		windows_x32 = 0x02,
+		linux = 0x03,
+		osx = 0x04,
+		ios = 0x05,
+		android = 0x06
+	};
+
 	static os* get_instance() { return s_instance_; }
 
-	virtual platform get_platform();
-
-	os();
-	virtual ~os();
-
+	platform get_platform();
+	
 	virtual bool initialize(ref<application> application);
 	virtual void run();
 	virtual void clean_up();
@@ -54,6 +51,9 @@ protected:
 
 	void set_main_window(window* window);
 
+	os();
+	virtual ~os();
+	
 private:
 	window* m_main_window_;
 
@@ -62,4 +62,3 @@ private:
 	void on_event(const input_event_mouse& e) override;
 	void on_event(const input_event_mouse_move& e) override;
 };
-

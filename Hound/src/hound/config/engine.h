@@ -8,8 +8,6 @@ class window;
 class engine
 {
 public:
-	static engine* get_instance() { return s_instance_; }
-
 	static void init();
 	static void clean_up();
 	
@@ -23,7 +21,8 @@ public:
 	static TImpl* get_singleton();
 	
 private:
-
+	static engine* get_instance() { return s_instance_; }
+	
 	static engine* s_instance_;
 	static bool s_initialized_;
 	

@@ -4,12 +4,15 @@
 class graphics_context : public object
 {
 public:
+	static void initialize();
+	
 	static graphics_context* get_instance();
 
-	virtual void initialize() = 0;
+protected:
+	static graphics_context* s_instance_;
 	
 	graphics_context();
-private:
-	static graphics_context* s_instance_;
+	virtual ~graphics_context();
 };
 
+void initialize_graphics_context();

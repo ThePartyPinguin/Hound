@@ -4,8 +4,6 @@
 class windows_os : public os
 {
 public:
-	platform get_platform() override;
-
 	windows_os();
 	virtual ~windows_os();
 	

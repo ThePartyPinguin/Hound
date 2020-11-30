@@ -3,6 +3,7 @@
 
 void open_gl_logger::init()
 {
+	HND_CORE_LOG_INFO("OPEN_GL::LOGGER Initialized!");
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(gl_error_callback, 0);
 }

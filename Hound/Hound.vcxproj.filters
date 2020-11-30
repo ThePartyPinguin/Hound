@@ -38,7 +38,6 @@
       <Filter>managers</Filter>
     </ClInclude>
     <ClInclude Include="src\hound\drivers\graphics_context.h" />
-    <ClInclude Include="src\hound\platform\open_gl\open_gl_context.h" />
     <ClInclude Include="src\hound\config\platform_identifier.h" />
     <ClInclude Include="src\hound\config\engine.h" />
     <ClInclude Include="src\hound\logging\logger.h">
@@ -60,9 +59,7 @@
     <ClInclude Include="src\hound\core\scene\render_target\render_target.h" />
     <ClInclude Include="src\hound\core\scene\render_target\viewport.h" />
     <ClInclude Include="src\hound\core\scene\render_target\window\window.h" />
-    <ClInclude Include="camera_manager.h" />
     <ClInclude Include="src\hound\platform\open_gl\open_gl_core.h" />
-    <ClInclude Include="src\hound\platform\open_gl\open_gl_logger.h" />
     <ClInclude Include="src\hound\core\event\event.h" />
     <ClInclude Include="src\hound\core\object\object_database.h" />
     <ClInclude Include="src\hound\core\object\object.h" />
@@ -87,6 +84,14 @@
     <ClInclude Include="src\hound\core\math\math_functions.h">
       <Filter>math</Filter>
     </ClInclude>
+    <ClInclude Include="src\hound\rendering\renderer.h" />
+    <ClInclude Include="src\hound\platform\open_gl\logging\open_gl_logger.h" />
+    <ClInclude Include="src\hound\platform\open_gl\context\open_gl_context.h" />
+    <ClInclude Include="src\hound\platform\open_gl\renderer\open_gl_renderer.h" />
+    <ClInclude Include="src\hound\core\object\mesh\mesh.h" />
+    <ClInclude Include="src\hound\rendering\renderer_cache.h" />
+    <ClInclude Include="src\hound\platform\open_gl\renderer\open_gl_renderer_cache.h" />
+    <ClInclude Include="src\hound\core\object\shader\shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hound\hnd_pch.cpp" />
@@ -94,7 +99,6 @@
       <Filter>managers</Filter>
     </ClCompile>
     <ClCompile Include="src\hound\drivers\graphics_context.cpp" />
-    <ClCompile Include="src\hound\platform\open_gl\open_gl_context.cpp" />
     <ClCompile Include="src\hound\config\platform_identifier.cpp" />
     <ClCompile Include="src\hound\config\engine.cpp" />
     <ClCompile Include="src\hound\logging\logger.cpp">
@@ -111,8 +115,6 @@
     <ClCompile Include="src\hound\core\scene\render_target\render_target.cpp" />
     <ClCompile Include="src\hound\core\scene\render_target\viewport.cpp" />
     <ClCompile Include="src\hound\core\scene\render_target\window\window.cpp" />
-    <ClCompile Include="camera_manager.cpp" />
-    <ClCompile Include="src\hound\platform\open_gl\open_gl_logger.cpp" />
     <ClCompile Include="src\hound\core\object\object_database.cpp" />
     <ClCompile Include="src\hound\core\object\object.cpp" />
     <ClCompile Include="src\hound\platform\windows\window_glfw_helper.cpp" />
@@ -120,5 +122,13 @@
     <ClCompile Include="src\hound\core\math\math_functions.cpp">
       <Filter>math</Filter>
     </ClCompile>
+    <ClCompile Include="src\hound\rendering\renderer.cpp" />
+    <ClCompile Include="src\hound\platform\open_gl\logging\open_gl_logger.cpp" />
+    <ClCompile Include="src\hound\platform\open_gl\context\open_gl_context.cpp" />
+    <ClCompile Include="src\hound\platform\open_gl\renderer\open_gl_renderer.cpp" />
+    <ClCompile Include="src\hound\core\object\mesh\mesh.cpp" />
+    <ClCompile Include="src\hound\rendering\renderer_cache.cpp" />
+    <ClCompile Include="src\hound\platform\open_gl\renderer\open_gl_renderer_cache.cpp" />
+    <ClCompile Include="src\hound\core\object\shader\shader.cpp" />
   </ItemGroup>
 </Project>
