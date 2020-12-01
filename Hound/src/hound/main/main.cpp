@@ -6,6 +6,7 @@
 #include "hound/managers/display_manager.h"
 #include "hound/core/input/input_system.h"
 #include "hound/drivers/graphics_context.h"
+#include "hound/file/shader/shader_file_handler.h"
 
 #include "hound/rendering/renderer.h"
 
@@ -30,6 +31,8 @@ error main::setup(const char* exec_path, int argc, char* argv[])
 	logger::init();
 	engine::init();
 	engine::register_singleton<input_system>();
+
+	application::s_startup_path_ = std::string(exec_path);
 	
 	return error::OK;
 }
@@ -68,6 +71,12 @@ void main::run()
 
 	const bool shader_finished = renderer_cache::get_instance()->shader_finalize(shader);
 
+	shader_file_handler handler(".shad");
+	
+	object_id s_id = handler.load_from_absolute_path("F:\\SilverWolf\\Test\\Created\\FlatShader.shad");
+	
+
+	
 	if(!shader_finished)
 	{
 		HND_CORE_LOG_ERROR("Shader compile failed, exiting");
