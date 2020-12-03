@@ -4,6 +4,7 @@
 #include "hound/core/bit.h"
 #include "hound/core/object/object.h"
 #include "hound/core/math/math.h"
+#include "hound/core/rendering/renderer_cache.h"
 
 class window;
 class input_event_with_modifier;
@@ -117,6 +118,8 @@ public:
 
 		window* window_object;
 		monitor_id monitor_id = MAIN_MONITOR_ID;
+
+		renderer_cache::frame_buffer_id frame_buffer;
 	};
 	
 	static display_manager* get_instance() { return s_instance_; }
@@ -137,6 +140,8 @@ public:
 
 	typedef void (*input_event_callback)(const input_event_with_modifier& e);
 	typedef void (*window_event_callback)(const window_event& e);
+
+	void window_bind_frame_buffer(window_id window, renderer_cache::frame_buffer_id frame_buffer);
 	
 	static window_properties get_default_properties();
 
@@ -168,8 +173,6 @@ private:
 	void on_event(const window_always_on_top_change_event& e) override;
 	
 protected:
-	graphics_context* m_graphics_context_;
-
 	const window_data& get_window_data(window_id window);
 
 	void set_main_window(window* window, window_id id);

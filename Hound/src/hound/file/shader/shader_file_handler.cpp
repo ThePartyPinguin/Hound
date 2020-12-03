@@ -1,7 +1,7 @@
 #include "hound/hnd_pch.h"
 #include "shader_file_handler.h"
 
-#include "hound/rendering/renderer_cache.h"
+#include "hound/core/rendering/renderer_cache.h"
 #include "raw/raw_shader_parser.h"
 
 void shader_file_handler::deserialize(object_id instance_id, char* buffer, size_t length)

@@ -15,6 +15,7 @@ struct object_id
 	
 	inline operator int64_t() const { return m_id_; }
 	inline operator uint64_t() const { return m_id_; }
+	inline operator uint32_t() const { return m_id_; }
 	
 	inline bool operator==(const object_id& other ) const { return m_id_ == other.m_id_; }	
 	inline bool operator!=(const object_id& other ) const { return m_id_ != other.m_id_; }

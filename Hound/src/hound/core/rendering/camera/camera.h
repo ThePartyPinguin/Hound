@@ -1,7 +1,7 @@
 #pragma once
 #include "hound/core/base.h"
 #include "hound/core/property.h"
-#include "hound/core/scene/render_target/render_target.h"
+#include "hound/core/rendering/render_target/render_target.h"
 #include "hound/core/math/math.h"
 
 class camera

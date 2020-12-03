@@ -1,6 +1,8 @@
 #pragma once
 #include "hound/core/object/object.h"
-#include "hound/rendering/renderer_cache.h"
+#include "hound/core/rendering/renderer_cache.h"
+
+class render_target;
 
 class renderer : public object
 {
@@ -18,7 +20,7 @@ public:
 
 	virtual type_api get_api_type();
 
-	virtual void begin_frame() = 0;	
+	virtual void begin_frame() = 0;
 	virtual void render_indexed(RC::shader_id shader, RC::mesh_id mesh) = 0;
 	virtual void end_frame() = 0;
 	

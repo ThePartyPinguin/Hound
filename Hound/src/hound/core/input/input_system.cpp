@@ -1,7 +1,7 @@
 #include "hound/hnd_pch.h"
 #include "input_system.h"
 #include "hound/core/input/input_event.h"
-#include "hound/core/scene/render_target/window/window.h"
+#include "hound/core/rendering/render_target/window/window.h"
 
 input_system* input_system::s_instance_ = nullptr;
 

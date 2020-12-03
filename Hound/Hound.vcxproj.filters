@@ -55,10 +55,6 @@
     <ClInclude Include="src\hound\core\bit.h" />
     <ClInclude Include="src\hound\core\input\input_event.h" />
     <ClInclude Include="src\hound\core\input\key_codes.h" />
-    <ClInclude Include="src\hound\core\scene\camera\camera.h" />
-    <ClInclude Include="src\hound\core\scene\render_target\render_target.h" />
-    <ClInclude Include="src\hound\core\scene\render_target\viewport.h" />
-    <ClInclude Include="src\hound\core\scene\render_target\window\window.h" />
     <ClInclude Include="src\hound\platform\open_gl\open_gl_core.h" />
     <ClInclude Include="src\hound\core\event\event.h" />
     <ClInclude Include="src\hound\core\object\object_database.h" />
@@ -84,12 +80,10 @@
     <ClInclude Include="src\hound\core\math\math_functions.h">
       <Filter>math</Filter>
     </ClInclude>
-    <ClInclude Include="src\hound\rendering\renderer.h" />
     <ClInclude Include="src\hound\platform\open_gl\logging\open_gl_logger.h" />
     <ClInclude Include="src\hound\platform\open_gl\context\open_gl_context.h" />
     <ClInclude Include="src\hound\platform\open_gl\renderer\open_gl_renderer.h" />
     <ClInclude Include="src\hound\core\object\mesh\mesh.h" />
-    <ClInclude Include="src\hound\rendering\renderer_cache.h" />
     <ClInclude Include="src\hound\platform\open_gl\renderer\open_gl_renderer_cache.h" />
     <ClInclude Include="src\hound\core\object\shader\shader.h" />
     <ClInclude Include="src\hound\file\file_handler.h" />
@@ -97,6 +91,15 @@
     <ClInclude Include="src\hound\file\shader\raw\raw_shader.h" />
     <ClInclude Include="src\hound\file\shader\raw\raw_shader_parser.h" />
     <ClInclude Include="src\hound\platform\open_gl\object\shader\open_gl_shader.h" />
+    <ClInclude Include="src\hound\platform\open_gl\renderer\render_target\open_gl_frame_buffer.h" />
+    <ClInclude Include="src\hound\core\object\texture\texture.h" />
+    <ClInclude Include="src\hound\core\rendering\camera\camera.h" />
+    <ClInclude Include="src\hound\core\rendering\render_target\window\window.h" />
+    <ClInclude Include="src\hound\core\rendering\render_target\frame_buffer.h" />
+    <ClInclude Include="src\hound\core\rendering\render_target\render_target.h" />
+    <ClInclude Include="src\hound\core\rendering\render_target\viewport.h" />
+    <ClInclude Include="src\hound\core\rendering\renderer.h" />
+    <ClInclude Include="src\hound\core\rendering\renderer_cache.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hound\hnd_pch.cpp" />
@@ -116,10 +119,6 @@
     </ClCompile>
     <ClCompile Include="src\hound\main\application.cpp" />
     <ClCompile Include="src\hound\platform\windows\display_manager_windows.cpp" />
-    <ClCompile Include="src\hound\core\scene\camera\camera.cpp" />
-    <ClCompile Include="src\hound\core\scene\render_target\render_target.cpp" />
-    <ClCompile Include="src\hound\core\scene\render_target\viewport.cpp" />
-    <ClCompile Include="src\hound\core\scene\render_target\window\window.cpp" />
     <ClCompile Include="src\hound\core\object\object_database.cpp" />
     <ClCompile Include="src\hound\core\object\object.cpp" />
     <ClCompile Include="src\hound\platform\windows\window_glfw_helper.cpp" />
@@ -127,17 +126,24 @@
     <ClCompile Include="src\hound\core\math\math_functions.cpp">
       <Filter>math</Filter>
     </ClCompile>
-    <ClCompile Include="src\hound\rendering\renderer.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\logging\open_gl_logger.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\context\open_gl_context.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\renderer\open_gl_renderer.cpp" />
     <ClCompile Include="src\hound\core\object\mesh\mesh.cpp" />
-    <ClCompile Include="src\hound\rendering\renderer_cache.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\renderer\open_gl_renderer_cache.cpp" />
     <ClCompile Include="src\hound\core\object\shader\shader.cpp" />
     <ClCompile Include="src\hound\file\shader\shader_file_handler.cpp" />
     <ClCompile Include="src\hound\file\shader\raw\raw_shader.cpp" />
     <ClCompile Include="src\hound\file\shader\raw\raw_shader_parser.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\object\shader\open_gl_shader.cpp" />
+    <ClCompile Include="src\hound\platform\open_gl\renderer\render_target\open_gl_frame_buffer.cpp" />
+    <ClCompile Include="src\hound\core\object\texture\texture.cpp" />
+    <ClCompile Include="src\hound\core\rendering\camera\camera.cpp" />
+    <ClCompile Include="src\hound\core\rendering\render_target\window\window.cpp" />
+    <ClCompile Include="src\hound\core\rendering\render_target\frame_buffer.cpp" />
+    <ClCompile Include="src\hound\core\rendering\render_target\render_target.cpp" />
+    <ClCompile Include="src\hound\core\rendering\render_target\viewport.cpp" />
+    <ClCompile Include="src\hound\core\rendering\renderer.cpp" />
+    <ClCompile Include="src\hound\core\rendering\renderer_cache.cpp" />
   </ItemGroup>
 </Project>

@@ -2,13 +2,13 @@
 #include "main.h"
 
 #include "hound/config/engine.h"
-#include "hound/core/scene/render_target/window/window.h"
+#include "hound/core/rendering//render_target/window/window.h"
 #include "hound/managers/display_manager.h"
 #include "hound/core/input/input_system.h"
 #include "hound/drivers/graphics_context.h"
 #include "hound/file/shader/shader_file_handler.h"
 
-#include "hound/rendering/renderer.h"
+#include "hound/core/rendering/renderer.h"
 
 const char* vertexShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
