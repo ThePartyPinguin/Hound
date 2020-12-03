@@ -96,6 +96,7 @@
     <ClInclude Include="src\hound\file\shader\shader_file_handler.h" />
     <ClInclude Include="src\hound\file\shader\raw\raw_shader.h" />
     <ClInclude Include="src\hound\file\shader\raw\raw_shader_parser.h" />
+    <ClInclude Include="src\hound\platform\open_gl\object\shader\open_gl_shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hound\hnd_pch.cpp" />
@@ -137,5 +138,6 @@
     <ClCompile Include="src\hound\file\shader\shader_file_handler.cpp" />
     <ClCompile Include="src\hound\file\shader\raw\raw_shader.cpp" />
     <ClCompile Include="src\hound\file\shader\raw\raw_shader_parser.cpp" />
+    <ClCompile Include="src\hound\platform\open_gl\object\shader\open_gl_shader.cpp" />
   </ItemGroup>
 </Project>

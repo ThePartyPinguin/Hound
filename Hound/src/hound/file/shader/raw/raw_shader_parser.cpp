@@ -46,9 +46,9 @@ void raw_shader_parser::parse_shader(raw_shader& shader)
 
 		if (m_current_word_ == "SubShader")
 		{
-			raw_shader::shader_stage_type stage_type = parse_shader_stage_type();
+			shader::stage stage_type = parse_shader_stage_type();
 
-			if (stage_type == raw_shader::shader_stage_type::INVALID)
+			if (stage_type == shader::stage::INVALID)
 			{
 				log_error("Shader stage type is unknown! Possible options are:\r\n\t- Vertex\r\n\t- Geometry\r\n\t- Tessellation\r\n\t- Fragment\r\n\t- Compute");
 				shader.is_valid = false;
@@ -99,7 +99,7 @@ bool raw_shader_parser::parse_shader_name(raw_shader& shader)
 	return true;
 }
 
-bool raw_shader_parser::parse_shader_stage(raw_shader::shader_stage& stage)
+bool raw_shader_parser::parse_shader_stage(raw_shader::raw_shader_stage& stage)
 {
 	advance_to_next_word();
 
@@ -116,6 +116,12 @@ bool raw_shader_parser::parse_shader_stage(raw_shader::shader_stage& stage)
 
 	while (m_current_scope_indent_lvl_ != previous_scope_indent_lvl_)
 	{
+		if (is_at_end())
+		{
+			log_error("Reached end of file while parsing shader stage, you're probably missing a '}'");
+			return false;
+		}
+		
 		std::string line = get_next_line();
 
 		if (line.find('{') != std::string::npos)
@@ -131,45 +137,39 @@ bool raw_shader_parser::parse_shader_stage(raw_shader::shader_stage& stage)
 		{
 			shader_source.append(line);
 		}
-
-		if(is_at_end())
-		{
-			log_error("END OF FILE! Shader stage missing closing '}'");
-			return false;
-		}
 	}
 
 	stage.shader_source = shader_source;
 	return true;
 }
 
-raw_shader::shader_stage_type raw_shader_parser::parse_shader_stage_type()
+shader::stage raw_shader_parser::parse_shader_stage_type()
 {
 	advance_to_next_word();
 	std::string type_string = parse_current_word_as_string();
 
 	if (type_string == "Vertex")
 	{
-		return raw_shader::shader_stage_type::VERTEX;
+		return shader::stage::VERTEX;
 	}
 	if (type_string == "Geometry")
 	{
-		return raw_shader::shader_stage_type::GEOMETRY;
+		return shader::stage::GEOMETRY;
 	}
 	if (type_string == "Tessellation")
 	{
-		return raw_shader::shader_stage_type::TESSELLATION;
+		return shader::stage::TESSELLATION;
 	}
 	if (type_string == "Fragment")
 	{
-		return raw_shader::shader_stage_type::FRAGMENT;
+		return shader::stage::FRAGMENT;
 	}
 	if (type_string == "Compute")
 	{
-		return raw_shader::shader_stage_type::COMPUTE;
+		return shader::stage::COMPUTE;
 	}
 	log_error("Invalid shader type!");
-	return raw_shader::shader_stage_type::INVALID;
+	return shader::stage::INVALID;
 }
 
 void raw_shader_parser::advance_to_next_word()

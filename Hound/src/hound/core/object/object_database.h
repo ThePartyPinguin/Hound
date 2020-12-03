@@ -46,7 +46,7 @@ TObject* object_database::get_object_instance(object_id id)
 {
 	if(m_object_map_[id])
 	{
-		return static_cast<TObject*>(id);
+		return static_cast<TObject*>(m_object_map_[id]);
 	}
 	return nullptr;
 }

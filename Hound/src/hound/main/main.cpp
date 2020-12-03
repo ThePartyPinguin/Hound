@@ -64,17 +64,18 @@ void main::run()
 	
 	renderer_cache::get_instance()->mesh_add_data(mesh, data);
 
-	const object_id shader = renderer_cache::get_instance()->shader_create();
+	const object_id default_shader = renderer_cache::get_instance()->shader_create();
 
-	renderer_cache::get_instance()->shader_set_source(shader, renderer_cache::shader_stage::VERTEX, vertexShaderSource);
-	renderer_cache::get_instance()->shader_set_source(shader, renderer_cache::shader_stage::FRAGMENT, fragmentShaderSource);
+	renderer_cache::get_instance()->shader_set_source(default_shader, shader::stage::VERTEX, vertexShaderSource);
+	renderer_cache::get_instance()->shader_set_source(default_shader, shader::stage::FRAGMENT, fragmentShaderSource);
 
-	const bool shader_finished = renderer_cache::get_instance()->shader_finalize(shader);
+	const bool shader_finished = renderer_cache::get_instance()->shader_finalize(default_shader);
 
 	shader_file_handler handler(".shad");
 	
 	object_id s_id = handler.load_from_absolute_path("F:\\SilverWolf\\Test\\Created\\FlatShader.shad");
-	
+
+	// shader* compiled_shader = object_database::get_instance()->get_object_instance<shader>(s_id);
 
 	
 	if(!shader_finished)
@@ -89,7 +90,7 @@ void main::run()
 
 		renderer::get_instance()->begin_frame();
 
-		renderer::get_instance()->render_indexed(shader, mesh);
+		renderer::get_instance()->render_indexed(s_id, mesh);
 		
 		renderer::get_instance()->end_frame();
 		

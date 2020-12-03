@@ -12,8 +12,8 @@ private:
 	void parse_shader(raw_shader& shader);
 	bool parse_header();
 	bool parse_shader_name(raw_shader& shader);
-	bool parse_shader_stage(raw_shader::shader_stage& stage);
-	raw_shader::shader_stage_type parse_shader_stage_type();
+	bool parse_shader_stage(raw_shader::raw_shader_stage& stage);
+	shader::stage parse_shader_stage_type();
 	
 	void advance_to_next_word();
 	bool is_at_end() const;

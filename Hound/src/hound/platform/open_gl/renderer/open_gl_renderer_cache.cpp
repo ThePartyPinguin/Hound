@@ -3,17 +3,21 @@
 #include "hound/core/object/object_database.h"
 #include "hound/core/object/shader/shader.h"
 #include "hound/core/object/mesh/mesh.h"
+#include "hound/platform/open_gl/object/shader/open_gl_shader.h"
 
 renderer_cache::shader_id open_gl_renderer_cache::shader_create()
 {
-	const shader* shader_instance = object_database::get_instance()->create_object_instance<shader>();
+	open_gl_shader* shader_instance = object_database::get_instance()->create_object_instance<open_gl_shader>();
 
-	m_gl_shader_map_[shader_instance->get_object_id()].program_id = glCreateProgram();
+	const gl_object_id program = glCreateProgram();
+	
+	m_gl_shader_map_[shader_instance->get_object_id()].program_id = program;
+	shader_instance->set_shader_program_id(program);
 	
 	return shader_instance->get_object_id();
 }
 
-void open_gl_renderer_cache::shader_set_source(shader_id shader, shader_stage stage, const std::string& source)
+void open_gl_renderer_cache::shader_set_source(shader_id shader, shader::stage stage, const std::string& source)
 {
 	gl_shader_data& shader_data = m_gl_shader_map_[shader];
 	
@@ -21,19 +25,19 @@ void open_gl_renderer_cache::shader_set_source(shader_id shader, shader_stage st
 	
 	switch (stage)
 	{
-	case shader_stage::VERTEX:
+	case shader::stage::VERTEX:
 		gl_shader_id = glCreateShader(GL_VERTEX_SHADER);
 		break;
-	case shader_stage::GEOMETRY:
+	case shader::stage::GEOMETRY:
 		gl_shader_id = glCreateShader(GL_GEOMETRY_SHADER);
 		break;
-	case shader_stage::TESSELLATION:
+	case shader::stage::TESSELLATION:
 		gl_shader_id = glCreateShader(GL_TESS_CONTROL_SHADER);
 		break;
-	case shader_stage::FRAGMENT:
+	case shader::stage::FRAGMENT:
 		gl_shader_id = glCreateShader(GL_FRAGMENT_SHADER);
 		break;
-	case shader_stage::COMPUTE:
+	case shader::stage::COMPUTE:
 		gl_shader_id = glCreateShader(GL_COMPUTE_SHADER);
 		break;
 	}
@@ -47,7 +51,7 @@ void open_gl_renderer_cache::shader_set_source(shader_id shader, shader_stage st
 	shader_data.program_stage_info[stage].source = source;
 }
 
-const std::string& open_gl_renderer_cache::shader_get_source(shader_id shader, shader_stage stage)
+const std::string& open_gl_renderer_cache::shader_get_source(shader_id shader, shader::stage stage)
 {
 	return m_gl_shader_map_[shader].program_stage_info[stage].source;
 }

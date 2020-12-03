@@ -70,8 +70,7 @@ object_id file_handler<TInstance>::load_from_absolute_path(const std::string& fi
 			file_stream.read(buffer, length);
 			file_stream.close();
 
-			TInstance* instance = object_database::get_instance()->create_object_instance<TInstance>();
-			const object_id id = instance->get_object_id();
+			const object_id id = create_instance();
 			deserialize(id, buffer, length);
 
 			delete[] buffer;
