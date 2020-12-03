@@ -9,6 +9,7 @@
 class window;
 class display_manager;
 class graphics_context;
+struct file_handle;
 
 class os : public object,
 	public event_handler<window_close_event>,
@@ -34,7 +35,7 @@ public:
 	platform get_platform();
 	
 	virtual bool initialize(ref<application> application);
-	virtual void run();
+	virtual void run();	
 	virtual void clean_up();
 	
 protected:

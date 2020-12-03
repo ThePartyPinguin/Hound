@@ -16,7 +16,7 @@ public:
 			std::string source;
 		};
 
-		std::unordered_map<shader_stage, stage_info> program_stage_info;
+		std::unordered_map<shader::stage, stage_info> program_stage_info;
 	};
 
 	struct gl_mesh_data : mesh_data
@@ -37,8 +37,8 @@ public:
 	};
 	
 	shader_id shader_create() override;
-	void shader_set_source(shader_id shader, shader_stage stage, const std::string& source) override;
-	const std::string& shader_get_source(shader_id shader, shader_stage stage) override;
+	void shader_set_source(shader_id shader, shader::stage stage, const std::string& source) override;
+	const std::string& shader_get_source(shader_id shader, shader::stage stage) override;
 	bool shader_finalize(shader_id shader) override;
 	gl_object_id get_shader_program_id(shader_id shader);
 

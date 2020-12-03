@@ -1,6 +1,7 @@
 #pragma once
 #include "hound/core/math/math.h"
 #include "hound/core/object/object.h"
+#include "hound/core/object/shader/shader.h"
 
 class renderer_cache : public object
 {
@@ -9,19 +10,10 @@ public:
 	
 	typedef object_id shader_id;
 
-	enum class shader_stage
-	{
-		VERTEX,
-		GEOMETRY,
-		TESSELLATION,
-		FRAGMENT,
-		COMPUTE
-	};
-
 	virtual shader_id shader_create() = 0;
 	
-	virtual void shader_set_source(shader_id shader, shader_stage stage, const std::string& source) = 0;
-	virtual const std::string& shader_get_source(shader_id shader, shader_stage stage) = 0;
+	virtual void shader_set_source(shader_id shader, shader::stage stage, const std::string& source) = 0;
+	virtual const std::string& shader_get_source(shader_id shader, shader::stage stage) = 0;
 	virtual bool shader_finalize(shader_id shader) = 0;
 	
 	typedef object_id mesh_id;
