@@ -4,6 +4,8 @@
 #include "hound/core/object/shader/shader.h"
 #include "hound/core/object/texture/texture.h"
 #include "hound/core/object/mesh/mesh.h"
+#include "hound/core/rendering/renderer_cache/module/texture/texture_cache_module.h"
+#include "hound/platform/open_gl/renderer/renderer_cache/module/open_gl_texture_cache_module.h"
 #include "hound/platform/open_gl/object/shader/open_gl_shader.h"
 #include "hound/platform/open_gl/renderer/render_target/open_gl_frame_buffer.h"
 
@@ -447,6 +449,8 @@ gl_object_id open_gl_renderer_cache::get_frame_buffer_object_id(frame_buffer_id 
 open_gl_renderer_cache::open_gl_renderer_cache()
 {
 	s_instance_ = this;
+
+	register_module<texture_cache_module, open_gl_texture_cache_module>();
 }
 
 open_gl_renderer_cache::~open_gl_renderer_cache()

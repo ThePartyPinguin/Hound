@@ -140,6 +140,11 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\mesh_cache_module.h" />
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\shader_cache_module.h" />
+    <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_texture_cache_module.h" />
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\renderer_cache_module.h" />
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\texture_cache_module.h" />
     <ClInclude Include="src\hound\platform\open_gl\renderer\render_target\open_gl_frame_buffer.h" />
     <ClInclude Include="src\hound\core\rendering\render_target\frame_buffer.h" />
     <ClInclude Include="src\hound\platform\open_gl\object\shader\open_gl_shader.h" />
@@ -148,7 +153,7 @@
     <ClInclude Include="src\hound\file\shader\shader_file_handler.h" />
     <ClInclude Include="src\hound\file\file_handler.h" />
     <ClInclude Include="src\hound\core\object\shader\shader.h" />
-    <ClInclude Include="src\hound\platform\open_gl\renderer\open_gl_renderer_cache.h" />
+    <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\open_gl_renderer_cache.h" />
     <ClInclude Include="src\hound\core\rendering\renderer_cache.h" />
     <ClInclude Include="src\hound\core\object\mesh\mesh.h" />
     <ClInclude Include="src\hound\platform\open_gl\renderer\open_gl_renderer.h" />
@@ -197,6 +202,7 @@
     <ClInclude Include="src\hound\core\object\texture\texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_texture_cache_module.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\renderer\render_target\open_gl_frame_buffer.cpp" />
     <ClCompile Include="src\hound\core\rendering\render_target\frame_buffer.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\object\shader\open_gl_shader.cpp" />
@@ -204,7 +210,7 @@
     <ClCompile Include="src\hound\file\shader\raw\raw_shader.cpp" />
     <ClCompile Include="src\hound\file\shader\shader_file_handler.cpp" />
     <ClCompile Include="src\hound\core\object\shader\shader.cpp" />
-    <ClCompile Include="src\hound\platform\open_gl\renderer\open_gl_renderer_cache.cpp" />
+    <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\open_gl_renderer_cache.cpp" />
     <ClCompile Include="src\hound\core\rendering\renderer_cache.cpp" />
     <ClCompile Include="src\hound\core\object\mesh\mesh.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\renderer\open_gl_renderer.cpp" />

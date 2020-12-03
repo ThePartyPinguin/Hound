@@ -7,8 +7,13 @@
 #include "hound/managers/display_manager.h"
 #include "hound/platform/open_gl/logging/open_gl_logger.h"
 #include "hound/platform/open_gl/renderer/open_gl_renderer.h"
-#include "hound/platform/open_gl/renderer/open_gl_renderer_cache.h"
+#include "hound/platform/open_gl/renderer/renderer_cache/open_gl_renderer_cache.h"
 
+
+display_manager::window_id open_gl_context::request_window()
+{
+	return 0;
+}
 
 open_gl_context::open_gl_context()
 {

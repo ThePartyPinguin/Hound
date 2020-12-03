@@ -5,7 +5,7 @@
 #include "GLFW/glfw3.h"
 #include "hound/platform/open_gl/object/shader/open_gl_shader.h"
 #include "hound/core/rendering/renderer.h"
-#include "hound/platform/open_gl/renderer/open_gl_renderer_cache.h"
+#include "hound/platform/open_gl/renderer/renderer_cache/open_gl_renderer_cache.h"
 #include "hound/core/object/object_database.h"
 
 renderer::type_api open_gl_renderer::get_api_type()

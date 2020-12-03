@@ -2,12 +2,17 @@
 #include "hound/core/bit.h"
 #include "hound/core/math/math.h"
 #include "hound/core/object/object.h"
+#include "hound/core/object/object_database.h"
 #include "hound/core/object/shader/shader.h"
+#include "hound/core/rendering/renderer_cache/module/renderer_cache_module.h"
 
 class renderer_cache : public object
 {
 public:
 	static renderer_cache* get_instance() { return s_instance_; };
+
+	template<typename TModule>
+	static TModule* get_module();
 	
 	typedef object_id shader_id;
 
@@ -99,9 +104,55 @@ public:
 	virtual const vec2_i& frame_buffer_get_size(frame_buffer_id frame_buffer) = 0;
 protected:
 	static renderer_cache* s_instance_;
+
+	typedef object_id module_id;
+	
+	template<typename TModule, typename TModuleImpl>
+	void register_module();
 	
 	renderer_cache();
 	virtual ~renderer_cache();
+
+private:
+	std::unordered_map<module_id, renderer_cache_module*> m_modules_;
+	std::unordered_map<const char*, module_id> m_type_module_id_map_;
 };
+
+template <typename TModule>
+TModule* renderer_cache::get_module()
+{
+	renderer_cache* _this = get_instance();
+
+	const char* index = typeid(TModule).name();
+	
+	if(!_this->m_type_module_id_map_.count(index))
+	{
+		HND_CORE_LOG_ERROR("RenderChache module not foud/registerd, returning null");
+		return nullptr;
+	}
+
+	const module_id id = _this->m_type_module_id_map_[index];
+	return static_cast<TModule*>(get_instance()->m_modules_[id]);
+}
+
+template <typename TModule, typename TModuleImpl>
+void renderer_cache::register_module()
+{
+	const char* index = typeid(TModule).name();
+
+	if(m_type_module_id_map_.count(index))
+	{
+		const char* existing_type = typeid(*m_modules_[m_type_module_id_map_[index]]).name();
+		HND_CORE_LOG_WARN("RenderCache module ", index, " already registered, as", existing_type);
+		return;
+	}
+
+	TModuleImpl* impl_instance = object_database::get_instance()->create_object_instance<TModuleImpl>();
+
+	const module_id id = impl_instance->get_object_id();
+	
+	m_modules_[id] = impl_instance;
+	m_type_module_id_map_[index] = id;
+}
 
 #define RC renderer_cache
