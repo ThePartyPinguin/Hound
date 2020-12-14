@@ -5,6 +5,7 @@
 #include "GLFW/glfw3.h"
 #include "hound/config/engine.h"
 #include "hound/managers/display_manager.h"
+#include "hound/core/rendering/render_target/window/window.h"
 #include "hound/platform/open_gl/logging/open_gl_logger.h"
 #include "hound/platform/open_gl/renderer/open_gl_renderer.h"
 #include "hound/platform/open_gl/renderer/renderer_cache/open_gl_renderer_cache.h"
@@ -38,8 +39,10 @@ open_gl_context::open_gl_context()
 	s_glad_initialized = true;
 
 	const display_manager::window_id main_window_id = display_manager::get_instance()->get_main_window();
-	const renderer_cache::frame_buffer_id frame_buffer = renderer_cache::get_instance()->frame_buffer_create();
+	const auto size = display_manager::get_instance()->get_attached_window_object(main_window_id)->get_rect().get_size();
 
+	const frame_buffer_cache_module::frame_buffer_id frame_buffer = renderer_cache::get_module<frame_buffer_cache_module>()->frame_buffer_create(size);
+	
 	display_manager::get_instance()->window_bind_frame_buffer(main_window_id, frame_buffer);
 }
 
@@ -50,8 +53,8 @@ open_gl_context::~open_gl_context()
 
 void initialize_graphics_context()
 {
+	engine::register_singleton<renderer_cache, open_gl_renderer_cache>();
 	engine::register_singleton<graphics_context, open_gl_context>();
 	engine::register_singleton<renderer, open_gl_renderer>();
-	engine::register_singleton<renderer_cache, open_gl_renderer_cache>();
 }
 

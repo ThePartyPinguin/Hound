@@ -67,6 +67,8 @@ public:
 	void request_attention();
 	void close();
 
+	const rect_i& get_rect_() const;
+	
 	window();
 	~window();
 private:

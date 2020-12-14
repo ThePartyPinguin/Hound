@@ -46,11 +46,11 @@ public:
 		texture_wrap_mode wrap_horizontal;
 	};
 
-	virtual texture_id texture_create_2d() = 0;
+	virtual texture_id texture_create_2d(const vec2_i& size) = 0;
 	virtual void texture_set_2d_size(texture_id texture, const vec2_i& size) = 0;
 	virtual void texture_set_2d_filter_mode(texture_id texture, texture_filter_mode mode) = 0;
 	virtual void texture_set_2d_wrap_mode(texture_id texture, texture_wrap_mode h = TEXTURE_WRAP_REPEAT, texture_wrap_mode v = TEXTURE_WRAP_REPEAT) = 0;
-	virtual void texture_set_2d_data(texture_id texture, unsigned char* data) = 0;
+	virtual void texture_set_2d_data(texture_id texture, unsigned char* tex_data_buffer) = 0;
 	virtual unsigned char* get_texture_2d_data(texture_id texture, vec2_i& size) = 0;
 	virtual void texture_generate_2d_mip_map(texture_id texture) = 0;
 
@@ -60,3 +60,5 @@ protected:
 	texture_cache_module() = default;
 	virtual ~texture_cache_module() = default;
 };
+
+#define TCM texture_cache_module

@@ -105,6 +105,10 @@
     <ClInclude Include="src\hound\core\rendering\renderer_cache\module\texture_cache_module.h" />
     <ClInclude Include="src\hound\core\rendering\renderer_cache\module\mesh_cache_module.h" />
     <ClInclude Include="src\hound\core\rendering\renderer_cache\module\shader_cache_module.h" />
+    <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_mesh_cache_module.h" />
+    <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_shader_cache_module.h" />
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\frame_buffer_cache_module.h" />
+    <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_frame_buffer_cache_module.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hound\hnd_pch.cpp" />
@@ -151,5 +155,8 @@
     <ClCompile Include="src\hound\core\rendering\renderer_cache.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\open_gl_renderer_cache.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_texture_cache_module.cpp" />
+    <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_mesh_cache_module.cpp" />
+    <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_shader_cache_module.cpp" />
+    <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_frame_buffer_cache_module.cpp" />
   </ItemGroup>
 </Project>

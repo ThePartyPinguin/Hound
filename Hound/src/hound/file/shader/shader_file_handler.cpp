@@ -2,6 +2,7 @@
 #include "shader_file_handler.h"
 
 #include "hound/core/rendering/renderer_cache.h"
+#include "hound/core/rendering/renderer_cache/module/shader_cache_module.h"
 #include "raw/raw_shader_parser.h"
 
 void shader_file_handler::deserialize(object_id instance_id, char* buffer, size_t length)
@@ -11,19 +12,21 @@ void shader_file_handler::deserialize(object_id instance_id, char* buffer, size_
 
 	if (!shader.is_valid)
 		return;
+
+	shader_cache_module* shader_cache = renderer_cache::get_module<shader_cache_module>();
 	
 	for (const auto& pair : shader.shader_stages)
 	{
 		if(pair.first == shader::stage::INVALID)
 			continue;
 		
-		renderer_cache::get_instance()->shader_set_source(instance_id, pair.first, pair.second.shader_source);
+		shader_cache->shader_set_source(instance_id, pair.first, pair.second.shader_source);
 	}
 
-	renderer_cache::get_instance()->shader_finalize(instance_id);
+	shader_cache->shader_finalize(instance_id);
 }
 
 object_id shader_file_handler::create_instance()
 {
-	return renderer_cache::get_instance()->shader_create();
+	return renderer_cache::get_module<shader_cache_module>()->shader_create();
 }

@@ -16,7 +16,7 @@ display_manager::~display_manager()
 {
 }
 
-void display_manager::initialize(const window_properties& main_window_properties, graphics_context* graphics_context)
+void display_manager::initialize(const window_properties& main_window_properties)
 {
 	on_init();
 
@@ -25,6 +25,11 @@ void display_manager::initialize(const window_properties& main_window_properties
 	const window_data& data = create_window_data(main_window_properties, main_window_object);	
 	create_native_window(data);
 	attach_window_object(main_window_object, data.id);
+
+	main_window_object->set_rect(data.rect);
+
+
+	
 	subscribe_to_window_events(main_window_object);
 }
 
@@ -203,7 +208,7 @@ void display_manager::on_event(const window_always_on_top_change_event& e)
 	set_native_window_is_always_on_top(e.get_window_id(), e.get_always_on_top());
 }
 
-void display_manager::window_bind_frame_buffer(window_id window, renderer_cache::frame_buffer_id frame_buffer)
+void display_manager::window_bind_frame_buffer(window_id window, frame_buffer_cache_module::frame_buffer_id frame_buffer)
 {
 	if(!m_window_data_.count(window))
 	{
@@ -212,7 +217,7 @@ void display_manager::window_bind_frame_buffer(window_id window, renderer_cache:
 	}
 
 	m_window_data_[window].frame_buffer = frame_buffer;
-	renderer_cache::get_instance()->frame_buffer_set_size(frame_buffer, m_window_data_[window].rect.get_size());
+	renderer_cache::get_module<frame_buffer_cache_module>()->frame_buffer_set_size(frame_buffer, m_window_data_[window].rect.get_size());
 }
 
 display_manager::window_properties display_manager::get_default_properties()

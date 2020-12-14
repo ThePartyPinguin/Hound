@@ -26,6 +26,11 @@ window* window::create(window* parent)
 	return instance;
 }
 
+const rect_i& window::get_rect_() const
+{
+	return display_manager::get_instance()->get_window_data(m_window_id_).rect;
+}
+
 window::window()
 {	
 }
@@ -42,7 +47,7 @@ void window::dpm_set_frame_buffer_rect(const rect_i& rect)
 		return;
 	}
 
-	renderer_cache::get_instance()->frame_buffer_set_size(get_frame_buffer(), rect.get_size());
+	renderer_cache::get_module<frame_buffer_cache_module>()->frame_buffer_set_size(get_frame_buffer(), rect.get_size());
 	
 	window_frame_buffer_resize_event e{};
 	e.set_window_id(m_window_id_);

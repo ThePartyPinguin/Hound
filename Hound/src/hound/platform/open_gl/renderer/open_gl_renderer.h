@@ -9,7 +9,7 @@ public:
 	type_api get_api_type() override;
 
 	void begin_frame() override;
-	void render_indexed(RC::shader_id shader, RC::mesh_id mesh) override;
+	void render_indexed(shader_cache_module::shader_id shader, mesh_cache_module::mesh_id mesh) override;
 	void end_frame() override;
 	
 	open_gl_renderer();

@@ -5,6 +5,7 @@
 #include "hound/core/object/object.h"
 #include "hound/core/math/math.h"
 #include "hound/core/rendering/renderer_cache.h"
+#include "hound/core/rendering/renderer_cache/module/frame_buffer_cache_module.h"
 
 class window;
 class input_event_with_modifier;
@@ -30,6 +31,7 @@ class display_manager : public object,
 	public event_handler<window_focused_event>
 {
 protected:
+	friend class window;
 	static display_manager* s_instance_;
 
 public:	
@@ -119,12 +121,12 @@ public:
 		window* window_object;
 		monitor_id monitor_id = MAIN_MONITOR_ID;
 
-		renderer_cache::frame_buffer_id frame_buffer;
+		frame_buffer_cache_module::frame_buffer_id frame_buffer;
 	};
 	
 	static display_manager* get_instance() { return s_instance_; }
 
-	virtual void initialize(const window_properties& main_window_properties, graphics_context* graphics_context);
+	virtual void initialize(const window_properties& main_window_properties);
 	virtual void redraw_windows() = 0;
 
 	window_id get_main_window();
@@ -141,7 +143,7 @@ public:
 	typedef void (*input_event_callback)(const input_event_with_modifier& e);
 	typedef void (*window_event_callback)(const window_event& e);
 
-	void window_bind_frame_buffer(window_id window, renderer_cache::frame_buffer_id frame_buffer);
+	void window_bind_frame_buffer(window_id window, frame_buffer_cache_module::frame_buffer_id frame_buffer);
 	
 	static window_properties get_default_properties();
 
