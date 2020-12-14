@@ -140,6 +140,11 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="camera_cache_module.h" />
+    <ClInclude Include="src\hound\core\rendering\target\render_target.h" />
+    <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_render_target_cache_module.h" />
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\render_target_cache_module.h" />
+    <ClInclude Include="src\hound\core\rendering\renderer_resource_id.h" />
     <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_frame_buffer_cache_module.h" />
     <ClInclude Include="src\hound\core\rendering\renderer_cache\module\frame_buffer_cache_module.h" />
     <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_shader_cache_module.h" />
@@ -168,7 +173,6 @@
     <ClInclude Include="src\hound\core\event\event.h" />
     <ClInclude Include="src\hound\platform\open_gl\logging\open_gl_logger.h" />
     <ClInclude Include="src\hound\core\object\object.h" />
-    <ClInclude Include="src\hound\core\rendering\render_target\render_target.h" />
     <ClInclude Include="src\hound\core\rendering\camera\camera.h" />
     <ClInclude Include="src\hound\core\input\input_event.h" />
     <ClInclude Include="src\hound\core\bit.h" />
@@ -206,6 +210,9 @@
     <ClInclude Include="src\hound\core\object\texture\texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="camera_cache_module.cpp" />
+    <ClCompile Include="src\hound\core\rendering\target\render_target.cpp" />
+    <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_render_target_cache_module.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_frame_buffer_cache_module.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_shader_cache_module.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_mesh_cache_module.cpp" />
@@ -226,7 +233,6 @@
     <ClCompile Include="src\hound\core\object\object_database.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\logging\open_gl_logger.cpp" />
     <ClCompile Include="src\hound\core\object\object.cpp" />
-    <ClCompile Include="src\hound\core\rendering\render_target\render_target.cpp" />
     <ClCompile Include="src\hound\core\rendering\camera\camera.cpp" />
     <ClCompile Include="src\hound\platform\windows\display_manager_windows.cpp" />
     <ClCompile Include="src\hound\main\application.cpp" />

@@ -2,12 +2,11 @@
 #include "hound/core/bit.h"
 #include "hound/core/object/object.h"
 #include "hound/core/rendering/renderer_cache/module/renderer_cache_module.h"
+#include "hound/core/rendering/renderer_resource_id.h"
 
 class texture_cache_module : public renderer_cache_module
 {
 public:
-	typedef object_id texture_id;
-
 	enum texture_type
 	{
 		TEXTURE_INVALID = BIT(0),

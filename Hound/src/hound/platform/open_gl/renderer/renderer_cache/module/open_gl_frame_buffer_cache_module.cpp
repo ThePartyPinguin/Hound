@@ -5,11 +5,11 @@
 #include "hound/platform/open_gl/renderer/render_target/open_gl_frame_buffer.h"
 #include "hound/platform/open_gl/renderer/renderer_cache/module/open_gl_texture_cache_module.h"
 
-FBC::frame_buffer_id GL_FBC::frame_buffer_create(const vec2_i& size)
+frame_buffer_id GL_FBC::frame_buffer_create(const vec2_i& size)
 {
 	auto* texture_module = dynamic_cast<GL_TCM*>(renderer_cache::get_module<texture_cache_module>());
 	
-	const texture_cache_module::texture_id buffer_color_buffer_texture = texture_module->texture_create_2d(size);
+	const texture_id buffer_color_buffer_texture = texture_module->texture_create_2d(size);
 
 	texture_module->texture_set_2d_filter_mode(buffer_color_buffer_texture, texture_cache_module::TEXTURE_FILTER_LINEAR);
 	

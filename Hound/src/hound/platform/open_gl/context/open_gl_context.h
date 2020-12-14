@@ -4,7 +4,6 @@
 class open_gl_context : public graphics_context
 {
 public:
-
 	display_manager::window_id request_window() override;
 	
 	open_gl_context();

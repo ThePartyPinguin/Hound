@@ -1,13 +1,11 @@
 #pragma once
 #include <vector>
 #include "hound/core/rendering/renderer_cache/module/renderer_cache_module.h"
+#include "hound/core/rendering/renderer_resource_id.h"
 
 class mesh_cache_module : public renderer_cache_module
 {
 public:
-	typedef object_id mesh_id;
-	typedef uint32_t mesh_data_id;
-
 	struct mesh_data
 	{
 		struct vertex
