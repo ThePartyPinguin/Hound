@@ -2,13 +2,13 @@
 #include "main.h"
 
 #include "hound/config/engine.h"
-#include "hound/core/scene/render_target/window/window.h"
+#include "hound/core/rendering//render_target/window/window.h"
 #include "hound/managers/display_manager.h"
 #include "hound/core/input/input_system.h"
 #include "hound/drivers/graphics_context.h"
 #include "hound/file/shader/shader_file_handler.h"
 
-#include "hound/rendering/renderer.h"
+#include "hound/core/rendering/renderer.h"
 
 const char* vertexShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
@@ -48,9 +48,11 @@ void main::run()
 {
 	s_application_->init();
 
-	const object_id mesh = renderer_cache::get_instance()->mesh_create();
+	mesh_cache_module* mesh_cache = renderer_cache::get_module<mesh_cache_module>();
+	shader_cache_module* shader_cache = renderer_cache::get_module<shader_cache_module>();
+	const object_id mesh = mesh_cache->mesh_create();
 	
-	const renderer_cache::mesh_data data
+	const mesh_cache_module::mesh_data data
 	{
 		{
 			{ {0.0f,  0.5f, 0.0f}, {}, {}},
@@ -62,14 +64,14 @@ void main::run()
 		}
 	};
 	
-	renderer_cache::get_instance()->mesh_add_data(mesh, data);
+	mesh_cache->mesh_add_data(mesh, data);
 
-	const object_id default_shader = renderer_cache::get_instance()->shader_create();
+	const object_id default_shader = shader_cache->shader_create();
 
-	renderer_cache::get_instance()->shader_set_source(default_shader, shader::stage::VERTEX, vertexShaderSource);
-	renderer_cache::get_instance()->shader_set_source(default_shader, shader::stage::FRAGMENT, fragmentShaderSource);
+	shader_cache->shader_set_source(default_shader, shader::stage::VERTEX, vertexShaderSource);
+	shader_cache->shader_set_source(default_shader, shader::stage::FRAGMENT, fragmentShaderSource);
 
-	const bool shader_finished = renderer_cache::get_instance()->shader_finalize(default_shader);
+	const bool shader_finished = shader_cache->shader_finalize(default_shader);
 
 	shader_file_handler handler(".shad");
 	

@@ -1,7 +1,8 @@
 #pragma once
 #include "hound/core/base.h"
 #include "hound/core/object/object.h"
-#include "hound/core/scene/camera/camera.h"
+#include "hound/core/rendering/render_target/render_target.h"
+#include "hound/core/rendering/camera/camera.h"
 
 class viewport : public render_target
 {

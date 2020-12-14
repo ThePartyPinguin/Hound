@@ -1,8 +1,9 @@
 #include "hound/hnd_pch.h"
 #include "display_manager.h"
 #include "hound/core/object/object_database.h"
-#include "hound/core/scene/render_target/window/window.h"
+#include "hound/core/rendering/render_target/window/window.h"
 #include "hound/core/input/input_system.h"
+#include "hound/core/rendering/renderer_cache.h"
 
 display_manager* display_manager::s_instance_ = nullptr;
 
@@ -15,9 +16,8 @@ display_manager::~display_manager()
 {
 }
 
-void display_manager::initialize(const window_properties& main_window_properties, graphics_context* graphics_context)
+void display_manager::initialize(const window_properties& main_window_properties)
 {
-	m_graphics_context_ = graphics_context;
 	on_init();
 
 	window* main_window_object = object_database::get_instance()->create_object_instance<window>();
@@ -25,6 +25,11 @@ void display_manager::initialize(const window_properties& main_window_properties
 	const window_data& data = create_window_data(main_window_properties, main_window_object);	
 	create_native_window(data);
 	attach_window_object(main_window_object, data.id);
+
+	main_window_object->set_rect(data.rect);
+
+
+	
 	subscribe_to_window_events(main_window_object);
 }
 
@@ -201,6 +206,18 @@ void display_manager::on_event(const window_always_on_top_change_event& e)
 {
 	m_window_data_[e.get_window_id()].is_always_on_top = e.get_always_on_top();
 	set_native_window_is_always_on_top(e.get_window_id(), e.get_always_on_top());
+}
+
+void display_manager::window_bind_frame_buffer(window_id window, frame_buffer_cache_module::frame_buffer_id frame_buffer)
+{
+	if(!m_window_data_.count(window))
+	{
+		HND_CORE_LOG_ERROR("Could not bind frame buffer to window, window id not found");
+		return;
+	}
+
+	m_window_data_[window].frame_buffer = frame_buffer;
+	renderer_cache::get_module<frame_buffer_cache_module>()->frame_buffer_set_size(frame_buffer, m_window_data_[window].rect.get_size());
 }
 
 display_manager::window_properties display_manager::get_default_properties()

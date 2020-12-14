@@ -2,7 +2,7 @@
 #include "display_manager_windows.h"
 
 #include "hound/core/object/object_database.h"
-#include "hound/core/scene/render_target/window/window.h"
+#include "hound/core/rendering/render_target/window/window.h"
 #include "hound/platform/windows/window_glfw_helper.h"
 
 bool windows_display_manager::s_glfw_initialized = false;

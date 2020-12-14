@@ -5,7 +5,7 @@
 class open_gl_shader : public shader
 {
 public:
-	friend class open_gl_renderer_cache;
+	friend class open_gl_shader_cache_module;
 
 	HND_PROPERTY_READ_ONLY(shader_program_id, gl_object_id, m_program_id_)
 
