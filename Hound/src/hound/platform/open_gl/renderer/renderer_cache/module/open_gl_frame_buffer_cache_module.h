@@ -9,6 +9,7 @@ public:
 	struct gl_frame_buffer_data : frame_buffer_data
 	{
 		gl_object_id gl_frame_buffer_object_id;
+		gl_object_id gl_depth_stencil_object_id;
 		texture_id color_buffer_texture_id;
 	};
 
@@ -17,12 +18,22 @@ public:
 	const vec2_i& frame_buffer_get_size(frame_buffer_id frame_buffer) override;
 
 	const gl_frame_buffer_data& get_gl_frame_buffer_data(frame_buffer_id frame_buffer);
+
+	void bind_gl_frame_buffer(frame_buffer_id frame_buffer);
+	void un_bind_gl_frame_buffer(frame_buffer_id frame_buffer);
+
+	mesh_id get_frame_buffer_quad();
 	
 	open_gl_frame_buffer_cache_module();
 	virtual ~open_gl_frame_buffer_cache_module();
 
 private:
+
+	mesh_id m_frame_buffer_mesh_id_;
+	
 	std::unordered_map<frame_buffer_id, gl_frame_buffer_data> m_gl_frame_buffer_map_;
+
+	const char* get_gl_frame_buffer_status_msg(GLint status);
 };
 
-#define GL_FBC open_gl_frame_buffer_cache_module
+#define HND_GL_FBC open_gl_frame_buffer_cache_module

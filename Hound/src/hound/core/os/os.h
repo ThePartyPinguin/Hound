@@ -39,7 +39,6 @@ public:
 	virtual void clean_up();
 	
 protected:
-
 	friend class main;
 	friend class display_manager;
 	

@@ -18,6 +18,9 @@ public:
 	unsigned char* get_texture_2d_data(texture_id texture, vec2_i& size) override;
 	void texture_generate_2d_mip_map(texture_id texture) override;
 	bool texture_has_mip_map(texture_id texture) override;
+
+	void bind_texture(texture_id texture);
+	void un_bind_texture(texture_id texture);
 	
 	const gl_texture_data& get_gl_texture_data(texture_id texture);
 
@@ -32,4 +35,4 @@ private:
 	GLint texture_get_gl_filter_mode(texture_filter_mode mode);
 };
 
-#define GL_TCM open_gl_texture_cache_module
+#define HND_GL_TCM open_gl_texture_cache_module

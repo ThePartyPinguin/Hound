@@ -2,14 +2,25 @@
 #include "hound/core/object/object.h"
 #include "hound/core/object/object_database.h"
 #include "hound/core/rendering/renderer_cache/module/renderer_cache_module.h"
+#include "hound/core/rendering/renderer_cache/module/texture_cache_module.h"
+#include "hound/core/rendering/renderer_cache/module/shader_cache_module.h"
+#include "hound/core/rendering/renderer_cache/module/mesh_cache_module.h"
+#include "hound/core/rendering/renderer_cache/module/frame_buffer_cache_module.h"
+#include "hound/core/rendering/renderer_cache/module/render_target_cache_module.h"
+
+
+#define HND_RENDER_CACHE_MODULE_ACCESS_FUNCTION(name, module_type) inline static module_type* name##_cache(){ return get_module<module_type>();}
 
 class renderer_cache : public object
 {
 public:
 	static renderer_cache* get_instance() { return s_instance_; };
 
-	template<typename TModule>
-	static TModule* get_module();
+	HND_RENDER_CACHE_MODULE_ACCESS_FUNCTION(texture, texture_cache_module)
+	HND_RENDER_CACHE_MODULE_ACCESS_FUNCTION(shader, shader_cache_module)
+	HND_RENDER_CACHE_MODULE_ACCESS_FUNCTION(mesh, mesh_cache_module)
+	HND_RENDER_CACHE_MODULE_ACCESS_FUNCTION(frame_buffer, frame_buffer_cache_module)
+	HND_RENDER_CACHE_MODULE_ACCESS_FUNCTION(render_target, render_target_cache_module)
 	
 protected:
 	static renderer_cache* s_instance_;
@@ -18,6 +29,9 @@ protected:
 	
 	template<typename TModule, typename TModuleImpl>
 	void register_module();
+
+	template<typename TModule>
+	static TModule* get_module();
 	
 	renderer_cache();
 	virtual ~renderer_cache();
@@ -26,6 +40,7 @@ private:
 	std::unordered_map<module_id, renderer_cache_module*> m_modules_;
 	std::unordered_map<const char*, module_id> m_base_type_module_id_map_;
 	std::unordered_map<const char*, module_id> m_impl_type_module_id_map_;
+
 };
 
 template <typename TModule>
@@ -48,7 +63,7 @@ TModule* renderer_cache::get_module()
 
 	if(id.is_null())
 	{
-		HND_CORE_LOG_ERROR("RenderChache module not foud/registerd, returning null");
+		HND_CORE_LOG_ERROR("RenderChache module not found/registerd, returning null");
 		return nullptr;
 	}
 

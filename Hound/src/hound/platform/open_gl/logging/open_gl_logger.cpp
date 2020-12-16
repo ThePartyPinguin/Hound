@@ -3,12 +3,12 @@
 
 void open_gl_logger::init()
 {
-	HND_CORE_LOG_INFO("OPEN_GL::LOGGER Initialized!");
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(gl_error_callback, 0);
+	HND_CORE_LOG_INFO("OPEN_GL::LOGGER Initialized!");
 }
 
-void open_gl_logger::gl_error_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
+void GLAPIENTRY open_gl_logger::gl_error_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 {
 	char source_str[64];
 	char type_str[64];
@@ -35,7 +35,7 @@ void open_gl_logger::gl_error_callback(GLenum source, GLenum type, GLuint id, GL
 	}
 	case GL_DEBUG_SEVERITY_NOTIFICATION:
 	{
-		return;
+		// return;
 		HND_CORE_LOG_TRACE("GL::NOTIFY\n\r\tID:", id, "\n\r\tSource: ", source_str, "\n\r\tType: ", type_str, "\n\r\tMessage: ", std::string(message));
 		break;
 	}

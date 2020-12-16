@@ -61,6 +61,7 @@ project "Hound"
 			"HND_PLATFORM_WINDOWS",
             "HND_BUILD_DLL",
 			"HND_ENABLE_ASSERT",
+			"HND_RENDERER_OPEN_GL",
 			"GLFW_INCLUDE_NONE",
 			"_GLFW_WIN32",
 			"_GLFW_WGL",

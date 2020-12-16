@@ -2,7 +2,7 @@
 #include "os.h"
 #include "hound/config/engine.h"
 #include "hound/config/platform_identifier.h"
-#include "hound/core/rendering/render_target/window/window.h"
+#include "hound/core/window/window.h"
 
 os* os::s_instance_ = nullptr;
 

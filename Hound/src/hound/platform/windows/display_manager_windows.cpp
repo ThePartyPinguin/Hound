@@ -1,18 +1,26 @@
 #include "hound/hnd_pch.h"
 #include "display_manager_windows.h"
 
+#include "hound/core/window/window.h"
 #include "hound/core/object/object_database.h"
-#include "hound/core/rendering/render_target/window/window.h"
+#include "hound/core/rendering/renderer_cache.h"
+#include "hound/core/rendering/renderer_cache/module/render_target_cache_module.h"
 #include "hound/platform/windows/window_glfw_helper.h"
+
+#include "hound/config/engine.h"
 
 bool windows_display_manager::s_glfw_initialized = false;
 
 windows_display_manager::windows_display_manager()
 {
+	s_instance_ = this;
 	m_window_count_ = 0;
 
 	init_glfw();
 	identify_monitors();
+	
+	create_window(MAIN_WINDOW_ID);
+	++m_window_count_;
 }
 
 windows_display_manager::~windows_display_manager()
@@ -20,35 +28,70 @@ windows_display_manager::~windows_display_manager()
 	glfwTerminate();
 }
 
-void windows_display_manager::on_init()
-{
-	init_glfw();
-	identify_monitors();
-}
-
 void windows_display_manager::redraw_windows()
 {
-	for (auto& pair : m_id_native_window_map_)
+	for (auto& pair : m_window_data_map_)
 	{
-		const window_data& data = get_window_data(pair.first);
-		if(data.is_visible)
-		{
-			glfwMakeContextCurrent(pair.second);
-			glfwSwapBuffers(pair.second);
-		}
+		redraw_window(pair.first);
 	}
+}
+
+void windows_display_manager::redraw_window(window_id id)
+{
+	const glfw_window_data& data = m_window_data_map_[id];
+	if (data.is_visible)
+	{
+		glfwMakeContextCurrent(data.native_window_handle);
+		glfwSwapBuffers(data.native_window_handle);
+	}
+}
+
+const display_manager::window_data& windows_display_manager::request_sub_window(const std::string& title, const vec2_i& size, window_id parent_id)
+{
+	const window_id window_id = m_window_count_;
+
+	glfw_window_data& wd = create_window(window_id);
+
+	++m_window_count_;
+
+	glfw_window_data& parent_data = m_window_data_map_[parent_id];
+	parent_data.children.insert(wd.parent_id);
+	return wd;
+}
+
+bool windows_display_manager::destroy_sub_window(window_id id)
+{
+	if (id == INVALID_WINDOW_ID)
+		return false;
+	
+	const window_data& data = get_window_data(id);
+
+	if(data.parent_id != INVALID_WINDOW_ID)
+	{
+		window_data& parent_data = m_window_data_map_[data.parent_id];
+		parent_data.children.erase(data.id);
+	}
+
+	destroy_glfw_window(id);
+
+	m_window_data_map_.erase(id);
+
+	return true;
+}
+
+void windows_display_manager::process_window_events()
+{
+	glfwPollEvents();
 }
 
 void windows_display_manager::init_glfw()
 {
 	if(!glfwInit())
 	{
-		HND_CORE_LOG_ERROR("ERROR::DISPLAY_MANAGER - Could not initialize glfw!!");
+		HND_CORE_LOG_ERROR("ERROR::DISPLAY_MANAGER - Could not initialize glfw");
 		return;
 	}
 	glfwSetErrorCallback(glfw_error_callback);
-
-	identify_monitors();
 }
 
 void windows_display_manager::identify_monitors()
@@ -56,13 +99,13 @@ void windows_display_manager::identify_monitors()
 	int monitor_count = 0;
 	GLFWmonitor** monitors = glfwGetMonitors(&monitor_count);
 
-	m_monitors_.reserve(monitor_count);
+	m_monitor_data_map_.reserve(monitor_count);
 
 	for (int i = 0; i < monitor_count; ++i)
 	{
 		GLFWmonitor* monitor = monitors[i];
 
-		monitor_data &md = m_monitors_[m_monitor_counter_];
+		monitor_data &md = m_monitor_data_map_[m_monitor_counter_];
 
 		md.native_monitor = monitor;
 		md.video_modes = glfwGetVideoModes(monitor, &md.mode_count);
@@ -89,11 +132,35 @@ void windows_display_manager::identify_monitors()
 	}
 }
 
-void windows_display_manager::create_native_window(const window_data& window_data)
+windows_display_manager::glfw_window_data& windows_display_manager::create_window(window_id id)
 {
-	GLFWwindow* native_window = create_glfw_window(window_data);
-	m_id_native_window_map_[window_data.id] = native_window;
-	m_native_window_id_map_[native_window] = window_data.id;
+	glfw_window_data& wd = m_window_data_map_[id];
+	wd.id = id;
+	wd.rect = monitor_centered_rect({ 1280, 720 });
+	wd.parent_id = INVALID_WINDOW_ID;
+	wd.mode = windowed;
+	wd.is_visible = true;
+	wd.is_focused = true;
+	wd.border_style = bordered;
+	wd.is_resizable = true;
+	
+	GLFWwindow* native_widow = create_glfw_window(wd);
+	wd.native_window_handle = native_widow;
+	
+	wd.window_object = create_window_object(id);
+	wd.viewport = renderer_cache::render_target_cache()->create_render_target(render_target_cache_module::VIEWPORT, wd.rect.get_size());
+	
+	return wd;
+}
+
+const display_manager::window_data& windows_display_manager::get_main_window()
+{
+	return get_window_data(MAIN_WINDOW_ID);
+}
+
+const display_manager::window_data& windows_display_manager::get_window_data(window_id window)
+{
+	return m_window_data_map_[window];
 }
 
 GLFWwindow* windows_display_manager::create_glfw_window(const window_data& window_data)
@@ -105,16 +172,25 @@ GLFWwindow* windows_display_manager::create_glfw_window(const window_data& windo
 
 	if (window_data.parent_id != INVALID_WINDOW_ID)
 	{
-		parent_window = m_id_native_window_map_[window_data.parent_id];
+		parent_window = m_window_data_map_[window_data.parent_id].native_window_handle;
+	}
+	else if(window_data.id != MAIN_WINDOW_ID)
+	{
+		parent_window = m_window_data_map_[MAIN_WINDOW_ID].native_window_handle;
 	}
 		
-	monitor_data& md = m_monitors_[window_data.monitor_id];
+	monitor_data& md = m_monitor_data_map_[window_data.monitor_id];
 	const GLFWvidmode* current_vid_mode = glfwGetVideoMode(md.native_monitor);
 
 	glfwWindowHint(GLFW_RESIZABLE, window_data.is_resizable ? GLFW_TRUE : GLFW_FALSE);
 	glfwWindowHint(GLFW_FLOATING, window_data.is_always_on_top ? GLFW_TRUE : GLFW_FALSE);
 	glfwWindowHint(GLFW_DECORATED, (window_data.border_style == bordered) ? GLFW_TRUE : GLFW_FALSE);
 
+#if defined(HND_DEBUG) && defined(HND_RENDERER_OPEN_GL)
+	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+#endif
+
+	
 	switch (window_data.mode)
 	{
 	case windowed:
@@ -156,76 +232,59 @@ GLFWwindow* windows_display_manager::create_glfw_window(const window_data& windo
 	glfwSetCharCallback(window, glfw_callback_char_input);
 	glfwSetInputMode(window, GLFW_LOCK_KEY_MODS, GLFW_TRUE);
 	glfwMakeContextCurrent(window);
-
+	
+	m_native_window_id_map_[window] = window_data.id;
+	
 	return window;
 }
 
 void windows_display_manager::destroy_glfw_window(window_id id)
 {
-	glfwDestroyWindow(m_id_native_window_map_[id]);
+	const glfw_window_data& data = m_window_data_map_[id];
+	
+	glfwDestroyWindow(data.native_window_handle);
 
-	m_native_window_id_map_.erase(m_id_native_window_map_[id]);
-	m_id_native_window_map_.erase(id);
+	m_native_window_id_map_.erase(data.native_window_handle);
 }
 
-void windows_display_manager::redraw_all_native_windows()
+void windows_display_manager::window_set_title(window_id window, const std::string& title)
 {
-	for (auto& pair : m_id_native_window_map_)
-	{
-		glfwMakeContextCurrent(pair.second);
-		glfwSwapBuffers(pair.second);
-	}
-}
-
-void windows_display_manager::redraw_native_window(window_id id)
-{
-	glfwMakeContextCurrent(m_id_native_window_map_[id]);
-	glfwSwapBuffers(m_id_native_window_map_[id]);
-}
-
-void windows_display_manager::poll_native_window_events()
-{
-	glfwPollEvents();
-}
-
-void windows_display_manager::set_native_window_title(window_id window, const std::string& title)
-{
-	GLFWwindow* native_window = m_id_native_window_map_[window];
+	GLFWwindow* native_window = m_window_data_map_[window].native_window_handle;
 	glfwSetWindowTitle(native_window, title.c_str());
 }
 
-void windows_display_manager::set_native_window_rect(window_id window, const rect_i& rect)
+void windows_display_manager::window_set_rect(window_id window, const rect_i& rect)
 {
-	GLFWwindow* native_window = m_id_native_window_map_[window];
+	GLFWwindow* native_window = m_window_data_map_[window].native_window_handle;
 	glfwSetWindowPos(native_window, rect.get_x(), rect.get_y());
 	glfwSetWindowSize(native_window, rect.get_width(), rect.get_height());
 }
 
-void windows_display_manager::set_native_window_frame_buffer_rect(window_id window, const rect_i& rect)
+void windows_display_manager::window_set_frame_buffer_rect(window_id window, const rect_i& rect)
 {
 	
 }
 
-void windows_display_manager::set_native_window_min_size(window_id window, const vec2_i& min_size)
+void windows_display_manager::window_set_min_size(window_id window, const vec2_i& min_size)
 {
 	const window_data& md = get_window_data(window);
-	GLFWwindow* native_window = m_id_native_window_map_[window];
+	GLFWwindow* native_window = m_window_data_map_[window].native_window_handle;
 	glfwSetWindowSizeLimits(native_window, min_size.get_x(), min_size.get_y(), md.max_size.get_x(), md.max_size.get_y());
 }
 
-void windows_display_manager::set_native_window_max_size(window_id window, const vec2_i& max_size)
+void windows_display_manager::window_set_max_size(window_id window, const vec2_i& max_size)
 {
 	const window_data& md = get_window_data(window);
-	GLFWwindow* native_window = m_id_native_window_map_[window];
+	GLFWwindow* native_window = m_window_data_map_[window].native_window_handle;
 	glfwSetWindowSizeLimits(native_window, md.max_size.get_x(), md.max_size.get_y(), max_size.get_x(), max_size.get_y());
 }
 
-void windows_display_manager::set_native_window_mode(window_id window, window_mode mode)
+void windows_display_manager::window_set_mode(window_id window, window_mode mode)
 {
-	GLFWwindow* native_window = m_id_native_window_map_[window];
+	GLFWwindow* native_window = m_window_data_map_[window].native_window_handle;
 	const window_data& wd = get_window_data(window);
 
-	monitor_data& md = m_monitors_[wd.monitor_id];
+	monitor_data& md = m_monitor_data_map_[wd.monitor_id];
 
 	const GLFWvidmode* vid_mode = glfwGetVideoMode(md.native_monitor);
 
@@ -257,9 +316,9 @@ void windows_display_manager::set_native_window_mode(window_id window, window_mo
 	}
 }
 
-void windows_display_manager::set_native_window_visible(window_id window, bool visible)
+void windows_display_manager::window_set_visible(window_id window, bool visible)
 {
-	GLFWwindow* native_window = m_id_native_window_map_[window];
+	GLFWwindow* native_window = m_window_data_map_[window].native_window_handle;
 	if (visible)
 	{
 		glfwShowWindow(native_window);
@@ -270,66 +329,75 @@ void windows_display_manager::set_native_window_visible(window_id window, bool v
 	}
 }
 
-void windows_display_manager::set_native_window_focused(window_id window, bool focused)
+void windows_display_manager::window_set_focused(window_id window, bool focused)
 {
-	GLFWwindow* native_window = m_id_native_window_map_[window];
+	GLFWwindow* native_window = m_window_data_map_[window].native_window_handle;
 	if (focused)
 	{
 		glfwFocusWindow(native_window);
 	}
 }
 
-void windows_display_manager::set_native_window_resizable(window_id window, bool is_resizable)
+void windows_display_manager::window_set_resizable(window_id window, bool is_resizable)
 {
-	GLFWwindow* native_window = m_id_native_window_map_[window];
+	GLFWwindow* native_window = m_window_data_map_[window].native_window_handle;
 	glfwSetWindowAttrib(native_window, GLFW_RESIZABLE, is_resizable ? GLFW_TRUE : GLFW_FALSE);
 }
 
-void windows_display_manager::set_native_window_content_scale(window_id window, const vec2_f& scale)
+void windows_display_manager::window_set_content_scale(window_id window, const vec2_f& scale)
 {
 }
 
-void windows_display_manager::set_native_window_aspect(window_id window, const vec2_i& aspect)
+void windows_display_manager::window_set_aspect(window_id window, const vec2_i& aspect)
 {
-	GLFWwindow* native_window = m_id_native_window_map_[window];
+	GLFWwindow* native_window = m_window_data_map_[window].native_window_handle;
 	glfwSetWindowAspectRatio(native_window, aspect.get_x(), aspect.get_y());
 }
 
-void windows_display_manager::set_native_window_maximized(window_id window, bool maximized)
+void windows_display_manager::window_set_maximized(window_id window, bool maximized)
 {
-	GLFWwindow* native_window = m_id_native_window_map_[window];
+	GLFWwindow* native_window = m_window_data_map_[window].native_window_handle;
 	
 	if(glfwGetWindowAttrib(native_window, GLFW_MAXIMIZED) != (maximized ? GLFW_TRUE : GLFW_FALSE))
 		glfwMaximizeWindow(native_window);
 }
 
-void windows_display_manager::set_native_window_minimized(window_id window, bool minimized)
+void windows_display_manager::window_set_minimized(window_id window, bool minimized)
 {
-	GLFWwindow* native_window = m_id_native_window_map_[window];
+	GLFWwindow* native_window = m_window_data_map_[window].native_window_handle;
 	
 	if(glfwGetWindowAttrib(native_window, GLFW_ICONIFIED) != (minimized ? GLFW_TRUE : GLFW_FALSE))
 		glfwIconifyWindow(native_window);
 }
 
-void windows_display_manager::set_native_window_is_always_on_top(window_id window, bool is_always_on_top)
+void windows_display_manager::window_set_is_always_on_top(window_id window, bool is_always_on_top)
 {
-	GLFWwindow* native_window = m_id_native_window_map_[window];
+	GLFWwindow* native_window = m_window_data_map_[window].native_window_handle;
 
 	if(glfwGetWindowAttrib(native_window, GLFW_FLOATING) != (is_always_on_top ? GLFW_TRUE : GLFW_FALSE))
 		glfwSetWindowAttrib(native_window, GLFW_FLOATING, is_always_on_top ? GLFW_TRUE : GLFW_FALSE);
 }
 
-void windows_display_manager::set_native_window_border_style(window_id window, window_border_style style)
+void windows_display_manager::window_set_border_style(window_id window, window_border_style style)
 {
-	GLFWwindow* native_window = m_id_native_window_map_[window];
+	GLFWwindow* native_window = m_window_data_map_[window].native_window_handle;
 	if (glfwGetWindowAttrib(native_window, GLFW_DECORATED) != ((style == bordered) ? GLFW_TRUE : GLFW_FALSE))
 		glfwSetWindowAttrib(native_window, GLFW_DECORATED, (style == bordered) ? GLFW_TRUE : GLFW_FALSE);
 }
 
-void windows_display_manager::native_window_request_attention(window_id window)
+void windows_display_manager::window_request_attention(window_id window)
 {
-	GLFWwindow* native_window = m_id_native_window_map_[window];
+	GLFWwindow* native_window = m_window_data_map_[window].native_window_handle;
 	glfwRequestWindowAttention(native_window);
+}
+
+rect_i windows_display_manager::monitor_centered_rect(const vec2_i& size, monitor_id monitor)
+{
+	const monitor_data& md = m_monitor_data_map_[monitor];
+
+	const rect_i& monitor_size = md.work_area;
+
+	return monitor_size.get_centered_rect_for_size(size);
 }
 
 void windows_display_manager::glfw_callback_close(GLFWwindow* window)
@@ -518,4 +586,9 @@ void windows_display_manager::glfw_callback_char_input(GLFWwindow* window, unsig
 void windows_display_manager::glfw_error_callback(int error, const char* description)
 {
 	HND_CORE_LOG_ERROR("ERROR::GLFW\r\n\tError code:", error, "\r\n\tDescription: ", description);
+}
+
+void initialize_display_manager()
+{
+	engine::register_singleton<display_manager, windows_display_manager>();
 }

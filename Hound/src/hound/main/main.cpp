@@ -2,13 +2,14 @@
 #include "main.h"
 
 #include "hound/config/engine.h"
-#include "hound/core/rendering//render_target/window/window.h"
-#include "hound/managers/display_manager.h"
+#include "hound/core/window/window.h"
+#include "hound/display/display_manager.h"
 #include "hound/core/input/input_system.h"
 #include "hound/drivers/graphics_context.h"
 #include "hound/file/shader/shader_file_handler.h"
 
 #include "hound/core/rendering/renderer.h"
+#include "hound/core/rendering/renderer_cache.h"
 
 const char* vertexShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
@@ -48,8 +49,8 @@ void main::run()
 {
 	s_application_->init();
 
-	mesh_cache_module* mesh_cache = renderer_cache::get_module<mesh_cache_module>();
-	shader_cache_module* shader_cache = renderer_cache::get_module<shader_cache_module>();
+	mesh_cache_module* mesh_cache = renderer_cache::mesh_cache();
+	shader_cache_module* shader_cache = renderer_cache::shader_cache();
 	const object_id mesh = mesh_cache->mesh_create();
 	
 	const mesh_cache_module::mesh_data data
@@ -85,18 +86,25 @@ void main::run()
 		HND_CORE_LOG_ERROR("Shader compile failed, exiting");
 		return;
 	}
+
+	renderer::get_instance()->set_clear_color({ 0.2, 0.2, 0.2, 1.0 });
 	
 	while(true)
 	{
-		display_manager::get_instance()->process_all_window_events();
+		display_manager::get_instance()->process_window_events();
 
-		renderer::get_instance()->begin_frame();
+		std::set<render_target_id> targets = renderer_cache::render_target_cache()->get_render_targets();
 
-		renderer::get_instance()->render_indexed(s_id, mesh);
-		
-		renderer::get_instance()->end_frame();
-		
-		display_manager::get_instance()->redraw_windows();
+		for (const render_target_id target : targets)
+		{
+			renderer::get_instance()->begin_frame(target);
+
+			renderer::get_instance()->render_indexed(s_id, mesh);
+
+			renderer::get_instance()->end_frame(target);
+
+			display_manager::get_instance()->redraw_windows();
+		}
 	}
 }
 

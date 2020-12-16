@@ -1,10 +1,11 @@
 #pragma once
+#include "hound/core/rendering/renderer_resource_id.h"
 #include "hound/drivers/graphics_context.h"
 
 class open_gl_context : public graphics_context
 {
 public:
-	display_manager::window_id request_window() override;
+	window_id request_window() override;
 	
 	open_gl_context();
 	virtual ~open_gl_context();

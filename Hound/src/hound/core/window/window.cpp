@@ -4,31 +4,58 @@
 #include "hound/core/input/input_event.h"
 #include "hound/core/event/window_event.h"
 #include "hound/core/object/object_database.h"
-#include "hound/core/rendering/renderer_cache.h"
 
-window* window::create(window* parent)
+window* window::create(const std::string& title, vec2_i size, window_id parent_id)
 {
-	display_manager::window_id parent_id = display_manager::MAIN_WINDOW_ID;
-
-	if (parent)
-	{
-		parent_id = parent->get_window_id();
-	}
-
-	display_manager::window_properties properties = display_manager::get_default_properties();
-	window* instance = object_database::get_instance()->create_object_instance<window>();
-	
-	display_manager::window_id window_id = display_manager::get_instance()->request_sub_window(parent_id, properties);
-
-	instance->m_window_id_ = window_id;
-	instance->m_parent_ = parent;
-	
-	return instance;
+	const display_manager::window_data& data = display_manager::get_instance()->request_sub_window(title, size, parent_id);
+	return data.window_object;
 }
 
-const rect_i& window::get_rect_() const
+void window::show()
 {
-	return display_manager::get_instance()->get_window_data(m_window_id_).rect;
+	set_is_visible(true);
+}
+
+void window::hide()
+{
+	set_is_visible(false);
+}
+
+void window::maximize()
+{
+	set_is_maximized(true);
+}
+
+void window::minimize()
+{
+	set_is_minimized(true);
+}
+
+void window::restore()
+{
+	set_is_maximized(false);
+	set_is_minimized(false);
+	set_is_visible(true);
+}
+
+void window::grab_focus()
+{
+	set_is_focused(true);
+}
+
+void window::resize(const rect_i& rect)
+{
+	set_rect(rect);
+}
+
+void window::request_attention()
+{
+	display_manager::get_instance()->window_request_attention(m_window_id_);
+}
+
+void window::close()
+{
+	set_should_close(true);
 }
 
 window::window()
@@ -41,14 +68,12 @@ window::~window()
 
 void window::dpm_set_frame_buffer_rect(const rect_i& rect)
 {
-	m_frame_buffer_rect_ = rect;
 	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
 	{
+		HND_CORE_LOG_WARN("Window has an invalid window_id");
 		return;
 	}
 
-	renderer_cache::get_module<frame_buffer_cache_module>()->frame_buffer_set_size(get_frame_buffer(), rect.get_size());
-	
 	window_frame_buffer_resize_event e{};
 	e.set_window_id(m_window_id_);
 	e.set_window_object(this);
@@ -59,22 +84,40 @@ void window::dpm_set_frame_buffer_rect(const rect_i& rect)
 
 void window::dpm_set_aspect(const vec2_i& aspect)
 {
-	m_aspect_ = aspect;
+	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
+	{
+		HND_CORE_LOG_WARN("Window has an invalid window_id");
+		return;
+	}
+	
 	on_set_aspect(aspect);
 }
 
 void window::dpm_set_content_scale(const vec2_f& scale)
 {
-	m_content_scale_ = scale;
+	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
+	{
+		HND_CORE_LOG_WARN("Window has an invalid window_id");
+		return;
+	}
 	
+	window_content_scale_change_event e{};
+	e.set_window_id(m_window_id_);
+	e.set_window_object(this);
+	e.set_scale(scale);
+
+	publish_event(e);
 }
 
 void window::on_set_title(const std::string& title)
 {
 	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
 	{
+		HND_CORE_LOG_WARN("Window has an invalid window_id");
 		return;
 	}
+
+	display_manager::get_instance()->window_set_title(m_window_id_, title);
 	
 	window_title_event e{};
 	e.set_window_id(m_window_id_);
@@ -88,8 +131,11 @@ void window::on_set_rect(const rect_i& rect)
 {
 	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
 	{
+		HND_CORE_LOG_WARN("Window has an invalid window_id");
 		return;
 	}
+
+	display_manager::get_instance()->window_set_rect(m_window_id_, rect);
 
 	window_resize_event e{};
 	e.set_window_id(m_window_id_);
@@ -103,8 +149,11 @@ void window::on_set_min_size(const vec2_i& size)
 {
 	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
 	{
+		HND_CORE_LOG_WARN("Window has an invalid window_id");
 		return;
 	}
+	
+	display_manager::get_instance()->window_set_min_size(m_window_id_, size);
 
 	window_min_size_change_event e{};
 	e.set_window_id(m_window_id_);
@@ -118,8 +167,11 @@ void window::on_set_max_size(const vec2_i& size)
 {
 	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
 	{
+		HND_CORE_LOG_WARN("Window has an invalid window_id");
 		return;
 	}
+
+	display_manager::get_instance()->window_set_max_size(m_window_id_, size);
 
 	window_max_size_change_event e{};
 	e.set_window_id(m_window_id_);
@@ -133,8 +185,11 @@ void window::on_set_aspect(const vec2_i& aspect)
 {
 	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
 	{
+		HND_CORE_LOG_WARN("Window has an invalid window_id");
 		return;
 	}
+
+	display_manager::get_instance()->window_set_aspect(m_window_id_, aspect);
 
 	window_aspect_change_event e{};
 	e.set_window_id(m_window_id_);
@@ -148,8 +203,11 @@ void window::on_set_mode(const mode& mode)
 {
 	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
 	{
+		HND_CORE_LOG_WARN("Window has an invalid window_id");
 		return;
 	}
+
+	display_manager::get_instance()->window_set_mode(m_window_id_, static_cast<display_manager::window_mode>(mode));
 
 	window_mode_change_event e{};
 	e.set_window_id(m_window_id_);
@@ -163,9 +221,12 @@ void window::on_set_should_close(bool close)
 {
 	if (m_window_id_ == display_manager::INVALID_WINDOW_ID)
 	{
+		HND_CORE_LOG_WARN("Window has an invalid window_id");
 		return;
 	}
 
+	//TODO Set should close tag
+	
 	window_close_event e{};
 	e.set_window_id(m_window_id_);
 	e.set_window_object(this);
@@ -178,9 +239,12 @@ void window::on_set_resizable(bool resizable)
 {
 	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
 	{
+		HND_CORE_LOG_WARN("Window has an invalid window_id");
 		return;
 	}
 
+	display_manager::get_instance()->window_set_resizable(m_window_id_, resizable);
+	
 	window_resizable_event e{};
 	e.set_window_id(m_window_id_);
 	e.set_window_object(this);
@@ -193,9 +257,12 @@ void window::on_set_visible(const bool& visible)
 {
 	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
 	{
+		HND_CORE_LOG_WARN("Window has an invalid window_id");
 		return;
 	}
-	
+
+	display_manager::get_instance()->window_set_visible(m_window_id_, visible);
+
 	window_visibility_event e{};
 	e.set_window_id(m_window_id_);
 	e.set_window_object(this);
@@ -208,8 +275,11 @@ void window::on_set_focus(const bool& focus)
 {
 	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
 	{
+		HND_CORE_LOG_WARN("Window has an invalid window_id");
 		return;
 	}
+	
+	display_manager::get_instance()->window_set_focused(m_window_id_, focus);
 
 	window_focused_event e{};
 	e.set_window_id(m_window_id_);
@@ -223,8 +293,11 @@ void window::on_set_maximized(const bool& is_maximized)
 {
 	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
 	{
+		HND_CORE_LOG_WARN("Window has an invalid window_id");
 		return;
 	}
+	
+	display_manager::get_instance()->window_set_maximized(m_window_id_, is_maximized);
 
 	window_maximize_event e{};
 	e.set_window_id(m_window_id_);
@@ -238,8 +311,11 @@ void window::on_set_minimized(const bool& is_minimized)
 {
 	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
 	{
+		HND_CORE_LOG_WARN("Window has an invalid window_id");
 		return;
 	}
+
+	display_manager::get_instance()->window_set_minimized(m_window_id_, is_minimized);
 
 	window_minimize_event e{};
 	e.set_window_id(m_window_id_);
@@ -253,9 +329,12 @@ void window::on_set_always_on_top(const bool& is_always_on_top)
 {
 	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
 	{
+		HND_CORE_LOG_WARN("Window has an invalid window_id");
 		return;
 	}
-
+	
+	display_manager::get_instance()->window_set_is_always_on_top(m_window_id_, is_always_on_top);
+	
 	window_always_on_top_change_event e{};
 	e.set_window_id(m_window_id_);
 	e.set_window_object(this);
@@ -268,9 +347,12 @@ void window::on_set_border_style(const border_style& style)
 {
 	if (m_window_id_ == display_manager::get_instance()->INVALID_WINDOW_ID)
 	{
+		HND_CORE_LOG_WARN("Window has an invalid window_id");
 		return;
 	}
 
+	display_manager::get_instance()->window_set_border_style(m_window_id_, static_cast<display_manager::window_border_style>(style));
+	
 	window_border_style_change_event e{};
 	e.set_window_id(m_window_id_);
 	e.set_window_object(this);

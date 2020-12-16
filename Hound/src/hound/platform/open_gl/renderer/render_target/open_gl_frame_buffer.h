@@ -1,6 +1,6 @@
 #pragma once
-#include "hound/core/rendering/render_target/frame_buffer.h"
 #include "hound/core/object/texture/texture.h"
+#include "hound/core/rendering/target/frame_buffer.h"
 
 class open_gl_frame_buffer : public frame_buffer
 {

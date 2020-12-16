@@ -21,9 +21,9 @@ public:
 
 	virtual type_api get_api_type();
 
-	virtual void begin_frame() = 0;
-	virtual void render_indexed(shader_cache_module::shader_id shader, mesh_cache_module::mesh_id mesh) = 0;
-	virtual void end_frame() = 0;
+	virtual void begin_frame(render_target_id render_target) = 0;
+	virtual void render_indexed(shader_id shader, mesh_id mesh) = 0;
+	virtual void end_frame(render_target_id render_target) = 0;
 	
 protected:
 	static renderer* s_instance_;
@@ -34,5 +34,3 @@ protected:
 private:
 	vec4_f m_clear_color_;
 };
-
-renderer* initialize_renderer();

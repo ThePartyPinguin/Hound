@@ -1,8 +1,7 @@
 #pragma once
-#include "hound/managers/display_manager.h"
-
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
+#include "hound/display/display_manager.h"
 
 class windows_display_manager : public display_manager
 {
@@ -11,13 +10,8 @@ public:
 	virtual ~windows_display_manager();
 	
 private:
-	uint32_t m_window_count_;
+	monitor_id m_monitor_counter_ = MAIN_MONITOR_ID;
 
-	void on_init() override;
-	void redraw_windows() override;
-	void init_glfw();
-	void identify_monitors();
-	
 	struct monitor_data
 	{
 		GLFWmonitor* native_monitor;
@@ -31,41 +25,59 @@ private:
 		vec2_f content_scale;
 		std::string name;
 	};
+
+	std::unordered_map<monitor_id, monitor_data> m_monitor_data_map_;
+
+	uint32_t m_window_count_ = MAIN_WINDOW_ID;
+
+	struct glfw_window_data : window_data
+	{
+		GLFWwindow* native_window_handle;
+	};
+
+	std::unordered_map<window_id, glfw_window_data> m_window_data_map_;
 	
 	static bool s_glfw_initialized;
 
-	void create_native_window(const window_data& window_data) override;
+	void init_glfw();
+	void identify_monitors();
 
-	void redraw_all_native_windows() override;
-	void redraw_native_window(window_id id) override;
-
-	void poll_native_window_events() override;
+	glfw_window_data& create_window(window_id id);
 	
-	void set_native_window_title(window_id window, const std::string& title) override;
-	void set_native_window_rect(window_id window, const rect_i& rect) override;
-	void set_native_window_frame_buffer_rect(window_id window, const rect_i& rect) override;
-	void set_native_window_min_size(window_id window, const vec2_i& min_size) override;
-	void set_native_window_max_size(window_id window, const vec2_i& max_size) override;
-	void set_native_window_mode(window_id window, window_mode mode) override;
-	void set_native_window_visible(window_id window, bool visible) override;
-	void set_native_window_focused(window_id window, bool focused) override;
-	void set_native_window_resizable(window_id window, bool is_resizable) override;
-	void set_native_window_content_scale(window_id window, const vec2_f& scale) override;
-	void set_native_window_aspect(window_id window, const vec2_i& aspect) override;
-	void set_native_window_maximized(window_id window, bool maximized) override;
-	void set_native_window_minimized(window_id window, bool minimized) override;
-	void set_native_window_is_always_on_top(window_id window, bool is_always_on_top) override;
-	void set_native_window_border_style(window_id window, window_border_style style) override;
-	void native_window_request_attention(window_id window) override;
+	const window_data& get_main_window() override;
+	const window_data& get_window_data(window_id window) override;
 	
-	std::unordered_map<monitor_id, monitor_data> m_monitors_;
-	monitor_id m_monitor_counter_ = MAIN_MONITOR_ID;
+	void redraw_windows() override;
+	void redraw_window(window_id id) override;
+	const window_data& request_sub_window(const std::string& title, const vec2_i& size, window_id parent_id) override;
+	bool destroy_sub_window(window_id id) override;
 
-	std::unordered_map<window_id, GLFWwindow*> m_id_native_window_map_;
+	void process_window_events() override;
+	
+	void window_set_title(window_id window, const std::string& title) override;
+	void window_set_rect(window_id window, const rect_i& rect) override;
+	void window_set_frame_buffer_rect(window_id window, const rect_i& rect) override;
+	void window_set_min_size(window_id window, const vec2_i& min_size) override;
+	void window_set_max_size(window_id window, const vec2_i& max_size) override;
+	void window_set_mode(window_id window, window_mode mode) override;
+	void window_set_visible(window_id window, bool visible) override;
+	void window_set_focused(window_id window, bool focused) override;
+	void window_set_resizable(window_id window, bool is_resizable) override;
+	void window_set_content_scale(window_id window, const vec2_f& scale) override;
+	void window_set_aspect(window_id window, const vec2_i& aspect) override;
+	void window_set_maximized(window_id window, bool maximized) override;
+	void window_set_minimized(window_id window, bool minimized) override;
+	void window_set_is_always_on_top(window_id window, bool is_always_on_top) override;
+	void window_set_border_style(window_id window, window_border_style style) override;
+	void window_request_attention(window_id window) override;
+
+	
+	rect_i monitor_centered_rect(const vec2_i& size, monitor_id monitor = MAIN_MONITOR_ID);
+	
+	//GLFW IMPLEMENTATION
 
 	std::unordered_map<GLFWwindow*, window_id> m_native_window_id_map_;
 	
-	//GLFW IMPLEMENTATION
 	GLFWwindow* create_glfw_window(const window_data& window_data);
 	void destroy_glfw_window(window_id id);
 	
