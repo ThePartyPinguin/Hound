@@ -76,7 +76,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>hound/hnd_pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>HND_PLATFORM_WINDOWS;HND_BUILD_DLL;HND_ENABLE_ASSERT;HND_RENDERER_OPEN_GL;HND_LOG_VERBOSITY=3;GLFW_INCLUDE_NONE;_GLFW_WIN32;_GLFW_WGL;_GLFW_USE_OPENGL;HND_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HND_PLATFORM_WINDOWS;HND_BUILD_DLL;HND_ENABLE_ASSERT;HND_RENDERER_OPEN_GL;HND_LOG_VERBOSITY=3;HND_DISPLAY_GLFW;GLFW_INCLUDE_NONE;_GLFW_WIN32;_GLFW_WGL;_GLFW_USE_OPENGL;HND_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -96,7 +96,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>hound/hnd_pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>HND_PLATFORM_WINDOWS;HND_BUILD_DLL;HND_ENABLE_ASSERT;HND_RENDERER_OPEN_GL;HND_LOG_VERBOSITY=3;GLFW_INCLUDE_NONE;_GLFW_WIN32;_GLFW_WGL;_GLFW_USE_OPENGL;HND_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HND_PLATFORM_WINDOWS;HND_BUILD_DLL;HND_ENABLE_ASSERT;HND_RENDERER_OPEN_GL;HND_LOG_VERBOSITY=3;HND_DISPLAY_GLFW;GLFW_INCLUDE_NONE;_GLFW_WIN32;_GLFW_WGL;_GLFW_USE_OPENGL;HND_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -120,7 +120,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>hound/hnd_pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>HND_PLATFORM_WINDOWS;HND_BUILD_DLL;HND_ENABLE_ASSERT;HND_RENDERER_OPEN_GL;HND_LOG_VERBOSITY=3;GLFW_INCLUDE_NONE;_GLFW_WIN32;_GLFW_WGL;_GLFW_USE_OPENGL;HND_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HND_PLATFORM_WINDOWS;HND_BUILD_DLL;HND_ENABLE_ASSERT;HND_RENDERER_OPEN_GL;HND_LOG_VERBOSITY=3;HND_DISPLAY_GLFW;GLFW_INCLUDE_NONE;_GLFW_WIN32;_GLFW_WGL;_GLFW_USE_OPENGL;HND_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -140,6 +140,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\hound\platform\glfw\glfw_callback_handler.h" />
     <ClInclude Include="src\hound\config\engine.h" />
     <ClInclude Include="src\hound\config\platform_identifier.h" />
     <ClInclude Include="src\hound\core\assertion.h" />
@@ -183,6 +184,7 @@
     <ClInclude Include="src\hound\core\template.h" />
     <ClInclude Include="src\hound\core\window\window.h" />
     <ClInclude Include="src\hound\display\display_manager.h" />
+    <ClInclude Include="src\hound\drivers\display_driver.h" />
     <ClInclude Include="src\hound\drivers\graphics_context.h" />
     <ClInclude Include="src\hound\file\file_handler.h" />
     <ClInclude Include="src\hound\file\shader\raw\raw_shader.h" />
@@ -192,6 +194,7 @@
     <ClInclude Include="src\hound\logging\logger.h" />
     <ClInclude Include="src\hound\main\application.h" />
     <ClInclude Include="src\hound\main\main.h" />
+    <ClInclude Include="src\hound\platform\glfw\glfw_display_driver.h" />
     <ClInclude Include="src\hound\platform\open_gl\context\open_gl_context.h" />
     <ClInclude Include="src\hound\platform\open_gl\logging\open_gl_logger.h" />
     <ClInclude Include="src\hound\platform\open_gl\object\shader\open_gl_shader.h" />
@@ -210,6 +213,7 @@
     <ClInclude Include="src\hound\platform\windows\window_glfw_helper.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\hound\platform\glfw\glfw_callback_handler.cpp" />
     <ClCompile Include="src\hound\config\engine.cpp" />
     <ClCompile Include="src\hound\config\platform_identifier.cpp" />
     <ClCompile Include="src\hound\core\input\input_system.cpp" />
@@ -238,6 +242,7 @@
     <ClCompile Include="src\hound\logging\logger.cpp" />
     <ClCompile Include="src\hound\main\application.cpp" />
     <ClCompile Include="src\hound\main\main.cpp" />
+    <ClCompile Include="src\hound\platform\glfw\glfw_display_driver.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\context\open_gl_context.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\logging\open_gl_logger.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\object\shader\open_gl_shader.cpp" />

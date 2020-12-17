@@ -48,7 +48,7 @@ bool main::start(ref<application>& p_application)
 void main::run()
 {
 	s_application_->init();
-
+	
 	mesh_cache_module* mesh_cache = renderer_cache::mesh_cache();
 	shader_cache_module* shader_cache = renderer_cache::shader_cache();
 	const object_id mesh = mesh_cache->mesh_create();

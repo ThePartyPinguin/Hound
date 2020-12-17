@@ -18,6 +18,10 @@ void open_gl_viewport::end_frame()
 {
 	const frame_buffer_id frame_buffer = open_gl_renderer_cache::gl_render_target_cache()->get_target_frame_buffer(get_object_id());
 	open_gl_renderer_cache::gl_frame_buffer_cache()->un_bind_gl_frame_buffer(frame_buffer);
+
+	HND_GL_CALL(glDisable, GL_DEPTH_TEST);
+	HND_GL_CALL(glClearColor, 1.0f, 1.0f, 1.0f, 1.0f);
+	HND_GL_CALL(glClear, GL_COLOR_BUFFER_BIT);
 	
 	const auto& data = open_gl_renderer_cache::gl_frame_buffer_cache()->get_gl_frame_buffer_data(frame_buffer);
 	

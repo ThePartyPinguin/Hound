@@ -85,6 +85,9 @@
     <Filter Include="platform">
       <UniqueIdentifier>{4A63C33C-3630-1E48-5F49-0CF04B7553D6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="platform\glfw">
+      <UniqueIdentifier>{49D5834D-B595-FF83-7ED0-4801EA4F4460}</UniqueIdentifier>
+    </Filter>
     <Filter Include="platform\open_gl">
       <UniqueIdentifier>{1DDFA8E8-09D8-C73A-320A-ADBF1E62A746}</UniqueIdentifier>
     </Filter>
@@ -246,6 +249,9 @@
     <ClInclude Include="src\hound\display\display_manager.h">
       <Filter>display</Filter>
     </ClInclude>
+    <ClInclude Include="src\hound\drivers\display_driver.h">
+      <Filter>drivers</Filter>
+    </ClInclude>
     <ClInclude Include="src\hound\drivers\graphics_context.h">
       <Filter>drivers</Filter>
     </ClInclude>
@@ -270,6 +276,9 @@
     </ClInclude>
     <ClInclude Include="src\hound\main\main.h">
       <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\platform\glfw\glfw_display_driver.h">
+      <Filter>platform\glfw</Filter>
     </ClInclude>
     <ClInclude Include="src\hound\platform\open_gl\context\open_gl_context.h">
       <Filter>platform\open_gl\context</Filter>
@@ -319,6 +328,7 @@
     <ClInclude Include="src\hound\platform\windows\window_glfw_helper.h">
       <Filter>platform\windows</Filter>
     </ClInclude>
+    <ClInclude Include="src\hound\platform\glfw\glfw_callback_handler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hound\config\engine.cpp">
@@ -397,6 +407,9 @@
     <ClCompile Include="src\hound\main\main.cpp">
       <Filter>main</Filter>
     </ClCompile>
+    <ClCompile Include="src\hound\platform\glfw\glfw_display_driver.cpp">
+      <Filter>platform\glfw</Filter>
+    </ClCompile>
     <ClCompile Include="src\hound\platform\open_gl\context\open_gl_context.cpp">
       <Filter>platform\open_gl\context</Filter>
     </ClCompile>
@@ -442,5 +455,6 @@
     <ClCompile Include="src\hound\platform\windows\window_glfw_helper.cpp">
       <Filter>platform\windows</Filter>
     </ClCompile>
+    <ClCompile Include="src\hound\platform\glfw\glfw_callback_handler.cpp" />
   </ItemGroup>
 </Project>
