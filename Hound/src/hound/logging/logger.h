@@ -85,14 +85,36 @@ void logger::log_error(const char* file_name, const char* function_name, const i
 	get_application_logger()->error(format_file_info_string(file_name, function_name, line_no, sizeof...(T_Args)), log_args...);
 }
 
-// #define HND_CORE_LOG_TRACE(...)		::hound::logging::logger::get_core_logger()->trace(__VA_ARGS__)
+#if HND_LOG_VERBOSITY > 3
 #define HND_CORE_LOG_TRACE(...)		logger::log_core_trace(__FILE__, __FUNCSIG__, __LINE__, __VA_ARGS__)
-#define HND_CORE_LOG_INFO(...)		logger::log_core_info(__FILE__, __FUNCSIG__, __LINE__, __VA_ARGS__)
-#define HND_CORE_LOG_WARN(...)		logger::log_core_warn(__FILE__, __FUNCSIG__, __LINE__, __VA_ARGS__)
-#define HND_CORE_LOG_ERROR(...)		logger::log_core_error(__FILE__, __FUNCSIG__, __LINE__, __VA_ARGS__)
-
 #define HND_LOG_TRACE(...)			logger::log_trace(__FILE__, __FUNCSIG__, __LINE__, __VA_ARGS__)
+#else
+#define HND_CORE_LOG_TRACE(...)
+#define HND_LOG_TRACE(...)
+#endif
+
+#if HND_LOG_VERBOSITY > 2
+#define HND_CORE_LOG_INFO(...)		logger::log_core_info(__FILE__, __FUNCSIG__, __LINE__, __VA_ARGS__)
 #define HND_LOG_INFO(...)			logger::log_info(__FILE__, __FUNCSIG__, __LINE__, __VA_ARGS__)
+#else
+#define HND_CORE_LOG_INFO(...)
+#define HND_LOG_INFO(...)	
+#endif
+
+#if HND_LOG_VERBOSITY > 1
+#define HND_CORE_LOG_WARN(...)		logger::log_core_warn(__FILE__, __FUNCSIG__, __LINE__, __VA_ARGS__)
 #define HND_LOG_WARN(...)			logger::log_warn(__FILE__, __FUNCSIG__, __LINE__, __VA_ARGS__)
+#else
+#define HND_CORE_LOG_WARN(...)
+#define HND_LOG_WARN(...)
+#endif
+
+#if HND_LOG_VERBOSITY > 0
+#define HND_CORE_LOG_ERROR(...)		logger::log_core_error(__FILE__, __FUNCSIG__, __LINE__, __VA_ARGS__)
 #define HND_LOG_ERROR(...)			logger::log_error(__FILE__, __FUNCSIG__, __LINE__, __VA_ARGS__)
+#else
+#define HND_CORE_LOG_ERROR(...)
+#define HND_LOG_ERROR(...)
+#endif
+
 

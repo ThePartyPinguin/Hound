@@ -16,7 +16,11 @@ public:
 
 	render_target* get_render_target(render_target_id render_target) override;
 	viewport* get_viewport(render_target_id render_target) override;
-
+	void set_viewport_parent_window(render_target_id viewport, window_id window) override;
+	window_id get_viewport_parent_window(render_target_id viewport) override;
+	bool viewport_has_parent_window(render_target_id viewport) override;
+	void unset_viewport_parent_window(render_target_id viewport) override;
+	
 	const vec2_i& get_render_target_size(render_target_id render_target) override;
 	frame_buffer_id get_target_frame_buffer(render_target_id target) override;
 	std::set<render_target_id> get_render_targets() override;

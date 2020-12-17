@@ -16,6 +16,11 @@ window_id open_gl_context::request_window()
 	return 0;
 }
 
+void open_gl_context::set_window_context_active(GLFWwindow* window)
+{
+	glfwMakeContextCurrent(window);
+}
+
 open_gl_context::open_gl_context()
 {
 	s_instance_ = this;

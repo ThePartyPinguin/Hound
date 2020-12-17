@@ -76,7 +76,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>hound/hnd_pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>HND_PLATFORM_WINDOWS;HND_BUILD_DLL;HND_ENABLE_ASSERT;HND_RENDERER_OPEN_GL;GLFW_INCLUDE_NONE;_GLFW_WIN32;_GLFW_WGL;_GLFW_USE_OPENGL;HND_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HND_PLATFORM_WINDOWS;HND_BUILD_DLL;HND_ENABLE_ASSERT;HND_RENDERER_OPEN_GL;HND_LOG_VERBOSITY=3;GLFW_INCLUDE_NONE;_GLFW_WIN32;_GLFW_WGL;_GLFW_USE_OPENGL;HND_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -96,7 +96,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>hound/hnd_pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>HND_PLATFORM_WINDOWS;HND_BUILD_DLL;HND_ENABLE_ASSERT;HND_RENDERER_OPEN_GL;GLFW_INCLUDE_NONE;_GLFW_WIN32;_GLFW_WGL;_GLFW_USE_OPENGL;HND_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HND_PLATFORM_WINDOWS;HND_BUILD_DLL;HND_ENABLE_ASSERT;HND_RENDERER_OPEN_GL;HND_LOG_VERBOSITY=3;GLFW_INCLUDE_NONE;_GLFW_WIN32;_GLFW_WGL;_GLFW_USE_OPENGL;HND_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -120,7 +120,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>hound/hnd_pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>HND_PLATFORM_WINDOWS;HND_BUILD_DLL;HND_ENABLE_ASSERT;HND_RENDERER_OPEN_GL;GLFW_INCLUDE_NONE;_GLFW_WIN32;_GLFW_WGL;_GLFW_USE_OPENGL;HND_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HND_PLATFORM_WINDOWS;HND_BUILD_DLL;HND_ENABLE_ASSERT;HND_RENDERER_OPEN_GL;HND_LOG_VERBOSITY=3;GLFW_INCLUDE_NONE;_GLFW_WIN32;_GLFW_WGL;_GLFW_USE_OPENGL;HND_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>

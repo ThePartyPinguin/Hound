@@ -1,6 +1,8 @@
 #include "hound/hnd_pch.h"
 #include "open_gl_render_target_cache_module.h"
 
+
+#include "hound/display/display_manager.h"
 #include "hound/platform/open_gl/renderer/renderer_cache/open_gl_renderer_cache.h"
 #include "hound/platform/open_gl/renderer/render_target/open_gl_viewport.h"
 
@@ -57,6 +59,74 @@ viewport* open_gl_render_target_cache_module::get_viewport(render_target_id rend
 	}
 
 	return dynamic_cast<viewport*>(data.target_object);
+}
+
+void open_gl_render_target_cache_module::set_viewport_parent_window(render_target_id viewport, window_id window)
+{
+	if(!m_render_target_map_.count(viewport))
+	{
+		HND_CORE_LOG_WARN("Could not find render target!");
+		return;
+	}
+
+	if (m_render_target_map_[viewport].type != VIEWPORT)
+	{
+		HND_CORE_LOG_WARN("Could not set parent window! Target is not a viewport!");
+		return;
+	}
+
+	m_render_target_map_[viewport].parent_window = window;
+}
+
+window_id open_gl_render_target_cache_module::get_viewport_parent_window(render_target_id viewport)
+{
+	if (!m_render_target_map_.count(viewport))
+	{
+		HND_CORE_LOG_WARN("Could not find render target!");
+		return display_manager::INVALID_WINDOW_ID;
+	}
+
+	if (m_render_target_map_[viewport].type != VIEWPORT)
+	{
+		HND_CORE_LOG_WARN("Could not set parent window! Target is not a viewport!");
+		return display_manager::INVALID_WINDOW_ID;
+	}
+
+	return m_render_target_map_[viewport].parent_window;
+}
+
+bool open_gl_render_target_cache_module::viewport_has_parent_window(render_target_id viewport)
+{
+	if (!m_render_target_map_.count(viewport))
+	{
+		HND_CORE_LOG_WARN("Could not find render target!");
+		return false;
+	}
+
+	if (m_render_target_map_[viewport].type != VIEWPORT)
+	{
+		HND_CORE_LOG_WARN("Could not set parent window! Target is not a viewport!");
+		return false;
+	}
+
+	return m_render_target_map_[viewport].parent_window != display_manager::INVALID_WINDOW_ID;
+}
+
+void open_gl_render_target_cache_module::unset_viewport_parent_window(render_target_id viewport)
+{
+	if (!m_render_target_map_.count(viewport))
+	{
+		HND_CORE_LOG_WARN("Could not find render target!");
+		return;
+	}
+
+	if (m_render_target_map_[viewport].type != VIEWPORT)
+	{
+		HND_CORE_LOG_WARN("Could not set parent window! Target is not a viewport!");
+		return;
+	}
+
+	m_render_target_map_[viewport].parent_window = display_manager::INVALID_WINDOW_ID;
 }
 
 render_target_id open_gl_render_target_cache_module::create_render_target(target_type type, const vec2_i& size)

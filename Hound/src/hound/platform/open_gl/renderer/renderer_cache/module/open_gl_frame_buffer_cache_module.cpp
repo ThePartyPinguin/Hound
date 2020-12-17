@@ -58,15 +58,15 @@ void HND_GL_FBC::frame_buffer_set_size(frame_buffer_id frame_buffer, const vec2_
 	gl_frame_buffer_data& buffer_data = m_gl_frame_buffer_map_[frame_buffer];
 	buffer_data.size = size;
 
-	glBindFramebuffer(GL_FRAMEBUFFER, buffer_data.gl_frame_buffer_object_id);
+	HND_GL_CALL(glBindFramebuffer, GL_FRAMEBUFFER, buffer_data.gl_frame_buffer_object_id);
 	
 	auto* texture_module = open_gl_renderer_cache::gl_texture_cache();
 
 	texture_module->texture_set_2d_size(buffer_data.color_buffer_texture_id, size);
 
-	glBindTexture(GL_TEXTURE_2D, 0);
+	HND_GL_CALL(glBindTexture, GL_TEXTURE_2D, 0);
 
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	if (HND_GL_CALL(glCheckFramebufferStatus, GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
 		HND_CORE_LOG_WARN("Framebuffer size set but not complete!");
 	}
@@ -90,12 +90,12 @@ const HND_GL_FBC::gl_frame_buffer_data& HND_GL_FBC::get_gl_frame_buffer_data(fra
 
 void open_gl_frame_buffer_cache_module::bind_gl_frame_buffer(frame_buffer_id frame_buffer)
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, get_gl_frame_buffer_data(frame_buffer).gl_frame_buffer_object_id);
+	HND_GL_CALL(glBindFramebuffer, GL_FRAMEBUFFER, get_gl_frame_buffer_data(frame_buffer).gl_frame_buffer_object_id);
 }
 
 void open_gl_frame_buffer_cache_module::un_bind_gl_frame_buffer(frame_buffer_id frame_buffer)
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	HND_GL_CALL(glBindFramebuffer, GL_FRAMEBUFFER, 0);
 }
 
 mesh_id open_gl_frame_buffer_cache_module::get_frame_buffer_quad()

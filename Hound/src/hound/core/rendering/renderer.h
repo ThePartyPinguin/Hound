@@ -1,7 +1,6 @@
 #pragma once
 #include "hound/core/object/object.h"
 #include "renderer_cache/module/mesh_cache_module.h"
-#include "renderer_cache/module/shader_cache_module.h"
 
 class render_target;
 

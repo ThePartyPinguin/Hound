@@ -3,6 +3,8 @@
 
 #include "glad/glad.h"
 #include "hound/core/object/object_database.h"
+#include "hound/file/shader/shader_file_handler.h"
+#include "hound/file/shader/raw/raw_shader.h"
 #include "hound/platform/open_gl/open_gl_core.h"
 #include "hound/platform/open_gl/object/shader/open_gl_shader.h"
 
@@ -17,14 +19,15 @@ shader* open_gl_shader_cache_module::get_shader_object(shader_id shader)
 	return m_gl_shader_map_[shader].shader_object;
 }
 
-shader_id open_gl_shader_cache_module::shader_create()
+shader_id open_gl_shader_cache_module::shader_create(const std::string& name)
 {
 	open_gl_shader* shader_instance = object_database::get_instance()->create_object_instance<open_gl_shader>();
 
 	const gl_object_id program = HND_GL_CALL(glCreateProgram);
 
 	gl_shader_data& data = m_gl_shader_map_[shader_instance->get_object_id()];
-	
+
+	data.name = std::string(name);
 	data.gl_shader_program_id = program;
 	data.shader_object = shader_instance;
 	
@@ -32,7 +35,19 @@ shader_id open_gl_shader_cache_module::shader_create()
 	return shader_instance->get_object_id();
 }
 
-void open_gl_shader_cache_module::shader_set_source(shader_id shader, shader::stage stage, const std::string& source)
+shader_id open_gl_shader_cache_module::shader_create_from_source_asset(const std::string& source_path)
+{
+	shader_file_handler file_handler(shader_file_extension);
+	return file_handler.load_from_asset_path(source_path);
+}
+
+shader_id open_gl_shader_cache_module::shader_create_from_absolute_file(const std::string& source_path)
+{
+	shader_file_handler file_handler(shader_file_extension);
+	return file_handler.load_from_absolute_path(source_path);
+}
+
+void open_gl_shader_cache_module::shader_set_source(shader_id shader, shader_stage stage, const std::string& source)
 {
 	gl_shader_data& shader_data = m_gl_shader_map_[shader];
 
@@ -40,19 +55,19 @@ void open_gl_shader_cache_module::shader_set_source(shader_id shader, shader::st
 
 	switch (stage)
 	{
-	case shader::stage::VERTEX:
+	case SHADER_STAGE_VERTEX:
 		gl_shader_id = HND_GL_CALL(glCreateShader, GL_VERTEX_SHADER);
 		break;
-	case shader::stage::GEOMETRY:
+	case SHADER_STAGE_GEOMETRY:
 		gl_shader_id = HND_GL_CALL(glCreateShader, GL_GEOMETRY_SHADER);
 		break;
-	case shader::stage::TESSELLATION:
+	case SHADER_STAGE_TESSELLATION:
 		gl_shader_id = HND_GL_CALL(glCreateShader, GL_TESS_CONTROL_SHADER);
 		break;
-	case shader::stage::FRAGMENT:
+	case SHADER_STAGE_FRAGMENT:
 		gl_shader_id = HND_GL_CALL(glCreateShader, GL_FRAGMENT_SHADER);
 		break;
-	case shader::stage::COMPUTE:
+	case SHADER_STAGE_COMPUTE:
 		gl_shader_id = HND_GL_CALL(glCreateShader, GL_COMPUTE_SHADER);
 		break;
 	}
@@ -66,7 +81,7 @@ void open_gl_shader_cache_module::shader_set_source(shader_id shader, shader::st
 	shader_data.program_stage_info[stage].source = source;
 }
 
-const std::string& open_gl_shader_cache_module::shader_get_source(shader_id shader, shader::stage stage)
+const std::string& open_gl_shader_cache_module::shader_get_source(shader_id shader, shader_stage stage)
 {
 	return m_gl_shader_map_[shader].program_stage_info[stage].source;
 }
@@ -150,6 +165,11 @@ gl_object_id open_gl_shader_cache_module::get_shader_program_id(shader_id shader
 	return m_gl_shader_map_[shader].gl_shader_program_id;
 }
 
+const shader_cache_module::shader_data& open_gl_shader_cache_module::get_shader_data(shader_id shader)
+{
+	return m_gl_shader_map_[shader];
+}
+
 shader_id open_gl_shader_cache_module::get_standard_screen_shader()
 {
 	return m_standard_screen_shader_;
@@ -187,17 +207,17 @@ void open_gl_shader_cache_module::create_standard_screen_shader()
 	#version 430 core
 	out vec4 FragColor;
   
-	in vec2 TexCooords;
+	in vec2 TexCoords;
 
 	uniform sampler2D screenTexture;
 
 	void main()
 	{ 
-	    FragColor = texture(screenTexture, TexCooords);
+	    FragColor = texture(screenTexture, TexCoords);
 	})";
 
-	m_standard_screen_shader_ = shader_create();
-	shader_set_source(m_standard_screen_shader_, shader::stage::VERTEX, vert_shader_src);
-	shader_set_source(m_standard_screen_shader_, shader::stage::FRAGMENT, frag_shader_src);
+	m_standard_screen_shader_ = shader_create("Standard screen shader");
+	shader_set_source(m_standard_screen_shader_, shader_stage::SHADER_STAGE_VERTEX, vert_shader_src);
+	shader_set_source(m_standard_screen_shader_, shader_stage::SHADER_STAGE_FRAGMENT, frag_shader_src);
 	shader_finalize(m_standard_screen_shader_);
 }

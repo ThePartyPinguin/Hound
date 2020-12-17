@@ -146,9 +146,12 @@ windows_display_manager::glfw_window_data& windows_display_manager::create_windo
 	
 	GLFWwindow* native_widow = create_glfw_window(wd);
 	wd.native_window_handle = native_widow;
-	
 	wd.window_object = create_window_object(id);
-	wd.viewport = renderer_cache::render_target_cache()->create_render_target(render_target_cache_module::VIEWPORT, wd.rect.get_size());
+
+	render_target_id vp_id = renderer_cache::render_target_cache()->create_render_target(render_target_cache_module::VIEWPORT, wd.rect.get_size());
+	wd.viewport = vp_id;
+
+	renderer_cache::render_target_cache()->set_viewport_parent_window(vp_id, wd.id);
 	
 	return wd;
 }

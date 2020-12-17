@@ -62,6 +62,7 @@ project "Hound"
             "HND_BUILD_DLL",
 			"HND_ENABLE_ASSERT",
 			"HND_RENDERER_OPEN_GL",
+			"HND_LOG_VERBOSITY=3",
 			"GLFW_INCLUDE_NONE",
 			"_GLFW_WIN32",
 			"_GLFW_WGL",
