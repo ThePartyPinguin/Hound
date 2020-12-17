@@ -1,6 +1,7 @@
 #pragma once
 
 struct GLFWwindow;
+class glfw_window;
 
 class glfw_callback_handler
 {
@@ -19,5 +20,7 @@ class glfw_callback_handler
 	static void glfw_callback_mouse_position(GLFWwindow* window, double pos_x, double pos_y);
 	static void glfw_callback_mouse_button_input(GLFWwindow* window, int button, int action, int mods);
 	static void glfw_callback_char_input(GLFWwindow* window, unsigned int code_point);
+
+	static glfw_window* get_user_pointer_window(GLFWwindow* native_window);
 };
 

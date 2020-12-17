@@ -75,3 +75,15 @@ void input_system::publish_mouse_button_event(window* window, uint32_t window_id
 	if (action == key_action::RELEASED)
 		m_mouse_data_.button = key_code::NONE;
 }
+
+void input_system::on_event(const window_key_input_event& e)
+{
+}
+
+void input_system::on_event(const window_mouse_move_event& e)
+{
+}
+
+void input_system::on_event(const window_mouse_button_input_event& e)
+{
+}

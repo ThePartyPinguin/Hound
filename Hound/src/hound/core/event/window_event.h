@@ -17,26 +17,6 @@ private:
 	bool m_should_close_;
 };
 
-class window_visibility_event : public input_event
-{
-public:
-	HND_PROPERTY(is_visible, bool, m_is_visible_)
-
-	window_visibility_event() = default;
-private:
-	bool m_is_visible_;
-};
-
-class window_title_event : public input_event
-{
-public:
-	HND_PROPERTY(title, std::string, m_window_title_)
-
-	window_title_event() = default;
-private:
-	std::string  m_window_title_;
-};
-
 class window_resize_event : public input_event
 {
 public:
@@ -62,19 +42,9 @@ class window_minimize_event : public input_event
 public:
 	HND_PROPERTY(is_minimized, bool, m_is_minimized_)
 
-	window_minimize_event() = default;
+		window_minimize_event() = default;
 private:
 	bool m_is_minimized_;
-};
-
-class window_resizable_event : public input_event
-{
-public:
-	HND_PROPERTY(is_resizable, bool, m_is_resizable_)
-	
-	window_resizable_event() = default;
-private:
-	bool m_is_resizable_;
 };
 
 class window_frame_buffer_resize_event : public input_event
@@ -97,56 +67,6 @@ private:
 	vec2_f m_scale_;
 };
 
-class window_min_size_change_event: public input_event
-{
-public:
-	HND_PROPERTY(min_size_, vec2_i, m_min_size_)
-
-	window_min_size_change_event() = default;
-private:
-	vec2_i m_min_size_;
-};
-
-class window_max_size_change_event : public input_event
-{
-public:
-	HND_PROPERTY(max_size_, vec2_i, m_max_size_)
-
-	window_max_size_change_event() = default;
-private:
-	vec2_i m_max_size_;
-};
-
-class window_aspect_change_event : public input_event
-{
-public:
-	HND_PROPERTY(aspect, vec2_i, m_aspect_)
-
-	window_aspect_change_event() = default;
-private:
-	vec2_i m_aspect_;
-};
-
-class window_border_style_change_event : public input_event
-{
-public:
-	HND_PROPERTY(border_style , int, m_border_style_)
-
-	window_border_style_change_event() = default;
-private:
-	int m_border_style_;
-};
-
-class window_always_on_top_change_event : public input_event
-{
-public:
-	HND_PROPERTY(always_on_top, int, m_is_always_on_top_)
-
-	window_always_on_top_change_event() = default;
-private:
-	bool m_is_always_on_top_;
-};
-
 class window_move_event : public input_event
 {
 public:
@@ -157,16 +77,6 @@ private:
 	rect_i m_rect_;
 };
 
-class window_mode_change_event : public input_event
-{
-public:
-	HND_PROPERTY(mode, int, m_mode_)
-
-	window_mode_change_event() = default;
-private:
-	int m_mode_;
-};
-
 class window_focused_event : public input_event
 {
 public:
@@ -175,4 +85,42 @@ public:
 		window_focused_event() = default;
 private:
 	bool m_is_focused_;
+};
+
+class window_mouse_move_event : public input_event
+{
+public:
+	HND_PROPERTY(mouse_pos, vec2_d, m_mouse_pos_)
+
+	window_mouse_move_event() = default;
+private:
+	vec2_d m_mouse_pos_;
+};
+
+class window_mouse_button_input_event : public input_event
+{
+public:
+	HND_PROPERTY(button, key_code, m_button_)
+	HND_PROPERTY(action, key_action, m_action_)
+	HND_PROPERTY(mods, int, m_mods_)
+
+	window_mouse_button_input_event() = default;
+private:
+	key_code m_button_;
+	key_action m_action_;
+	int m_mods_;
+};
+
+class window_key_input_event : public input_event
+{
+public:
+	HND_PROPERTY(button, key_code, m_key_)
+	HND_PROPERTY(action, key_action, m_action_)
+	HND_PROPERTY(mods, int, m_mods_)
+
+	window_key_input_event() = default;
+private:
+	key_code m_key_;
+	key_action m_action_;
+	int m_mods_;
 };

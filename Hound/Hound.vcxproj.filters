@@ -329,6 +329,8 @@
       <Filter>platform\windows</Filter>
     </ClInclude>
     <ClInclude Include="src\hound\platform\glfw\glfw_callback_handler.h" />
+    <ClInclude Include="src\hound\platform\glfw\glfw_window.h" />
+    <ClInclude Include="src\hound\core\window\window_enum.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hound\config\engine.cpp">
@@ -456,5 +458,6 @@
       <Filter>platform\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\hound\platform\glfw\glfw_callback_handler.cpp" />
+    <ClCompile Include="src\hound\platform\glfw\glfw_window.cpp" />
   </ItemGroup>
 </Project>

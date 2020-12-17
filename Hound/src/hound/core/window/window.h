@@ -1,64 +1,36 @@
 #pragma once
 #include "hound/core/math/math.h"
-#include "hound/display/display_manager.h"
 #include "hound/core/event/event.h"
-
-#define DPM_I display_manager::get_instance()
-#define DPM_WD DPM_I->get_window_data(m_window_id_)
+#include "hound/drivers/display_driver.h"
+#include "hound/core/window/window_enum.h"
 
 class window : public object, public event_publisher
 {
 public:
 	friend class display_manager;
+
 	
-	enum class flag
-	{
-		resizable				= display_manager::window_flag_resizable,
-		border_less				= display_manager::window_flag_resizable,
-		floating				= display_manager::window_flag_always_on_top,
-		focused					= display_manager::window_flag_focused,
-		centered				= display_manager::window_flag_centered
-	};
+	HND_PROPERTY_READ_ONLY(window_id, window_id, m_window_id_)
+	HND_PROPERTY_READ_ONLY(viewport, render_target_id, m_viewport_)
 
-	enum class mode
-	{
-		windowed				= display_manager::windowed,
-		minimized				= display_manager::minimized,
-		maximized				= display_manager::maximized,
-		full_screen				= display_manager::full_screen,
-		full_screen_windowed	= display_manager::full_screen_windowed,
-	};
+	HND_PROPERTY_READ_ONLY(content_scale, vec2_f, m_content_scale_)
+	HND_PROPERTY_CALLBACK(rect, rect_i, m_rect_, on_set_rect)
+	HND_PROPERTY_CALLBACK(min_size, vec2_i, m_min_size_, on_set_min_size)
+	HND_PROPERTY_CALLBACK(max_size, vec2_i, m_max_size_, on_set_max_size)
+	HND_PROPERTY_READ_ONLY(aspect, vec2_i, m_aspect_)
+	HND_PROPERTY_CALLBACK(mode, window_mode, m_mode_, on_set_mode)
 
-	enum class border_style
-	{
-		border_less				= display_manager::border_less,
-		bordered				= display_manager::bordered
-	};
-	
-	HND_PROPERTY_READ_ONLY(window_id, window_id, DPM_WD.id)
-	HND_PROPERTY_READ_ONLY(monitor_id, monitor_id, DPM_WD.monitor_id)
-	HND_PROPERTY_READ_ONLY(viewport, render_target_id, DPM_WD.viewport)
+	HND_PROPERTY_CALLBACK(should_close, bool, m_should_close_, on_set_should_close)
+	HND_PROPERTY_CALLBACK(is_resizable, bool, m_is_resizable_, on_set_resizable)
+	HND_PROPERTY_CALLBACK(is_visible, bool, m_is_visible_, on_set_visible)
+	HND_PROPERTY_CALLBACK(is_focused, bool, m_is_focused_, on_set_focus)
+	HND_PROPERTY_CALLBACK(is_maximized, bool, m_is_maximized_, on_set_maximized)
+	HND_PROPERTY_CALLBACK(is_minimized, bool, m_is_minimized_, on_set_minimized)
+	HND_PROPERTY_CALLBACK(is_always_on_top, bool, m_is_always_on_top_, on_set_always_on_top)
+	HND_PROPERTY_CALLBACK(border_style, window_border_style, m_border_style_, on_set_border_style)
 
-	HND_PROPERTY_READ_ONLY(content_scale, vec2_f, DPM_WD.content_scale)
-	HND_PROPERTY_CALLBACK(rect, rect_i, DPM_WD.rect, on_set_rect)
-	HND_PROPERTY_CALLBACK(min_size, vec2_i, DPM_WD.min_size, on_set_min_size)
-	HND_PROPERTY_CALLBACK(max_size, vec2_i, DPM_WD.max_size, on_set_max_size)
-	HND_PROPERTY_READ_ONLY(aspect, vec2_i, DPM_WD.aspect)
-	HND_PROPERTY_CALLBACK(mode, mode, static_cast<mode>(DPM_WD.mode), on_set_mode)
-
-	HND_PROPERTY_CALLBACK(should_close, bool, DPM_WD.should_close, on_set_should_close)
-	HND_PROPERTY_CALLBACK(is_resizable, bool, DPM_WD.is_resizable, on_set_resizable)
-	HND_PROPERTY_CALLBACK(is_visible, bool, DPM_WD.is_visible, on_set_visible)
-	HND_PROPERTY_CALLBACK(is_focused, bool, DPM_WD.is_focused, on_set_focus)
-	HND_PROPERTY_CALLBACK(is_maximized, bool, DPM_WD.is_maximized, on_set_maximized)
-	HND_PROPERTY_CALLBACK(is_minimized, bool, DPM_WD.is_minimized, on_set_minimized)
-	HND_PROPERTY_CALLBACK(is_always_on_top, bool, DPM_WD.is_always_on_top, on_set_always_on_top)
-	HND_PROPERTY_CALLBACK(border_style, border_style, static_cast<border_style>(DPM_WD.border_style), on_set_border_style)
-
-	HND_PROPERTY_READ_ONLY(parent, window_id, DPM_WD.parent_id)
-	HND_PROPERTY_READ_ONLY(children, std::set<window_id>, DPM_WD.children)
-
-	static window* create(const std::string& title, vec2_i size, window_id parent_id = display_manager::MAIN_WINDOW_ID);
+	HND_PROPERTY_READ_ONLY(parent, window_id, m_parent_id_)
+	HND_PROPERTY_READ_ONLY(children, std::set<window_id>, m_children_)
 	
 	virtual void show();
 	virtual void hide();
@@ -70,28 +42,57 @@ public:
 	virtual void request_attention();
 	virtual void close();
 
-	window();
-	~window();
-private:
-	window_id m_window_id_ = display_manager::INVALID_WINDOW_ID;
 
-	void dpm_set_frame_buffer_rect(const rect_i& rect);
-	void dpm_set_aspect(const vec2_i& aspect);
-	void dpm_set_content_scale(const vec2_f& scale);
+	virtual void* get_native_handle() = 0;
 	
-	void on_set_title(const std::string& title);
-	void on_set_rect(const rect_i& rect);
-	void on_set_min_size(const vec2_i& size);
-	void on_set_max_size(const vec2_i& size);
-	void on_set_aspect(const vec2_i& aspect);
-	void on_set_mode(const mode& mode);
-	void on_set_should_close(bool close);
-	void on_set_resizable(bool resizable);
-	void on_set_visible(const bool& visible);
-	void on_set_focus(const bool& focus);
-	void on_set_maximized(const bool& is_maximized);
-	void on_set_minimized(const bool& is_minimized);
-	void on_set_always_on_top(const bool& is_always_on_top);
-	void on_set_border_style (const border_style& style);
+	window() = default;
+	virtual ~window() = default;
+
+protected:
+	window_id m_window_id_ = display_driver::INVALID_WINDOW_ID;
+	window_id m_parent_id_ = display_driver::INVALID_WINDOW_ID;
+	
+	std::set<window_id> m_children_;
+	std::string m_title_;
+	rect_i m_rect_;
+	rect_i m_frame_buffer_rect_;
+
+	vec2_f m_content_scale_;
+	vec2_i m_min_size_;
+	vec2_i m_max_size_;
+	vec2_i m_aspect_;
+
+	window_mode m_mode_;
+	bool m_should_close_;
+	bool m_is_resizable_;
+	bool m_is_visible_;
+	bool m_is_focused_;
+	bool m_is_maximized_;
+	bool m_is_minimized_;
+	bool m_is_always_on_top_;
+	window_border_style m_border_style_;
+
+	render_target_id m_viewport_;
+	
+	bool check_valid_window() const;
+
+	void log_event_error(const char* error) const;
+private:
+	void on_set_title(const std::string& title) const;
+	void on_set_rect(const rect_i& rect) const;
+	void on_set_min_size(const vec2_i& size) const;
+	void on_set_max_size(const vec2_i& size) const;
+	void on_set_aspect(const vec2_i& aspect) const;
+	void on_set_mode(const window_mode& mode) const;
+	void on_set_should_close(bool close) const;
+	void on_set_resizable(bool resizable) const;
+	void on_set_visible(const bool& visible) const;
+	void on_set_focus(const bool& focus) const;
+	void on_set_maximized(const bool& is_maximized) const;
+	void on_set_minimized(const bool& is_minimized) const;
+	void on_set_always_on_top(const bool& is_always_on_top) const;
+	void on_set_border_style (const window_border_style& style) const;
+
+	void log_set_error(const char* error) const;
 };
 
