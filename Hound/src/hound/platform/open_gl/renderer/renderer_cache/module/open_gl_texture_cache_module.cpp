@@ -16,7 +16,7 @@ open_gl_texture_cache_module::~open_gl_texture_cache_module()
 	}
 }
 
-texture_cache_module::texture_id open_gl_texture_cache_module::texture_create_2d(const vec2_i& size)
+texture_id open_gl_texture_cache_module::texture_create_2d(const vec2_i& size)
 {
 	texture* texture_instance = object_database::get_instance()->create_object_instance<texture>();
 
@@ -188,6 +188,46 @@ bool open_gl_texture_cache_module::texture_has_mip_map(texture_id texture)
 	}
 
 	return m_gl_texture_map_[texture].has_mip_map;
+}
+
+void open_gl_texture_cache_module::bind_texture(texture_id texture)
+{
+	if(!m_gl_texture_map_.count(texture))
+	{
+		HND_CORE_LOG_WARN("Texture does not exists, no texture bound!");
+		return;
+	}
+
+	const gl_texture_data& data = get_gl_texture_data(texture);
+
+	GLint gl_texture_type;
+	
+	switch (data.type)
+	{
+	case TEXTURE_TYPE_2D: gl_texture_type = GL_TEXTURE_2D; break;
+	}
+
+	glBindTexture(gl_texture_type, data.gl_texture_object_id);
+}
+
+void open_gl_texture_cache_module::un_bind_texture(texture_id texture)
+{
+	if (!m_gl_texture_map_.count(texture))
+	{
+		HND_CORE_LOG_WARN("Texture does not exists, no texture bound!");
+		return;
+	}
+
+	const gl_texture_data& data = get_gl_texture_data(texture);
+
+	GLint gl_texture_type;
+
+	switch (data.type)
+	{
+	case TEXTURE_TYPE_2D: gl_texture_type = GL_TEXTURE_2D; break;
+	}
+
+	glBindTexture(gl_texture_type, data.gl_texture_object_id);
 }
 
 const open_gl_texture_cache_module::gl_texture_data& open_gl_texture_cache_module::get_gl_texture_data(texture_id texture)

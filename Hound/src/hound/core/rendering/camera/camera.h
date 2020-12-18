@@ -1,8 +1,8 @@
 #pragma once
 #include "hound/core/base.h"
 #include "hound/core/property.h"
-#include "hound/core/rendering/render_target/render_target.h"
 #include "hound/core/math/math.h"
+#include "hound/core/rendering/target/render_target.h"
 
 class camera
 {

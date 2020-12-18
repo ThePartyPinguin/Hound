@@ -2,8 +2,8 @@
 #include "os_windows.h"
 
 #include "hound/config/engine.h"
-#include "hound/platform/windows/display_manager_windows.h"
 #include "hound/main/main.h"
+#include "hound/platform/glfw/glfw_display_driver.h"
 
 windows_os::windows_os()
 {
@@ -19,11 +19,9 @@ bool windows_os::initialize(ref<application> application)
 	m_application_ = application;
 	
 	engine::register_singleton<os, windows_os>();
-	engine::register_singleton<display_manager, windows_display_manager>();
+	display_driver* driver = engine::register_singleton<display_driver, glfw_display_driver>();
+	driver->init();
 	
-	m_display_manager_ = windows_display_manager::get_instance();
-	m_display_manager_->initialize(display_manager::get_default_properties());
-
 	return true;
 }
 

@@ -13,7 +13,7 @@ private:
 	bool parse_header();
 	bool parse_shader_name(raw_shader& shader);
 	bool parse_shader_stage(raw_shader::raw_shader_stage& stage);
-	shader::stage parse_shader_stage_type();
+	shader_cache_module::shader_stage parse_shader_stage_type();
 	
 	void advance_to_next_word();
 	bool is_at_end() const;

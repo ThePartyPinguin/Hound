@@ -131,6 +131,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\application\sandbox_application.h" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="src\application\sandbox_application.cpp" />
     <ClCompile Include="src\hound_windows.cpp" />
   </ItemGroup>
@@ -138,9 +141,6 @@
     <ProjectReference Include="..\Hound\Hound.vcxproj">
       <Project>{C3C2540D-2FD7-7CBE-F858-201E642C79EF}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\application\sandbox_application.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

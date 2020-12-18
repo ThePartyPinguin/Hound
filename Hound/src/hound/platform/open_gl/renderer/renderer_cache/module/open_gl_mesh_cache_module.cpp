@@ -4,7 +4,7 @@
 #include "hound/core/object/object_database.h"
 #include "hound/core/object/mesh/mesh.h"
 
-mesh_cache_module::mesh_id open_gl_mesh_cache_module::mesh_create()
+mesh_id open_gl_mesh_cache_module::mesh_create()
 {
 	const mesh* mesh_instance = object_database::get_instance()->create_object_instance<mesh>();
 
@@ -16,7 +16,7 @@ mesh_cache_module::mesh_id open_gl_mesh_cache_module::mesh_create()
 	return mesh_instance->get_object_id();
 }
 
-mesh_cache_module::mesh_data_id open_gl_mesh_cache_module::mesh_add_data(mesh_id mesh, const mesh_data& data)
+mesh_data_id open_gl_mesh_cache_module::mesh_add_data(mesh_id mesh, const mesh_data& data)
 {
 	if (!m_gl_mesh_map_.count(mesh))
 	{

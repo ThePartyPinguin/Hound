@@ -61,6 +61,9 @@ project "Hound"
 			"HND_PLATFORM_WINDOWS",
             "HND_BUILD_DLL",
 			"HND_ENABLE_ASSERT",
+			"HND_RENDERER_OPEN_GL",
+			"HND_LOG_VERBOSITY=3",
+			"HND_DISPLAY_GLFW",
 			"GLFW_INCLUDE_NONE",
 			"_GLFW_WIN32",
 			"_GLFW_WGL",
@@ -73,9 +76,14 @@ project "Hound"
 		--}
 
 	filter "configurations:Debug"
-		defines "HND_DEBUG"
+		--defines "HND_DEBUG"
 		runtime "Debug"
 		symbols "On"
+
+		defines
+		{
+			"HND_DEBUG"
+		}
 
 	filter "configurations:Release"
 		defines "HND_RELEASE"

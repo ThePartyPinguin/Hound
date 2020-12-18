@@ -1,12 +1,11 @@
 #pragma once
 #include "hound/core/math/math.h"
 #include "hound/core/rendering/renderer_cache/module/renderer_cache_module.h"
+#include "hound/core/rendering/renderer_resource_id.h"
 
 class frame_buffer_cache_module : public renderer_cache_module
 {
-public:
-	typedef object_id frame_buffer_id;
-	
+public:	
 	struct frame_buffer_data
 	{
 		vec2_i size;

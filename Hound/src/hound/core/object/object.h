@@ -51,6 +51,7 @@ public:
 		
 	HND_PROP_GET_REF_FUNC(object_id, object_id, m_id_)
 
+protected:
 	object() = default;
 	virtual ~object() = default;
 private:

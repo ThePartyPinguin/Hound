@@ -1,6 +1,5 @@
 #pragma once
 #include "hound/core/object/object.h"
-#include "hound/core/object/object_database.h"
 #include "hound/main/application.h"
 #include <string>
 #include <fstream>
@@ -19,8 +18,7 @@ public:
 	object_id load_from_absolute_path(const std::string& file_path);
 
 protected:
-	virtual object_id create_instance() = 0;
-	virtual void deserialize(object_id instance_id, char* buffer, size_t length) = 0;
+	virtual object_id deserialize(char* buffer, size_t length) = 0;
 	
 private:
 	void fix_file_path(std::string& str, const std::string& from, const std::string& to);
@@ -70,8 +68,7 @@ object_id file_handler<TInstance>::load_from_absolute_path(const std::string& fi
 			file_stream.read(buffer, length);
 			file_stream.close();
 
-			const object_id id = create_instance();
-			deserialize(id, buffer, length);
+			const object_id id = deserialize(buffer, length);
 
 			delete[] buffer;
 			return id;

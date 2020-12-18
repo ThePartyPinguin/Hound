@@ -4,11 +4,10 @@
 
 class shader_file_handler : public file_handler<shader>
 {
-public:
+public:	
 	shader_file_handler(const std::string& file_extension) : file_handler<shader>(file_extension){}
 
 protected:
-	void deserialize(object_id instance_id, char* buffer, size_t length) override;
-	object_id create_instance() override;
+	object_id deserialize(char* buffer, size_t length) override;
 };
 

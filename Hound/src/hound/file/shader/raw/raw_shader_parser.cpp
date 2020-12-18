@@ -46,9 +46,9 @@ void raw_shader_parser::parse_shader(raw_shader& shader)
 
 		if (m_current_word_ == "SubShader")
 		{
-			shader::stage stage_type = parse_shader_stage_type();
+			shader_cache_module::shader_stage stage_type = parse_shader_stage_type();
 
-			if (stage_type == shader::stage::INVALID)
+			if (stage_type == shader_cache_module::SHADER_STAGE_INVALID)
 			{
 				log_error("Shader stage type is unknown! Possible options are:\r\n\t- Vertex\r\n\t- Geometry\r\n\t- Tessellation\r\n\t- Fragment\r\n\t- Compute");
 				shader.is_valid = false;
@@ -143,33 +143,33 @@ bool raw_shader_parser::parse_shader_stage(raw_shader::raw_shader_stage& stage)
 	return true;
 }
 
-shader::stage raw_shader_parser::parse_shader_stage_type()
+shader_cache_module::shader_stage raw_shader_parser::parse_shader_stage_type()
 {
 	advance_to_next_word();
 	std::string type_string = parse_current_word_as_string();
 
 	if (type_string == "Vertex")
 	{
-		return shader::stage::VERTEX;
+		return shader_cache_module::SHADER_STAGE_VERTEX;
 	}
 	if (type_string == "Geometry")
 	{
-		return shader::stage::GEOMETRY;
+		return shader_cache_module::SHADER_STAGE_GEOMETRY;
 	}
 	if (type_string == "Tessellation")
 	{
-		return shader::stage::TESSELLATION;
+		return shader_cache_module::SHADER_STAGE_TESSELLATION;
 	}
 	if (type_string == "Fragment")
 	{
-		return shader::stage::FRAGMENT;
+		return shader_cache_module::SHADER_STAGE_FRAGMENT;
 	}
 	if (type_string == "Compute")
 	{
-		return shader::stage::COMPUTE;
+		return shader_cache_module::SHADER_STAGE_COMPUTE;
 	}
 	log_error("Invalid shader type!");
-	return shader::stage::INVALID;
+	return shader_cache_module::SHADER_STAGE_INVALID;
 }
 
 void raw_shader_parser::advance_to_next_word()

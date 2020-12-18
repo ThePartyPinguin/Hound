@@ -15,7 +15,7 @@ public:
 	static void register_singleton();
 
 	template<typename T, typename TImpl>
-	static void register_singleton();
+	static TImpl* register_singleton();
 
 	template<typename T, typename TImpl>
 	static TImpl* get_singleton();
@@ -48,7 +48,7 @@ void engine::register_singleton()
 }
 
 template <typename T, typename TImpl>
-void engine::register_singleton()
+TImpl* engine::register_singleton()
 {
 	const char* id = typeid(T).name();
 	
@@ -63,6 +63,8 @@ void engine::register_singleton()
 	TImpl* instance = object_database::get_instance()->create_object_instance<TImpl>();
 		
 	s_instance_->m_singletons_[id] = instance;
+
+	return instance;
 }
 
 template <typename T, typename TImpl>

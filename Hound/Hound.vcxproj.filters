@@ -1,8 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="config">
+      <UniqueIdentifier>{7B6CE4F6-670E-0FCD-50C9-22213C0A961D}</UniqueIdentifier>
+    </Filter>
     <Filter Include="core">
       <UniqueIdentifier>{4E40957C-3A77-960D-E363-7C10CF79120F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\event">
+      <UniqueIdentifier>{3F54CC50-2B0C-0E9E-9413-E7F980EAA88E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\input">
+      <UniqueIdentifier>{ED821051-D93A-529E-4242-2BFA2E19ED8E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\math">
+      <UniqueIdentifier>{07925FA5-73FC-131C-BC3A-C5C128E4F170}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\math\matrix">
+      <UniqueIdentifier>{EB6F042D-D768-237F-009B-0804ECF2028B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\math\quaternion">
+      <UniqueIdentifier>{5C1CB229-48AB-3BF3-F1C9-4FEEDD374C99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\math\rect">
+      <UniqueIdentifier>{24ACD17D-107A-C583-F90D-36AAE57AA1E8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\math\vector">
+      <UniqueIdentifier>{69F64142-55EF-6094-7E21-46196A7940A0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\object">
+      <UniqueIdentifier>{341E4380-A0D3-BB75-29C8-B54C957CB279}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\object\mesh">
+      <UniqueIdentifier>{9020C299-7C19-E1EB-A54B-C67091A3C0F7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\object\shader">
+      <UniqueIdentifier>{7ADFF720-66C3-B876-CF23-B3C9BB26A3F8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\object\texture">
+      <UniqueIdentifier>{B4CF9787-2031-7595-A99E-BB4715FFAB54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\os">
+      <UniqueIdentifier>{3FDCB8D3-ABBB-376F-B4D3-C24520329ED0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\rendering">
+      <UniqueIdentifier>{3B63E6A1-2731-DAA7-10C5-4ACEFC31B60C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\rendering\camera">
+      <UniqueIdentifier>{73BB9DBB-DF27-59B6-A81B-F11314477B1E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\rendering\renderer_cache">
+      <UniqueIdentifier>{744BD88E-E063-BFB8-A910-4F5215E85352}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\rendering\renderer_cache\module">
+      <UniqueIdentifier>{C94A4FEB-B531-11E3-5E82-77004A488A49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\rendering\target">
+      <UniqueIdentifier>{F13248E3-5D9F-03DE-2693-9B3B92BE2546}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\window">
+      <UniqueIdentifier>{953D6D93-01F3-E588-8AE7-DF5FF69BDC8C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="display">
+      <UniqueIdentifier>{9B47CD12-0727-4CAE-103F-D7847C9DB20F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="drivers">
+      <UniqueIdentifier>{E4EE1927-50CE-98C2-59E6-2399C544FF23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="file">
+      <UniqueIdentifier>{25CB967C-1102-980D-BAEE-7D10A604140F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="file\shader">
+      <UniqueIdentifier>{4B73EB46-B728-643C-401D-5E13ACD15A40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="file\shader\raw">
+      <UniqueIdentifier>{84D8D5EA-F063-43AF-F974-C6A3657F9FAF}</UniqueIdentifier>
     </Filter>
     <Filter Include="logging">
       <UniqueIdentifier>{CC00C087-38E0-3E23-41F8-C9F9AD56A584}</UniqueIdentifier>
@@ -10,153 +82,374 @@
     <Filter Include="main">
       <UniqueIdentifier>{6A7F9A7C-56B6-9B0D-FFA2-8110EBB8170F}</UniqueIdentifier>
     </Filter>
-    <Filter Include="managers">
-      <UniqueIdentifier>{D3E83846-BFB5-9351-E8CE-81F9D4FAC8DF}</UniqueIdentifier>
+    <Filter Include="platform">
+      <UniqueIdentifier>{4A63C33C-3630-1E48-5F49-0CF04B7553D6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="math">
-      <UniqueIdentifier>{CF809A7C-BBB7-9B0D-64A4-811050BA170F}</UniqueIdentifier>
+    <Filter Include="platform\glfw">
+      <UniqueIdentifier>{49D5834D-B595-FF83-7ED0-4801EA4F4460}</UniqueIdentifier>
     </Filter>
-    <Filter Include="math\vector">
-      <UniqueIdentifier>{3174933B-9D29-0C31-261E-060892D20235}</UniqueIdentifier>
+    <Filter Include="platform\open_gl">
+      <UniqueIdentifier>{1DDFA8E8-09D8-C73A-320A-ADBF1E62A746}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\open_gl\context">
+      <UniqueIdentifier>{D1BE00D9-BDE3-4F59-E62E-35E9D2B24E77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\open_gl\logging">
+      <UniqueIdentifier>{D324478D-BF49-960D-E894-7B9DD418952B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\open_gl\object">
+      <UniqueIdentifier>{231E94E3-8F55-DC7A-985F-409E04160374}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\open_gl\object\shader">
+      <UniqueIdentifier>{89BCC9CE-75E2-9335-5E28-19014AEDB801}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\open_gl\renderer">
+      <UniqueIdentifier>{830F0CCE-EFD1-3F58-3882-CEE4A4831836}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\open_gl\renderer\render_target">
+      <UniqueIdentifier>{B898166C-2428-D856-2D24-B96E99321363}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\open_gl\renderer\renderer_cache">
+      <UniqueIdentifier>{BC1EC3D8-A89B-B61B-D118-B72FBDF452AF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\open_gl\renderer\renderer_cache\module">
+      <UniqueIdentifier>{119DF25E-7DD8-5222-86CD-CFB1F287D752}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\windows">
+      <UniqueIdentifier>{A44FC440-9048-E392-B97A-C817A5D2C29E}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\hound\config\engine.h">
+      <Filter>config</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\config\platform_identifier.h">
+      <Filter>config</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\assertion.h">
+      <Filter>core</Filter>
+    </ClInclude>
     <ClInclude Include="src\hound\core\base.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\bit.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\create_function.h">
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="src\hound\core\error_code.h">
       <Filter>core</Filter>
     </ClInclude>
+    <ClInclude Include="src\hound\core\event\event.h">
+      <Filter>core\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\event\window_event.h">
+      <Filter>core\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\input\input_event.h">
+      <Filter>core\input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\input\input_system.h">
+      <Filter>core\input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\input\key_codes.h">
+      <Filter>core\input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\math\math.h">
+      <Filter>core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\math\math_functions.h">
+      <Filter>core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\math\matrix\mat4.h">
+      <Filter>core\math\matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\math\quaternion\quaternion.h">
+      <Filter>core\math\quaternion</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\math\rect\rect.h">
+      <Filter>core\math\rect</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\math\vector\vec2.h">
+      <Filter>core\math\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\math\vector\vec3.h">
+      <Filter>core\math\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\math\vector\vec4.h">
+      <Filter>core\math\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\object\mesh\mesh.h">
+      <Filter>core\object\mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\object\object.h">
+      <Filter>core\object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\object\object_database.h">
+      <Filter>core\object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\object\shader\shader.h">
+      <Filter>core\object\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\object\texture\texture.h">
+      <Filter>core\object\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\os\os.h">
+      <Filter>core\os</Filter>
+    </ClInclude>
     <ClInclude Include="src\hound\core\property.h">
       <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\rendering\camera\camera.h">
+      <Filter>core\rendering\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\rendering\renderer.h">
+      <Filter>core\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\rendering\renderer_cache.h">
+      <Filter>core\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\frame_buffer_cache_module.h">
+      <Filter>core\rendering\renderer_cache\module</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\mesh_cache_module.h">
+      <Filter>core\rendering\renderer_cache\module</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\render_target_cache_module.h">
+      <Filter>core\rendering\renderer_cache\module</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\renderer_cache_module.h">
+      <Filter>core\rendering\renderer_cache\module</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\shader_cache_module.h">
+      <Filter>core\rendering\renderer_cache\module</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\texture_cache_module.h">
+      <Filter>core\rendering\renderer_cache\module</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\rendering\renderer_resource_id.h">
+      <Filter>core\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\rendering\target\frame_buffer.h">
+      <Filter>core\rendering\target</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\rendering\target\render_target.h">
+      <Filter>core\rendering\target</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\rendering\target\viewport.h">
+      <Filter>core\rendering\target</Filter>
     </ClInclude>
     <ClInclude Include="src\hound\core\template.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="src\hound\hnd_pch.h" />
-    <ClInclude Include="src\hound\managers\display_manager.h">
-      <Filter>managers</Filter>
+    <ClInclude Include="src\hound\core\window\window.h">
+      <Filter>core\window</Filter>
     </ClInclude>
-    <ClInclude Include="src\hound\drivers\graphics_context.h" />
-    <ClInclude Include="src\hound\config\platform_identifier.h" />
-    <ClInclude Include="src\hound\config\engine.h" />
+    <ClInclude Include="src\hound\drivers\display_driver.h">
+      <Filter>drivers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\drivers\graphics_context.h">
+      <Filter>drivers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\file\file_handler.h">
+      <Filter>file</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\file\shader\raw\raw_shader.h">
+      <Filter>file\shader\raw</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\file\shader\raw\raw_shader_parser.h">
+      <Filter>file\shader\raw</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\file\shader\shader_file_handler.h">
+      <Filter>file\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\hnd_pch.h" />
     <ClInclude Include="src\hound\logging\logger.h">
       <Filter>logging</Filter>
     </ClInclude>
-    <ClInclude Include="src\hound\core\assertion.h" />
-    <ClInclude Include="src\hound\core\os\os.h" />
-    <ClInclude Include="src\hound\core\create_function.h" />
-    <ClInclude Include="src\hound\platform\windows\os_windows.h" />
+    <ClInclude Include="src\hound\main\application.h">
+      <Filter>main</Filter>
+    </ClInclude>
     <ClInclude Include="src\hound\main\main.h">
       <Filter>main</Filter>
     </ClInclude>
-    <ClInclude Include="src\hound\main\application.h" />
-    <ClInclude Include="src\hound\platform\windows\display_manager_windows.h" />
-    <ClInclude Include="src\hound\core\bit.h" />
-    <ClInclude Include="src\hound\core\input\input_event.h" />
-    <ClInclude Include="src\hound\core\input\key_codes.h" />
-    <ClInclude Include="src\hound\platform\open_gl\open_gl_core.h" />
-    <ClInclude Include="src\hound\core\event\event.h" />
-    <ClInclude Include="src\hound\core\object\object_database.h" />
-    <ClInclude Include="src\hound\core\object\object.h" />
-    <ClInclude Include="src\hound\platform\windows\window_glfw_helper.h" />
-    <ClInclude Include="src\hound\core\input\input_system.h" />
-    <ClInclude Include="src\hound\core\event\window_event.h" />
-    <ClInclude Include="src\hound\core\math\matrix\mat4.h" />
-    <ClInclude Include="src\hound\core\math\quaternion\quaternion.h" />
-    <ClInclude Include="src\hound\core\math\rect\rect.h" />
-    <ClInclude Include="src\hound\core\math\vector\vec2.h">
-      <Filter>math\vector</Filter>
+    <ClInclude Include="src\hound\platform\glfw\glfw_display_driver.h">
+      <Filter>platform\glfw</Filter>
     </ClInclude>
-    <ClInclude Include="src\hound\core\math\vector\vec3.h">
-      <Filter>math\vector</Filter>
+    <ClInclude Include="src\hound\platform\open_gl\context\open_gl_context.h">
+      <Filter>platform\open_gl\context</Filter>
     </ClInclude>
-    <ClInclude Include="src\hound\core\math\vector\vec4.h">
-      <Filter>math\vector</Filter>
+    <ClInclude Include="src\hound\platform\open_gl\logging\open_gl_logger.h">
+      <Filter>platform\open_gl\logging</Filter>
     </ClInclude>
-    <ClInclude Include="src\hound\core\math\math.h">
-      <Filter>math</Filter>
+    <ClInclude Include="src\hound\platform\open_gl\object\shader\open_gl_shader.h">
+      <Filter>platform\open_gl\object\shader</Filter>
     </ClInclude>
-    <ClInclude Include="src\hound\core\math\math_functions.h">
-      <Filter>math</Filter>
+    <ClInclude Include="src\hound\platform\open_gl\open_gl_core.h">
+      <Filter>platform\open_gl</Filter>
     </ClInclude>
-    <ClInclude Include="src\hound\platform\open_gl\logging\open_gl_logger.h" />
-    <ClInclude Include="src\hound\platform\open_gl\context\open_gl_context.h" />
-    <ClInclude Include="src\hound\platform\open_gl\renderer\open_gl_renderer.h" />
-    <ClInclude Include="src\hound\core\object\mesh\mesh.h" />
-    <ClInclude Include="src\hound\core\object\shader\shader.h" />
-    <ClInclude Include="src\hound\file\file_handler.h" />
-    <ClInclude Include="src\hound\file\shader\shader_file_handler.h" />
-    <ClInclude Include="src\hound\file\shader\raw\raw_shader.h" />
-    <ClInclude Include="src\hound\file\shader\raw\raw_shader_parser.h" />
-    <ClInclude Include="src\hound\platform\open_gl\object\shader\open_gl_shader.h" />
-    <ClInclude Include="src\hound\platform\open_gl\renderer\render_target\open_gl_frame_buffer.h" />
-    <ClInclude Include="src\hound\core\object\texture\texture.h" />
-    <ClInclude Include="src\hound\core\rendering\camera\camera.h" />
-    <ClInclude Include="src\hound\core\rendering\render_target\window\window.h" />
-    <ClInclude Include="src\hound\core\rendering\render_target\frame_buffer.h" />
-    <ClInclude Include="src\hound\core\rendering\render_target\render_target.h" />
-    <ClInclude Include="src\hound\core\rendering\render_target\viewport.h" />
-    <ClInclude Include="src\hound\core\rendering\renderer.h" />
-    <ClInclude Include="src\hound\core\rendering\renderer_cache.h" />
-    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\renderer_cache_module.h" />
-    <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\open_gl_renderer_cache.h" />
-    <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_texture_cache_module.h" />
-    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\texture_cache_module.h" />
-    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\mesh_cache_module.h" />
-    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\shader_cache_module.h" />
-    <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_mesh_cache_module.h" />
-    <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_shader_cache_module.h" />
-    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\frame_buffer_cache_module.h" />
-    <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_frame_buffer_cache_module.h" />
+    <ClInclude Include="src\hound\platform\open_gl\renderer\open_gl_renderer.h">
+      <Filter>platform\open_gl\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\platform\open_gl\renderer\render_target\open_gl_frame_buffer.h">
+      <Filter>platform\open_gl\renderer\render_target</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\platform\open_gl\renderer\render_target\open_gl_viewport.h">
+      <Filter>platform\open_gl\renderer\render_target</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_frame_buffer_cache_module.h">
+      <Filter>platform\open_gl\renderer\renderer_cache\module</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_mesh_cache_module.h">
+      <Filter>platform\open_gl\renderer\renderer_cache\module</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_render_target_cache_module.h">
+      <Filter>platform\open_gl\renderer\renderer_cache\module</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_shader_cache_module.h">
+      <Filter>platform\open_gl\renderer\renderer_cache\module</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_texture_cache_module.h">
+      <Filter>platform\open_gl\renderer\renderer_cache\module</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\open_gl_renderer_cache.h">
+      <Filter>platform\open_gl\renderer\renderer_cache</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\platform\windows\os_windows.h">
+      <Filter>platform\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\platform\windows\window_glfw_helper.h">
+      <Filter>platform\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\platform\glfw\glfw_callback_handler.h" />
+    <ClInclude Include="src\hound\platform\glfw\glfw_window.h" />
+    <ClInclude Include="src\hound\core\window\window_enum.h" />
+    <ClInclude Include="src\hound\core\window\monitor.h" />
+    <ClInclude Include="src\hound\platform\glfw\glfw_monitor.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\hound\hnd_pch.cpp" />
-    <ClCompile Include="src\hound\managers\display_manager.cpp">
-      <Filter>managers</Filter>
+    <ClCompile Include="src\hound\config\engine.cpp">
+      <Filter>config</Filter>
     </ClCompile>
-    <ClCompile Include="src\hound\drivers\graphics_context.cpp" />
-    <ClCompile Include="src\hound\config\platform_identifier.cpp" />
-    <ClCompile Include="src\hound\config\engine.cpp" />
+    <ClCompile Include="src\hound\config\platform_identifier.cpp">
+      <Filter>config</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\core\input\input_system.cpp">
+      <Filter>core\input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\core\math\math_functions.cpp">
+      <Filter>core\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\core\object\mesh\mesh.cpp">
+      <Filter>core\object\mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\core\object\object.cpp">
+      <Filter>core\object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\core\object\object_database.cpp">
+      <Filter>core\object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\core\object\shader\shader.cpp">
+      <Filter>core\object\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\core\object\texture\texture.cpp">
+      <Filter>core\object\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\core\os\os.cpp">
+      <Filter>core\os</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\core\rendering\camera\camera.cpp">
+      <Filter>core\rendering\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\core\rendering\renderer.cpp">
+      <Filter>core\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\core\rendering\renderer_cache.cpp">
+      <Filter>core\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\core\rendering\target\frame_buffer.cpp">
+      <Filter>core\rendering\target</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\core\rendering\target\render_target.cpp">
+      <Filter>core\rendering\target</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\core\rendering\target\viewport.cpp">
+      <Filter>core\rendering\target</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\core\window\window.cpp">
+      <Filter>core\window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\drivers\graphics_context.cpp">
+      <Filter>drivers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\file\shader\raw\raw_shader.cpp">
+      <Filter>file\shader\raw</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\file\shader\raw\raw_shader_parser.cpp">
+      <Filter>file\shader\raw</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\file\shader\shader_file_handler.cpp">
+      <Filter>file\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\hnd_pch.cpp" />
     <ClCompile Include="src\hound\logging\logger.cpp">
       <Filter>logging</Filter>
     </ClCompile>
-    <ClCompile Include="src\hound\core\os\os.cpp" />
-    <ClCompile Include="src\hound\platform\windows\os_windows.cpp" />
+    <ClCompile Include="src\hound\main\application.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
     <ClCompile Include="src\hound\main\main.cpp">
       <Filter>main</Filter>
     </ClCompile>
-    <ClCompile Include="src\hound\main\application.cpp" />
-    <ClCompile Include="src\hound\platform\windows\display_manager_windows.cpp" />
-    <ClCompile Include="src\hound\core\object\object_database.cpp" />
-    <ClCompile Include="src\hound\core\object\object.cpp" />
-    <ClCompile Include="src\hound\platform\windows\window_glfw_helper.cpp" />
-    <ClCompile Include="src\hound\core\input\input_system.cpp" />
-    <ClCompile Include="src\hound\core\math\math_functions.cpp">
-      <Filter>math</Filter>
+    <ClCompile Include="src\hound\platform\glfw\glfw_display_driver.cpp">
+      <Filter>platform\glfw</Filter>
     </ClCompile>
-    <ClCompile Include="src\hound\platform\open_gl\logging\open_gl_logger.cpp" />
-    <ClCompile Include="src\hound\platform\open_gl\context\open_gl_context.cpp" />
-    <ClCompile Include="src\hound\platform\open_gl\renderer\open_gl_renderer.cpp" />
-    <ClCompile Include="src\hound\core\object\mesh\mesh.cpp" />
-    <ClCompile Include="src\hound\core\object\shader\shader.cpp" />
-    <ClCompile Include="src\hound\file\shader\shader_file_handler.cpp" />
-    <ClCompile Include="src\hound\file\shader\raw\raw_shader.cpp" />
-    <ClCompile Include="src\hound\file\shader\raw\raw_shader_parser.cpp" />
-    <ClCompile Include="src\hound\platform\open_gl\object\shader\open_gl_shader.cpp" />
-    <ClCompile Include="src\hound\platform\open_gl\renderer\render_target\open_gl_frame_buffer.cpp" />
-    <ClCompile Include="src\hound\core\object\texture\texture.cpp" />
-    <ClCompile Include="src\hound\core\rendering\camera\camera.cpp" />
-    <ClCompile Include="src\hound\core\rendering\render_target\window\window.cpp" />
-    <ClCompile Include="src\hound\core\rendering\render_target\frame_buffer.cpp" />
-    <ClCompile Include="src\hound\core\rendering\render_target\render_target.cpp" />
-    <ClCompile Include="src\hound\core\rendering\render_target\viewport.cpp" />
-    <ClCompile Include="src\hound\core\rendering\renderer.cpp" />
-    <ClCompile Include="src\hound\core\rendering\renderer_cache.cpp" />
-    <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\open_gl_renderer_cache.cpp" />
-    <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_texture_cache_module.cpp" />
-    <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_mesh_cache_module.cpp" />
-    <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_shader_cache_module.cpp" />
-    <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_frame_buffer_cache_module.cpp" />
+    <ClCompile Include="src\hound\platform\open_gl\context\open_gl_context.cpp">
+      <Filter>platform\open_gl\context</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\platform\open_gl\logging\open_gl_logger.cpp">
+      <Filter>platform\open_gl\logging</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\platform\open_gl\object\shader\open_gl_shader.cpp">
+      <Filter>platform\open_gl\object\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\platform\open_gl\renderer\open_gl_renderer.cpp">
+      <Filter>platform\open_gl\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\platform\open_gl\renderer\render_target\open_gl_frame_buffer.cpp">
+      <Filter>platform\open_gl\renderer\render_target</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\platform\open_gl\renderer\render_target\open_gl_viewport.cpp">
+      <Filter>platform\open_gl\renderer\render_target</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_frame_buffer_cache_module.cpp">
+      <Filter>platform\open_gl\renderer\renderer_cache\module</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_mesh_cache_module.cpp">
+      <Filter>platform\open_gl\renderer\renderer_cache\module</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_render_target_cache_module.cpp">
+      <Filter>platform\open_gl\renderer\renderer_cache\module</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_shader_cache_module.cpp">
+      <Filter>platform\open_gl\renderer\renderer_cache\module</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_texture_cache_module.cpp">
+      <Filter>platform\open_gl\renderer\renderer_cache\module</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\open_gl_renderer_cache.cpp">
+      <Filter>platform\open_gl\renderer\renderer_cache</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\platform\windows\os_windows.cpp">
+      <Filter>platform\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\platform\windows\window_glfw_helper.cpp">
+      <Filter>platform\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\platform\glfw\glfw_callback_handler.cpp" />
+    <ClCompile Include="src\hound\platform\glfw\glfw_window.cpp" />
+    <ClCompile Include="src\hound\core\window\monitor.cpp" />
+    <ClCompile Include="src\hound\platform\glfw\glfw_monitor.cpp" />
   </ItemGroup>
 </Project>
