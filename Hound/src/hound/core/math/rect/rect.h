@@ -49,6 +49,7 @@ public:
 
 	this_type get_centered_rect_for_size(vec2_type size) const;
 	bool is_null() const;
+	bool contains(const vec2_type& position) const;
 };
 
 template <typename T>
@@ -100,4 +101,14 @@ template <typename T>
 bool rect<T>::is_null() const
 {
 	return get_x() == 0 && get_y() == 0 && get_width() == 0 && get_height() == 0;
+}
+
+template <typename T>
+bool rect<T>::contains(const vec2_type& position) const
+{
+	return
+		position.get_x() >= get_x() && 
+		position.get_x() <= get_x() + get_width() &&
+		position.get_y() >= get_y() &&
+		position.get_y() <= get_y() + get_height();
 }

@@ -11,6 +11,8 @@ public:
 
 	
 	HND_PROPERTY_READ_ONLY(window_id, window_id, m_window_id_)
+	HND_PROPERTY_READ_ONLY(monitor_id, monitor_id, m_monitor_id_);
+	
 	HND_PROPERTY_READ_ONLY(viewport, render_target_id, m_viewport_)
 
 	HND_PROPERTY_READ_ONLY(content_scale, vec2_f, m_content_scale_)
@@ -51,8 +53,10 @@ public:
 protected:
 	window_id m_window_id_ = display_driver::INVALID_WINDOW_ID;
 	window_id m_parent_id_ = display_driver::INVALID_WINDOW_ID;
-	
 	std::set<window_id> m_children_;
+
+	monitor_id m_monitor_id_ = display_driver::INVALID_MONITOR_ID;
+	
 	std::string m_title_;
 	rect_i m_rect_;
 	rect_i m_frame_buffer_rect_;
@@ -63,6 +67,7 @@ protected:
 	vec2_i m_aspect_;
 
 	window_mode m_mode_;
+	window_mode m_previous_mode_;
 	bool m_should_close_;
 	bool m_is_resizable_;
 	bool m_is_visible_;
@@ -73,9 +78,11 @@ protected:
 	window_border_style m_border_style_;
 
 	render_target_id m_viewport_;
-	
-	bool check_valid_window() const;
 
+	void switch_mode(window_mode new_mode);
+	void restore_mode();
+	
+	bool check_valid_window() const;	
 	void log_event_error(const char* error) const;
 private:
 	void on_set_title(const std::string& title) const;

@@ -2,17 +2,19 @@
 #include "glfw_display_driver.h"
 
 
+
+#include "glfw_monitor.h"
 #include "glfw_window.h"
 #include "hound/platform/glfw/glfw_callback_handler.h"
 #include "GLFW/glfw3.h"
 #include "hound/core/object/object_database.h"
+#include "hound/core/window/monitor.h"
 
 display_driver* display_driver::s_instance = nullptr;
 
 glfw_display_driver::glfw_display_driver()
 {
 	s_instance = this;
-	
 }
 
 glfw_display_driver::~glfw_display_driver()
@@ -27,22 +29,28 @@ void glfw_display_driver::init()
 		return;
 	}
 	HND_CORE_LOG_INFO("GLFW display driver initialized!");
+
+	identify_monitors();
 }
 
-window_id glfw_display_driver::create_window(const char* title, const vec2_i& size, window_id parent_window_id)
+window_id glfw_display_driver::create_window(const char* title, const vec2_i& size, window_id parent_window_id, monitor_id monitor_id)
 {
+	glfw_monitor_data& monitor_data = m_monitor_data_map_[monitor_id];
 	glfw_window_data& data = create_new_window_data();
 
 	glfw_window* window_handle = object_database::get_instance()->create_object_instance<glfw_window>();
 	data.object_handle = window_handle;
 	data.native_window_handle = create_native_window(title, size, parent_window_id);
 	data.parent = parent_window_id;
-
+	data.monitor = monitor_id;
+	
 	window_handle->init(data.id, title, data.native_window_handle);
 	
 	get_window_data(parent_window_id).children.insert(data.id);
 
 	glfwSetWindowUserPointer(data.native_window_handle, data.object_handle);
+
+	monitor_data.containing_windows.insert(data.id);
 	
 	return data.id;
 }
@@ -200,6 +208,7 @@ void glfw_display_driver::set_native_aspect(window_id window, const vec2_i& aspe
 
 void glfw_display_driver::set_native_mode(window_id window, window_mode aspect)
 {
+	
 }
 
 void glfw_display_driver::set_native_should_close(window_id window, bool should_close)
@@ -262,4 +271,51 @@ void glfw_display_driver::set_native_always_on_top(window_id window, bool is_alw
 void glfw_display_driver::set_native_border_style(window_id window, window_border_style style)
 {
 	glfwSetWindowAttrib(get_window_data(window).native_window_handle, GLFW_DECORATED, style == window_border_style::bordered);
+}
+
+monitor_id glfw_display_driver::get_native_monitor(window_id window_id)
+{
+	glfw_window* window_handle = dynamic_cast<glfw_window*>(get_window_handle(window_id));
+
+	const vec2_i& position = window_handle->get_rect().get_origin();
+
+	for(auto& pair : m_monitor_data_map_)
+	{
+		monitor* monitor_handle = pair.second.object_handle;
+
+		const rect_i& monitor_rect = monitor_handle->get_work_area();
+
+		if(monitor_rect.contains(position))
+		{
+			m_monitor_data_map_[window_handle->m_monitor_id_].containing_windows.erase(window_id);
+			window_handle->m_monitor_id_ = pair.first;
+			pair.second.containing_windows.insert(window_id);
+
+			return pair.first;
+		}
+	}
+	return INVALID_MONITOR_ID;
+}
+
+void glfw_display_driver::identify_monitors()
+{
+	int count;
+	GLFWmonitor** monitors = glfwGetMonitors(&count);
+	
+	for (int i = 0; i < count; ++i)
+	{
+		GLFWmonitor* native_monitor = monitors[i];
+
+		monitor_id id = m_monitor_counter_;
+		
+		glfw_monitor_data& data = m_monitor_data_map_[id];
+		data.id = id;
+		data.native_monitor_handle_ = native_monitor;
+		
+		glfw_monitor* monitor_object = object_database::get_instance()->create_object_instance<glfw_monitor>();
+
+		monitor_object->init(id, native_monitor);
+
+		data.object_handle = monitor_object;
+	}
 }

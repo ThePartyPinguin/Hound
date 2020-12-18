@@ -3,6 +3,7 @@
 #include "hound/core/input/key_codes.h"
 
 struct GLFWwindow;
+struct GLFWmonitor;
 
 class glfw_window : public window
 {
@@ -10,10 +11,14 @@ class glfw_window : public window
 	friend class glfw_display_driver;
 
 	GLFWwindow* m_native_handle_;
+	GLFWmonitor* m_native_monitor_;
 	
 	void init(window_id id, const char* title, GLFWwindow* native_window_handle);
 	void init_window_values(const char* title, GLFWwindow* native_handle_handle);
 	void* get_native_handle() override;
+
+	void set_monitor();
+	
 	void on_glfw_close_callback();
 	void on_glfw_size_callback(const vec2_i& size);
 	void on_glfw_frame_buffer_callback(const vec2_i& size);

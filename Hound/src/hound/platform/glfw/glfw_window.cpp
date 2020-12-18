@@ -123,6 +123,8 @@ void glfw_window::on_glfw_position_callback(const vec2_i& position)
 		return;
 	}
 
+	m_monitor_id_ = display_driver::get_instance()->get_native_monitor(m_window_id_);
+	
 	m_rect_.set_origin(position);
 
 	window_move_event e{};
@@ -143,10 +145,19 @@ void glfw_window::on_glfw_iconified_callback(bool iconified)
 
 	m_is_minimized_ = iconified;
 
-	window_minimize_event e{};
+	if (m_is_minimized_)
+	{
+		switch_mode(window_mode::minimized);
+	}
+	else
+	{
+		restore_mode();
+	}
+	
+	window_mode_change_event e{};
 	e.set_window_id(m_window_id_);
 	e.set_window_object(this);
-	e.set_is_minimized(m_is_minimized_);
+	e.set_mode(m_mode_);
 
 	publish_event(e);
 }
@@ -161,10 +172,20 @@ void glfw_window::on_glfw_maximized_callback(bool maximized)
 
 	m_is_maximized_ = maximized;
 
-	window_maximize_event e{};
+	if (m_is_minimized_)
+	{
+		switch_mode(window_mode::maximized);
+	}
+	else
+	{
+		restore_mode();
+	}
+	
+	window_mode_change_event e{};
+	
 	e.set_window_id(m_window_id_);
 	e.set_window_object(this);
-	e.set_is_maximized(m_is_maximized_);
+	e.set_mode(m_mode_);
 
 	publish_event(e);
 }

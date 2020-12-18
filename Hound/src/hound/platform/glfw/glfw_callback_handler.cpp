@@ -5,7 +5,7 @@
 
 #include "glfw_window.h"
 #include "hound/platform/windows/window_glfw_helper.h"
-
+#include "hound/platform/glfw/glfw_display_driver.h"
 void glfw_callback_handler::glfw_callback_close(GLFWwindow* window)
 {
 	glfw_window* window_object = get_user_pointer_window(window);

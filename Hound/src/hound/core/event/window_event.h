@@ -4,6 +4,7 @@
 
 #include "hound/core/property.h"
 #include "hound/core/math/math.h"
+#include "hound/core/window/window_enum.h"
 
 class window_close_event : public input_event
 {
@@ -25,6 +26,16 @@ public:
 	window_resize_event() = default;
 private:
 	rect_i m_rect_;
+};
+
+class window_mode_change_event : public input_event
+{
+public:
+	HND_PROPERTY(mode, window_mode, m_mode_)
+
+	window_mode_change_event() = default;
+private:
+	window_mode m_mode_;
 };
 
 class window_maximize_event : public input_event

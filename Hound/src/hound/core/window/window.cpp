@@ -66,6 +66,7 @@ void window::on_set_rect(const rect_i& rect) const
 		return;
 	}
 	display_driver::get_instance()->set_native_rect(m_window_id_, rect);
+	display_driver::get_instance()->get_native_monitor(m_window_id_);
 }
 
 void window::on_set_min_size(const vec2_i& size) const
@@ -189,6 +190,17 @@ void window::on_set_border_style(const window_border_style& style) const
 	}
 
 	display_driver::get_instance()->set_native_border_style(m_window_id_, style);
+}
+
+void window::switch_mode(window_mode new_mode)
+{
+	m_previous_mode_ = m_mode_;
+	m_mode_ = new_mode;
+}
+
+void window::restore_mode()
+{
+	m_mode_ = m_previous_mode_;
 }
 
 bool window::check_valid_window() const

@@ -2,6 +2,7 @@
 #include "hound/drivers/display_driver.h"
 
 struct GLFWwindow;
+struct GLFWmonitor;
 
 class glfw_display_driver : public display_driver
 {
@@ -17,7 +18,7 @@ protected:
 	};
 	
 	void init() override;
-	window_id create_window(const char* title, const vec2_i& size, window_id parent_window_id) override;
+	window_id create_window(const char* title, const vec2_i& size, window_id parent_window_id, monitor_id monitor_id) override;
 	void destroy_window(window_id window) override;
 	window* get_window_handle(window_id window) override;
 	void* get_native_window_handle(window_id window) override;
@@ -25,7 +26,13 @@ protected:
 	void redraw_window(window_id window) override;
 	void process_window_events() override;
 
+	struct glfw_monitor_data : monitor_data
+	{
+		GLFWmonitor* native_monitor_handle_;
+	};
+	
 private:
+	
 	window_id m_window_counter_ = MAIN_WINDOW_ID;
 	std::unordered_map<window_id, glfw_window_data> m_window_data_map_;
 
@@ -49,5 +56,12 @@ private:
 	void set_native_minimized(window_id window, bool is_minimized) override;
 	void set_native_always_on_top(window_id window, bool is_always_on_top) override;
 	void set_native_border_style(window_id window, window_border_style style) override;
+	monitor_id get_native_monitor(window_id window_id) override;
+
+	monitor_id m_monitor_counter_ = MAIN_MONITOR_ID;
+	std::unordered_map<monitor_id, glfw_monitor_data> m_monitor_data_map_;
+	rect_i m_virtual_screen_size_;
+
+	void identify_monitors();
 };
 
