@@ -15,7 +15,6 @@ os::os()
 {
 	m_application_ = nullptr;
 	m_graphics_context_ = nullptr;
-	m_display_manager_ = nullptr;
 	m_main_window_ = nullptr;
 }
 

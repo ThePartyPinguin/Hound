@@ -12,10 +12,11 @@ public:
 		HND_PROPERTY_READ_ONLY(r_bit_depth, int, r_bit_depth_)
 		HND_PROPERTY_READ_ONLY(g_bit_depth, int, g_bit_depth_)
 		HND_PROPERTY_READ_ONLY(b_bit_depth, int, b_bit_depth_)
-		
-		video_mode(const vec2_i& resolution, int refresh_rate, int r_bit_depth, int g_bit_depth, int b_bit_depth);
-	protected:
 
+		video_mode() = default;
+		video_mode(const vec2_i& resolution, int refresh_rate, int r_bit_depth, int g_bit_depth, int b_bit_depth);
+		
+	protected:
 		vec2_i resolution_;
 		int refresh_rate_;
 		int r_bit_depth_;
@@ -23,17 +24,18 @@ public:
 		int b_bit_depth_;
 	};
 
-	HND_PROPERTY_READ_ONLY(video_modes, std::set<video_mode>, m_video_modes_)
+	HND_PROPERTY_READ_ONLY(video_modes, std::vector<video_mode>, m_video_modes_)
 	HND_PROPERTY_READ_ONLY(current_video_mode, video_mode, m_current_video_mode_)
 	HND_PROPERTY_READ_ONLY(physical_size, vec2_i, m_physical_size_)
 	HND_PROPERTY_READ_ONLY(content_scale, vec2_f, m_content_scale_)
 	HND_PROPERTY_READ_ONLY(work_area, rect_i, m_work_area_)
 	HND_PROPERTY_READ_ONLY(name, std::string, m_name_)
+	
 protected:
 	
 	monitor_id m_monitor_id_ = display_driver::INVALID_MONITOR_ID;
 	video_mode m_current_video_mode_;
-	std::set<video_mode> m_video_modes_;
+	std::vector<video_mode> m_video_modes_;
 
 	vec2_i m_physical_size_;
 	vec2_f m_content_scale_;

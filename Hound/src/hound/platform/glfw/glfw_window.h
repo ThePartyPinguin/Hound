@@ -30,5 +30,8 @@ class glfw_window : public window
 	void on_glfw_key_callback(key_code key, key_action action, int mods);
 	void on_glfw_mouse_position_callback(double pos_x, double pos_y);
 	void on_glfw_mouse_input_callback(key_code key, key_action action, int mods);
+
+	void begin_frame() override;
+	void end_frame() override;
 };
 

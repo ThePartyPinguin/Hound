@@ -13,7 +13,6 @@ class input_system : public object,
 	public event_handler<window_mouse_move_event>,
 	public event_handler<window_mouse_button_input_event>
 {
-	friend class display_manager;
 public:
 	static input_system* get_instance() { return s_instance_; }
 

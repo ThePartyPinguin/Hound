@@ -7,11 +7,10 @@
 class window : public object, public event_publisher
 {
 public:
-	friend class display_manager;
+	friend class viewport;
 
-	
 	HND_PROPERTY_READ_ONLY(window_id, window_id, m_window_id_)
-	HND_PROPERTY_READ_ONLY(monitor_id, monitor_id, m_monitor_id_);
+	HND_PROPERTY_READ_ONLY(monitor_id, monitor_id, m_monitor_id_)
 	
 	HND_PROPERTY_READ_ONLY(viewport, render_target_id, m_viewport_)
 
@@ -44,7 +43,6 @@ public:
 	virtual void request_attention();
 	virtual void close();
 
-
 	virtual void* get_native_handle() = 0;
 	
 	window() = default;
@@ -55,7 +53,7 @@ protected:
 	window_id m_parent_id_ = display_driver::INVALID_WINDOW_ID;
 	std::set<window_id> m_children_;
 
-	monitor_id m_monitor_id_ = display_driver::INVALID_MONITOR_ID;
+	mutable monitor_id m_monitor_id_ = display_driver::INVALID_MONITOR_ID;
 	
 	std::string m_title_;
 	rect_i m_rect_;
@@ -84,6 +82,10 @@ protected:
 	
 	bool check_valid_window() const;	
 	void log_event_error(const char* error) const;
+
+	virtual void begin_frame() = 0;
+	virtual void end_frame() = 0;
+	
 private:
 	void on_set_title(const std::string& title) const;
 	void on_set_rect(const rect_i& rect) const;

@@ -10,11 +10,11 @@
 #include "hound/core/object/object_database.h"
 #include "hound/core/window/monitor.h"
 
-display_driver* display_driver::s_instance = nullptr;
+display_driver* display_driver::s_instance_ = nullptr;
 
 glfw_display_driver::glfw_display_driver()
 {
-	s_instance = this;
+	s_instance_ = this;
 }
 
 glfw_display_driver::~glfw_display_driver()
@@ -31,6 +31,10 @@ void glfw_display_driver::init()
 	HND_CORE_LOG_INFO("GLFW display driver initialized!");
 
 	identify_monitors();
+
+	//Create main window
+	const window_id main_window = create_window("Main window", { 1280, 720 }, INVALID_WINDOW_ID, MAIN_MONITOR_ID);
+	set_window_active_context(main_window);
 }
 
 window_id glfw_display_driver::create_window(const char* title, const vec2_i& size, window_id parent_window_id, monitor_id monitor_id)
@@ -42,7 +46,8 @@ window_id glfw_display_driver::create_window(const char* title, const vec2_i& si
 	data.object_handle = window_handle;
 	data.native_window_handle = create_native_window(title, size, parent_window_id);
 	data.parent = parent_window_id;
-	data.monitor = monitor_id;
+
+	add_window_to_monitor(data.id, monitor_data.id);
 	
 	window_handle->init(data.id, title, data.native_window_handle);
 	
@@ -89,7 +94,7 @@ void* glfw_display_driver::get_native_window_handle(window_id window)
 
 void* glfw_display_driver::get_native_proc_address()
 {
-	return glfwGetProcAddress;
+	return static_cast<void*>(glfwGetProcAddress);
 }
 
 void glfw_display_driver::redraw_window(window_id window)
@@ -273,28 +278,15 @@ void glfw_display_driver::set_native_border_style(window_id window, window_borde
 	glfwSetWindowAttrib(get_window_data(window).native_window_handle, GLFW_DECORATED, style == window_border_style::bordered);
 }
 
-monitor_id glfw_display_driver::get_native_monitor(window_id window_id)
+void glfw_display_driver::set_window_active_context(window_id window)
 {
-	glfw_window* window_handle = dynamic_cast<glfw_window*>(get_window_handle(window_id));
-
-	const vec2_i& position = window_handle->get_rect().get_origin();
-
-	for(auto& pair : m_monitor_data_map_)
+	if(!m_window_data_map_.count(window))
 	{
-		monitor* monitor_handle = pair.second.object_handle;
-
-		const rect_i& monitor_rect = monitor_handle->get_work_area();
-
-		if(monitor_rect.contains(position))
-		{
-			m_monitor_data_map_[window_handle->m_monitor_id_].containing_windows.erase(window_id);
-			window_handle->m_monitor_id_ = pair.first;
-			pair.second.containing_windows.insert(window_id);
-
-			return pair.first;
-		}
+		HND_CORE_LOG_WARN("Window id not valid! Not setting active context");
 	}
-	return INVALID_MONITOR_ID;
+
+	const glfw_window_data& window_data = m_window_data_map_[window];
+	glfwMakeContextCurrent(window_data.native_window_handle);
 }
 
 void glfw_display_driver::identify_monitors()
@@ -317,5 +309,57 @@ void glfw_display_driver::identify_monitors()
 		monitor_object->init(id, native_monitor);
 
 		data.object_handle = monitor_object;
+
+		++m_monitor_counter_;
 	}
+}
+
+monitor* glfw_display_driver::get_monitor_handle(monitor_id monitor)
+{
+	return m_monitor_data_map_[monitor].object_handle;
+}
+
+bool glfw_display_driver::is_window_on_monitor(window_id window, monitor_id monitor)
+{
+	glfw_window* window_handle = dynamic_cast<glfw_window*>(get_window_handle(window));
+	glfw_monitor* monitor_handle = dynamic_cast<glfw_monitor*>(get_monitor_handle(monitor));
+
+	return monitor_handle->m_work_area_.contains(window_handle->m_rect_.get_origin());
+}
+
+monitor_id glfw_display_driver::get_native_monitor(window_id window_id)
+{
+	glfw_window* window_handle = dynamic_cast<glfw_window*>(get_window_handle(window_id));
+
+	const vec2_i& position = window_handle->get_rect().get_origin();
+
+	for (auto& pair : m_monitor_data_map_)
+	{
+		if(pair.first == INVALID_MONITOR_ID)
+			continue;
+		
+		monitor* monitor_handle = pair.second.object_handle;
+
+		const rect_i& monitor_rect = monitor_handle->get_work_area();
+
+		if (monitor_rect.contains(position))
+		{
+			return pair.first;
+		}
+	}
+	return INVALID_MONITOR_ID;
+}
+
+void glfw_display_driver::add_window_to_monitor(window_id window, monitor_id monitor)
+{
+	m_window_data_map_[window].monitor = monitor;
+	dynamic_cast<glfw_window*>(m_window_data_map_[window].object_handle)->m_monitor_id_ = monitor;
+	m_monitor_data_map_[monitor].containing_windows.insert(window);
+}
+
+void glfw_display_driver::remove_window_from_monitor(window_id window, monitor_id monitor)
+{
+	m_window_data_map_[window].monitor = INVALID_MONITOR_ID;
+	dynamic_cast<glfw_window*>(m_window_data_map_[window].object_handle)->m_monitor_id_ = INVALID_MONITOR_ID;
+	m_monitor_data_map_[monitor].containing_windows.erase(window);
 }

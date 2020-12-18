@@ -7,7 +7,6 @@
 #include "hound/main/application.h"
 
 class window;
-class display_manager;
 class graphics_context;
 struct file_handle;
 
@@ -40,10 +39,8 @@ public:
 	
 protected:
 	friend class main;
-	friend class display_manager;
 	
 	graphics_context* m_graphics_context_;
-	display_manager* m_display_manager_;
 
 	ref<application> m_application_;
 	

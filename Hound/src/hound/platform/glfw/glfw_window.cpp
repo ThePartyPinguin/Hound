@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include "hound/core/event/window_event.h"
 #include "hound/drivers/display_driver.h"
+#include "hound/platform/glfw/glfw_display_driver.h"
 
 void glfw_window::init(window_id id, const char* title, GLFWwindow* native_window_handle)
 {
@@ -56,7 +57,7 @@ void glfw_window::on_glfw_close_callback()
 	e.set_window_id(m_window_id_);
 	e.set_window_object(this);
 	e.set_is_main_window(m_window_id_ == display_driver::MAIN_WINDOW_ID);
-	e.set_should_close(close);
+	e.set_should_close(m_should_close_);
 	
 	publish_event(e);
 }
@@ -123,10 +124,20 @@ void glfw_window::on_glfw_position_callback(const vec2_i& position)
 		return;
 	}
 
-	m_monitor_id_ = display_driver::get_instance()->get_native_monitor(m_window_id_);
-	
 	m_rect_.set_origin(position);
 
+	if (!display_driver::get_instance()->is_window_on_monitor(m_window_id_, m_monitor_id_))
+	{
+		const monitor_id new_monitor = display_driver::get_instance()->get_native_monitor(m_window_id_);
+
+		glfw_display_driver* driver = dynamic_cast<glfw_display_driver*>(display_driver::get_instance());
+		
+		driver->remove_window_from_monitor(m_window_id_, m_monitor_id_);
+		driver->add_window_to_monitor(m_window_id_, new_monitor);
+		
+		m_monitor_id_ = new_monitor;
+	}
+	
 	window_move_event e{};
 	e.set_window_id(m_window_id_);
 	e.set_window_object(this);
@@ -258,4 +269,13 @@ void glfw_window::on_glfw_mouse_input_callback(key_code key, key_action action, 
 	e.set_mods(mods);
 
 	publish_event(e);
+}
+
+void glfw_window::begin_frame()
+{
+	glfwMakeContextCurrent(m_native_handle_);
+}
+
+void glfw_window::end_frame()
+{
 }

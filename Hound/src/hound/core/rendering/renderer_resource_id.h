@@ -19,5 +19,5 @@ typedef object_id texture_id;
 typedef object_id render_target_id;
 
 //DisplayManager
-typedef uint32_t window_id;
-typedef uint32_t monitor_id;
+typedef int32_t window_id;
+typedef int32_t monitor_id;

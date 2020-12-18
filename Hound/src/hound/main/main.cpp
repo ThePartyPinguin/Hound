@@ -3,7 +3,6 @@
 
 #include "hound/config/engine.h"
 #include "hound/core/window/window.h"
-#include "hound/display/display_manager.h"
 #include "hound/core/input/input_system.h"
 #include "hound/drivers/graphics_context.h"
 #include "hound/file/shader/shader_file_handler.h"
@@ -82,7 +81,7 @@ void main::run()
 	
 	while(true)
 	{
-		display_manager::get_instance()->process_window_events();
+		display_driver::get_instance()->process_window_events();
 
 		std::set<render_target_id> targets = renderer_cache::render_target_cache()->get_render_targets();
 
@@ -94,7 +93,11 @@ void main::run()
 
 			renderer::get_instance()->end_frame(target);
 
-			display_manager::get_instance()->redraw_windows();
+			if(renderer_cache::render_target_cache()->viewport_has_parent_window(target))
+			{
+				const window_id window = renderer_cache::render_target_cache()->get_viewport_parent_window(target);
+				display_driver::get_instance()->redraw_window(window);
+			}
 		}
 	}
 }

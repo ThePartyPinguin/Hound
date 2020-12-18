@@ -66,7 +66,14 @@ void window::on_set_rect(const rect_i& rect) const
 		return;
 	}
 	display_driver::get_instance()->set_native_rect(m_window_id_, rect);
-	display_driver::get_instance()->get_native_monitor(m_window_id_);
+
+	if(!display_driver::get_instance()->is_window_on_monitor(m_window_id_, m_monitor_id_))
+	{
+		const monitor_id new_monitor = display_driver::get_instance()->get_native_monitor(m_window_id_);
+		display_driver::get_instance()->remove_window_from_monitor(m_window_id_, m_monitor_id_);
+		display_driver::get_instance()->add_window_to_monitor(m_window_id_, new_monitor);
+		m_monitor_id_ = new_monitor;
+	}
 }
 
 void window::on_set_min_size(const vec2_i& size) const

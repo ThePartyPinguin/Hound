@@ -246,9 +246,6 @@
     <ClInclude Include="src\hound\core\window\window.h">
       <Filter>core\window</Filter>
     </ClInclude>
-    <ClInclude Include="src\hound\display\display_manager.h">
-      <Filter>display</Filter>
-    </ClInclude>
     <ClInclude Include="src\hound\drivers\display_driver.h">
       <Filter>drivers</Filter>
     </ClInclude>
@@ -319,9 +316,6 @@
     <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\open_gl_renderer_cache.h">
       <Filter>platform\open_gl\renderer\renderer_cache</Filter>
     </ClInclude>
-    <ClInclude Include="src\hound\platform\windows\display_manager_windows.h">
-      <Filter>platform\windows</Filter>
-    </ClInclude>
     <ClInclude Include="src\hound\platform\windows\os_windows.h">
       <Filter>platform\windows</Filter>
     </ClInclude>
@@ -386,9 +380,6 @@
     <ClCompile Include="src\hound\core\window\window.cpp">
       <Filter>core\window</Filter>
     </ClCompile>
-    <ClCompile Include="src\hound\display\display_manager.cpp">
-      <Filter>display</Filter>
-    </ClCompile>
     <ClCompile Include="src\hound\drivers\graphics_context.cpp">
       <Filter>drivers</Filter>
     </ClCompile>
@@ -449,9 +440,6 @@
     </ClCompile>
     <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\open_gl_renderer_cache.cpp">
       <Filter>platform\open_gl\renderer\renderer_cache</Filter>
-    </ClCompile>
-    <ClCompile Include="src\hound\platform\windows\display_manager_windows.cpp">
-      <Filter>platform\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\hound\platform\windows\os_windows.cpp">
       <Filter>platform\windows</Filter>

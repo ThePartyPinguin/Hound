@@ -1,6 +1,7 @@
 #pragma once
 #include "hound/core/object/object.h"
-#include "hound/display/display_manager.h"
+#include "hound/core/rendering/renderer_resource_id.h"
+
 
 class graphics_context : public object
 {

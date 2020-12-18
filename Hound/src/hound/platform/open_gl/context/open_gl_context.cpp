@@ -5,7 +5,6 @@
 #include "GLFW/glfw3.h"
 #include "hound/config/engine.h"
 #include "hound/core/rendering/renderer_cache/module/frame_buffer_cache_module.h"
-#include "hound/display/display_manager.h"
 #include "hound/drivers/display_driver.h"
 #include "hound/platform/open_gl/logging/open_gl_logger.h"
 #include "hound/platform/open_gl/renderer/open_gl_renderer.h"

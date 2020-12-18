@@ -13,7 +13,6 @@ private:
 
 	void init(monitor_id id, GLFWmonitor* native_monitor_handle);
 	void init_values();
-	void add_video_mode(const GLFWvidmode& mode);
 	
 public:
 	glfw_monitor() = default;

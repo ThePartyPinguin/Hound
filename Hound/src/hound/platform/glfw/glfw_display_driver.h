@@ -7,6 +7,7 @@ struct GLFWmonitor;
 class glfw_display_driver : public display_driver
 {
 	friend class glfw_callback_handler;
+	friend class glfw_window;
 public:
 	glfw_display_driver();
 	~glfw_display_driver();
@@ -56,12 +57,18 @@ private:
 	void set_native_minimized(window_id window, bool is_minimized) override;
 	void set_native_always_on_top(window_id window, bool is_always_on_top) override;
 	void set_native_border_style(window_id window, window_border_style style) override;
-	monitor_id get_native_monitor(window_id window_id) override;
+
+	void set_window_active_context(window_id window);
 
 	monitor_id m_monitor_counter_ = MAIN_MONITOR_ID;
 	std::unordered_map<monitor_id, glfw_monitor_data> m_monitor_data_map_;
 	rect_i m_virtual_screen_size_;
 
 	void identify_monitors();
+	monitor* get_monitor_handle(monitor_id monitor) override;
+	bool is_window_on_monitor(window_id window, monitor_id monitor) override;
+	monitor_id get_native_monitor(window_id window_id) override;
+	void add_window_to_monitor(window_id window, monitor_id monitor) override;
+	void remove_window_from_monitor(window_id window, monitor_id monitor) override;
 };
 

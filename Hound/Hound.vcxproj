@@ -187,7 +187,6 @@
     <ClInclude Include="src\hound\core\rendering\target\viewport.h" />
     <ClInclude Include="src\hound\core\template.h" />
     <ClInclude Include="src\hound\core\window\window.h" />
-    <ClInclude Include="src\hound\display\display_manager.h" />
     <ClInclude Include="src\hound\drivers\display_driver.h" />
     <ClInclude Include="src\hound\drivers\graphics_context.h" />
     <ClInclude Include="src\hound\file\file_handler.h" />
@@ -212,7 +211,6 @@
     <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_shader_cache_module.h" />
     <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_texture_cache_module.h" />
     <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\open_gl_renderer_cache.h" />
-    <ClInclude Include="src\hound\platform\windows\display_manager_windows.h" />
     <ClInclude Include="src\hound\platform\windows\os_windows.h" />
     <ClInclude Include="src\hound\platform\windows\window_glfw_helper.h" />
   </ItemGroup>
@@ -238,7 +236,6 @@
     <ClCompile Include="src\hound\core\rendering\target\render_target.cpp" />
     <ClCompile Include="src\hound\core\rendering\target\viewport.cpp" />
     <ClCompile Include="src\hound\core\window\window.cpp" />
-    <ClCompile Include="src\hound\display\display_manager.cpp" />
     <ClCompile Include="src\hound\drivers\graphics_context.cpp" />
     <ClCompile Include="src\hound\file\shader\raw\raw_shader.cpp" />
     <ClCompile Include="src\hound\file\shader\raw\raw_shader_parser.cpp" />
@@ -262,7 +259,6 @@
     <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_shader_cache_module.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_texture_cache_module.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\open_gl_renderer_cache.cpp" />
-    <ClCompile Include="src\hound\platform\windows\display_manager_windows.cpp" />
     <ClCompile Include="src\hound\platform\windows\os_windows.cpp" />
     <ClCompile Include="src\hound\platform\windows\window_glfw_helper.cpp" />
   </ItemGroup>
