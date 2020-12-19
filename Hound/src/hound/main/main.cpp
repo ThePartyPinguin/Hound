@@ -81,7 +81,11 @@ void main::run()
 	
 	while(true)
 	{
+		//Capture window events
 		display_driver::get_instance()->process_window_events();
+
+		//Process any inputs captured during the window events
+		input_system::get_instance()->process_input_events();
 
 		std::set<render_target_id> targets = renderer_cache::render_target_cache()->get_render_targets();
 
