@@ -14,10 +14,12 @@ class input_system : public object,
 	public event_handler<window_mouse_button_input_event>
 {
 public:
+	friend class main;
+	
 	static input_system* get_instance() { return s_instance_; }
 
 	input_system();
-	~input_system() = default;;
+	~input_system() = default;
 private:
 	static input_system* s_instance_;
 
@@ -25,12 +27,26 @@ private:
 	{
 		vec2_d window_mouse_position;
 		vec2_d global_mouse_position;
-		int mods;
-		key_code button;
-		key_action button_action;
 	};
 
 	mouse_data m_mouse_data_;
+
+	struct key_input_info
+	{
+		key_code code;
+		key_action action;
+		int mods;
+		uint32_t frame;
+	};
+
+	uint32_t m_current_frame_;
+	struct std::unordered_map<key_code, key_input_info> m_input_info_;
+	
+	bool is_key_down(key_code code);
+	bool is_key_pressed(key_code code);
+	bool is_key_released(key_code code);
+	
+	void process_input_events();
 	
 	void publish_key_event(window* window, uint32_t window_id, key_code key, key_action action, int modifiers);
 	void publish_char_input_event(window* window, uint32_t window_id);
