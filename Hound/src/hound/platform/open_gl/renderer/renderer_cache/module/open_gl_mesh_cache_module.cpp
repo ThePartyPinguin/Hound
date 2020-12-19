@@ -77,7 +77,7 @@ bool open_gl_mesh_cache_module::mesh_override_data(mesh_id mesh, mesh_data_id da
 		return false;
 	}
 
-	mesh_data.sub_objects[data_id].data = data;
+	// mesh_data.sub_objects[data_id] = data;
 	return true;
 }
 

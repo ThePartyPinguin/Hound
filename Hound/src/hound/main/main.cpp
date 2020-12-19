@@ -41,6 +41,12 @@ bool main::start(ref<application>& p_application)
 {
 	s_application_ = p_application;
 	graphics_context::initialize();
+
+
+	//Create main window viewport
+	window* main_window = display_driver::get_instance()->get_window_handle(display_driver::MAIN_WINDOW_ID);
+	renderer_cache::render_target_cache()->create_render_target(render_target_cache_module::VIEWPORT, main_window->get_rect().get_size());
+	
 	return true;
 }
 
@@ -65,19 +71,10 @@ void main::run()
 	};
 	
 	mesh_cache->mesh_add_data(mesh, data);
-
-	// const object_id default_shader = shader_cache->shader_create("Default");
-	//
-	// shader_cache->shader_set_source(default_shader, shader_cache_module::SHADER_STAGE_VERTEX, vertexShaderSource);
-	// shader_cache->shader_set_source(default_shader, shader_cache_module::SHADER_STAGE_FRAGMENT, fragmentShaderSource);
-	//
-	// const bool shader_finished = shader_cache->shader_finalize(default_shader);
-	//
-	// shader_file_handler handler(".shad");
 	
 	object_id s_id = shader_cache->shader_create_from_absolute_file(R"(F:\SilverWolf\Test\Created\FlatShader.shad)");
 
-	renderer::get_instance()->set_clear_color({ 0.2f, 0.2f, 1.0f, 1.0 });
+	renderer::get_instance()->set_clear_color({ 0.2f, 0.2f, 0.2f, 1.0 });
 	
 	while(true)
 	{
