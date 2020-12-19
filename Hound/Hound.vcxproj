@@ -140,6 +140,9 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="open_gl_viewport_cache_module.h" />
+    <ClInclude Include="src\hound\core\object\mesh\mesh_surface_data.h" />
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\viewport_cache_module.h" />
     <ClInclude Include="src\hound\platform\glfw\glfw_monitor.h" />
     <ClInclude Include="src\hound\core\window\monitor.h" />
     <ClInclude Include="src\hound\core\window\window_enum.h" />
@@ -215,6 +218,7 @@
     <ClInclude Include="src\hound\platform\windows\window_glfw_helper.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="open_gl_viewport_cache_module.cpp" />
     <ClCompile Include="src\hound\platform\glfw\glfw_monitor.cpp" />
     <ClCompile Include="src\hound\core\window\monitor.cpp" />
     <ClCompile Include="src\hound\platform\glfw\glfw_window.cpp" />

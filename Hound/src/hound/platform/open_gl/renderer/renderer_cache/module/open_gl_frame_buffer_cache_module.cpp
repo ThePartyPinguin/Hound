@@ -3,6 +3,8 @@
 
 #include "hound/platform/open_gl/renderer/renderer_cache/open_gl_renderer_cache.h"
 #include "hound/platform/open_gl/renderer/render_target/open_gl_frame_buffer.h"
+#include "hound/core/object/mesh/mesh.h"
+#include "hound/core/object/mesh/mesh_surface_data.h"
 
 frame_buffer_id HND_GL_FBC::frame_buffer_create(const vec2_i& size)
 {
@@ -105,9 +107,11 @@ mesh_id open_gl_frame_buffer_cache_module::get_frame_buffer_quad()
 
 HND_GL_FBC::open_gl_frame_buffer_cache_module()
 {
-	m_frame_buffer_mesh_id_ = open_gl_renderer_cache::gl_mesh_cache()->mesh_create();
+	// m_frame_buffer_mesh_id_ = open_gl_renderer_cache::gl_mesh_cache()->mesh_create();
 
-	const mesh_cache_module::mesh_data data
+	mesh* m = mesh::create();
+	
+	const mesh_surface_data data
 	{
 		{
 			{ {1.0f,  1.0f, 0.0f}, {}, {1.0f, 1.0f}},
@@ -121,8 +125,9 @@ HND_GL_FBC::open_gl_frame_buffer_cache_module()
 		}
 	};
 
-	
-	open_gl_renderer_cache::gl_mesh_cache()->mesh_add_data(m_frame_buffer_mesh_id_, data);
+	m->add_surface_data(data);
+	// open_gl_renderer_cache::gl_mesh_cache()->mesh_add_data(m_frame_buffer_mesh_id_, data);
+	m_frame_buffer_mesh_id_ = m->get_object_id();
 }
 
 HND_GL_FBC::~open_gl_frame_buffer_cache_module()

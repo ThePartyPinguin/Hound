@@ -5,7 +5,6 @@
 class open_gl_render_target_cache_module : public render_target_cache_module
 {
 public:
-	
 	struct open_gl_render_target_data : render_target_data
 	{
 		
@@ -13,7 +12,7 @@ public:
 
 	open_gl_render_target_cache_module();
 	virtual ~open_gl_render_target_cache_module();
-
+	
 	render_target* get_render_target(render_target_id render_target) override;
 	viewport* get_viewport(render_target_id render_target) override;
 	void set_viewport_parent_window(render_target_id viewport, window_id window) override;

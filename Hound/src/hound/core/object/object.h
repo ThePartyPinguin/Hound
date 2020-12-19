@@ -1,4 +1,5 @@
 #pragma once
+#include "hound/core/base.h"
 #include "hound/core/property.h"
 #include "hound/core/math/math.h"
 
@@ -59,3 +60,35 @@ private:
 	
 	object_id m_id_;
 };
+
+typedef object_id resource_id;
+
+#define HND_OBJECT_CLASS_DECL(Type, TypeCacheModule)\
+	class TypeCacheModule;\
+	class Type : public object
+
+#define HND_OBJECT_BASE_CLASS_DECL(Type)\
+	class Type : public object
+
+#define HND_OBJECT_DERIVED_CLASS_DECL(Type, BaseType, TypeCacheModule)\
+	class TypeCacheModule;\
+	class Type : public BaseType
+
+#define HND_OBJECT_CLASS_FUNC_DECL(Type, TypeCacheModule)\
+	public:\
+		static Type* create();\
+	private:\
+		typedef TypeCacheModule cache;\
+		cache* get_cache();
+
+#define HND_OBJECT_CLASS_FUNC_IMPL(Type, TypeCacheModule)\
+		Type* Type::create()\
+		{\
+			return cache::get_instance()->create_##Type();\
+		}\
+		\
+		Type::cache* Type::get_cache()\
+		{\
+			return cache::get_instance();\
+		}
+			

@@ -10,6 +10,9 @@
 #include "hound/core/rendering/renderer.h"
 #include "hound/core/rendering/renderer_cache.h"
 
+#include "hound/core/object/mesh/mesh.h"
+#include "hound/core/object/mesh/mesh_surface_data.h"
+
 // const char* vertexShaderSource = "#version 330 core\n"
 // "layout (location = 0) in vec3 aPos;\n"
 // "void main()\n"
@@ -56,9 +59,9 @@ void main::run()
 	
 	mesh_cache_module* mesh_cache = renderer_cache::mesh_cache();
 	shader_cache_module* shader_cache = renderer_cache::shader_cache();
-	const object_id mesh = mesh_cache->mesh_create();
+	mesh* mesh = mesh::create();
 	
-	const mesh_cache_module::mesh_data data
+	const mesh_surface_data data
 	{
 		{
 			{ {0.0f,  0.5f, 0.0f}, {}, {}},
@@ -70,7 +73,7 @@ void main::run()
 		}
 	};
 	
-	mesh_cache->mesh_add_data(mesh, data);
+	mesh->add_surface_data(data);
 	
 	object_id s_id = shader_cache->shader_create_from_absolute_file(R"(F:\SilverWolf\Test\Created\FlatShader.shad)");
 
@@ -90,7 +93,7 @@ void main::run()
 		{
 			renderer::get_instance()->begin_frame(target);
 
-			renderer::get_instance()->render_indexed(s_id, mesh);
+			renderer::get_instance()->render_indexed(s_id, mesh->get_object_id());
 
 			renderer::get_instance()->end_frame(target);
 

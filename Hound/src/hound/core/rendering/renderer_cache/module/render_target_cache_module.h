@@ -1,11 +1,12 @@
 #pragma once
 #include "renderer_cache_module.h"
 
-class render_target;
 class viewport;
 
-class render_target_cache_module : public renderer_cache_module
+HND_RENDER_CACHE_CLASS_DECL(render_target_cache_module, render_target)
 {
+	HND_RENDER_CACHE_BASE_FUNC_DECL(render_target_cache_module, render_target)
+	
 public:
 	enum target_type
 	{

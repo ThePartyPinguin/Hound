@@ -6,6 +6,8 @@
 #include "hound/platform/open_gl/renderer/renderer_cache/open_gl_renderer_cache.h"
 #include "hound/platform/open_gl/renderer/render_target/open_gl_viewport.h"
 
+HND_RENDER_CACHE_BASE_FUNC_IMPL(render_target_cache_module, render_target)
+
 open_gl_render_target_cache_module::open_gl_render_target_cache_module()
 {
 }

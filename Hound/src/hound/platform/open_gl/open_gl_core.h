@@ -1,5 +1,4 @@
 #pragma once
-#include "hound/core/base.h"
 #include <glad/glad.h>
 
 typedef unsigned int gl_object_id;
