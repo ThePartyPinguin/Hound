@@ -8,10 +8,13 @@
 #include "hound/file/shader/shader_file_handler.h"
 
 #include "hound/core/rendering/renderer.h"
+#include "hound/core/rendering/target/render_target.h"
+#include "hound/core/rendering/target/viewport.h"
 #include "hound/core/rendering/renderer_cache.h"
 
 #include "hound/core/object/mesh/mesh.h"
 #include "hound/core/object/mesh/mesh_surface_data.h"
+#include "hound/core/os/os.h"
 
 // const char* vertexShaderSource = "#version 330 core\n"
 // "layout (location = 0) in vec3 aPos;\n"
@@ -45,11 +48,12 @@ bool main::start(ref<application>& p_application)
 	s_application_ = p_application;
 	graphics_context::initialize();
 
-
 	//Create main window viewport
 	window* main_window = display_driver::get_instance()->get_window_handle(display_driver::MAIN_WINDOW_ID);
-	renderer_cache::render_target_cache()->create_render_target(render_target_cache_module::VIEWPORT, main_window->get_rect().get_size());
+	viewport* vp = viewport::create(main_window->get_rect().get_size());
+	display_driver::get_instance()->set_window_viewport(main_window->get_window_id(), vp);
 	
+	os::get_instance()->m_main_window_ = main_window;
 	return true;
 }
 
@@ -87,9 +91,10 @@ void main::run()
 		//Process any inputs captured during the window events
 		input_system::get_instance()->process_input_events();
 
-		std::set<render_target_id> targets = renderer_cache::render_target_cache()->get_render_targets();
+		
+		std::set<render_target*> targets = renderer_cache::render_target_cache()->get_render_targets();
 
-		for (const render_target_id target : targets)
+		for (render_target* target : targets)
 		{
 			renderer::get_instance()->begin_frame(target);
 
@@ -97,10 +102,12 @@ void main::run()
 
 			renderer::get_instance()->end_frame(target);
 
-			if(renderer_cache::render_target_cache()->viewport_has_parent_window(target))
+			if(target->get_type() == render_target::VIEWPORT)
 			{
-				const window_id window = renderer_cache::render_target_cache()->get_viewport_parent_window(target);
-				display_driver::get_instance()->redraw_window(window);
+				viewport* vp = static_cast<viewport*>(target);
+				window* window = vp->get_owner_window();
+				// const window_id window = renderer_cache::render_target_cache()->get_viewport_parent_window(target);
+				display_driver::get_instance()->redraw_window(window->get_window_id());
 			}
 		}
 	}

@@ -6,6 +6,8 @@
 #include "hound/core/object/mesh/mesh_surface_data.h"
 
 HND_RENDER_CACHE_BASE_FUNC_IMPL(mesh_cache_module, mesh)
+HND_RENDER_CACHE_GET_FUNC_IMPL(mesh_cache_module, mesh)
+HND_RENDER_CACHE_CREATE_FUNC_IMPL(mesh_cache_module, mesh)
 
 void open_gl_mesh_cache_module::on_create_instance(mesh* instance)
 {

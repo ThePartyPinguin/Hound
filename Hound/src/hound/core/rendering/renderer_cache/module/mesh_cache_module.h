@@ -6,6 +6,9 @@ struct mesh_surface_data;
 HND_RENDER_CACHE_CLASS_DECL(mesh_cache_module, mesh)
 {
 	HND_RENDER_CACHE_BASE_FUNC_DECL(mesh_cache_module, mesh)
+	HND_RENDER_CACHE_CREATE_FUNC_DECL(mesh)
+	HND_RENDER_CACHE_GET_FUNC_DECL(mesh)
+	
 public:
 	virtual mesh_id mesh_create() = 0;
 	virtual mesh_data_id mesh_add_data(mesh_id mesh, const mesh_surface_data& data) = 0;

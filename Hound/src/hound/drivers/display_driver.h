@@ -2,6 +2,7 @@
 #include "hound/core/rendering/renderer_resource_id.h"
 #include "hound/core/window/window_enum.h"
 
+class viewport;
 class monitor;
 class window;
 
@@ -36,6 +37,8 @@ public:
 	virtual bool is_window_on_monitor(window_id window, monitor_id monitor) = 0;
 	virtual monitor_id get_native_monitor(window_id window) = 0;
 
+	virtual void set_window_viewport(window_id window, viewport* viewport) = 0;
+	
 protected:
 	static display_driver* s_instance_;
 	

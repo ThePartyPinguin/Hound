@@ -10,6 +10,7 @@
 #include "hound/core/input/input_system.h"
 #include "hound/core/object/object_database.h"
 #include "hound/core/window/monitor.h"
+#include "hound/core/rendering/target/viewport.h"
 
 display_driver* display_driver::s_instance_ = nullptr;
 
@@ -59,6 +60,16 @@ window_id glfw_display_driver::create_window(const char* title, const vec2_i& si
 	monitor_data.containing_windows.insert(data.id);
 	
 	return data.id;
+}
+
+void glfw_display_driver::set_window_viewport(window_id window, viewport* viewport)
+{
+	if(m_window_data_map_.count(window))
+	{
+		glfw_window* w_ptr = static_cast<glfw_window*>(m_window_data_map_[window].object_handle);
+		w_ptr->m_viewport_ = viewport;
+		viewport->set_owner_window(w_ptr);
+	}
 }
 
 void glfw_display_driver::destroy_window(window_id window)

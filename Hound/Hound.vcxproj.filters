@@ -216,9 +216,6 @@
     <ClInclude Include="src\hound\core\rendering\renderer_cache\module\mesh_cache_module.h">
       <Filter>core\rendering\renderer_cache\module</Filter>
     </ClInclude>
-    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\render_target_cache_module.h">
-      <Filter>core\rendering\renderer_cache\module</Filter>
-    </ClInclude>
     <ClInclude Include="src\hound\core\rendering\renderer_cache\module\renderer_cache_module.h">
       <Filter>core\rendering\renderer_cache\module</Filter>
     </ClInclude>
@@ -292,12 +289,6 @@
     <ClInclude Include="src\hound\platform\open_gl\renderer\open_gl_renderer.h">
       <Filter>platform\open_gl\renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\hound\platform\open_gl\renderer\render_target\open_gl_frame_buffer.h">
-      <Filter>platform\open_gl\renderer\render_target</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hound\platform\open_gl\renderer\render_target\open_gl_viewport.h">
-      <Filter>platform\open_gl\renderer\render_target</Filter>
-    </ClInclude>
     <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_frame_buffer_cache_module.h">
       <Filter>platform\open_gl\renderer\renderer_cache\module</Filter>
     </ClInclude>
@@ -328,8 +319,8 @@
     <ClInclude Include="src\hound\core\window\monitor.h" />
     <ClInclude Include="src\hound\platform\glfw\glfw_monitor.h" />
     <ClInclude Include="src\hound\core\object\mesh\mesh_surface_data.h" />
-    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\viewport_cache_module.h" />
-    <ClInclude Include="open_gl_viewport_cache_module.h" />
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\render_target_cache_module.h" />
+    <ClInclude Include="src\hound\core\rendering\target\render_texture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hound\config\engine.cpp">
@@ -420,12 +411,6 @@
     <ClCompile Include="src\hound\platform\open_gl\renderer\open_gl_renderer.cpp">
       <Filter>platform\open_gl\renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\hound\platform\open_gl\renderer\render_target\open_gl_frame_buffer.cpp">
-      <Filter>platform\open_gl\renderer\render_target</Filter>
-    </ClCompile>
-    <ClCompile Include="src\hound\platform\open_gl\renderer\render_target\open_gl_viewport.cpp">
-      <Filter>platform\open_gl\renderer\render_target</Filter>
-    </ClCompile>
     <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_frame_buffer_cache_module.cpp">
       <Filter>platform\open_gl\renderer\renderer_cache\module</Filter>
     </ClCompile>
@@ -454,6 +439,6 @@
     <ClCompile Include="src\hound\platform\glfw\glfw_window.cpp" />
     <ClCompile Include="src\hound\core\window\monitor.cpp" />
     <ClCompile Include="src\hound\platform\glfw\glfw_monitor.cpp" />
-    <ClCompile Include="open_gl_viewport_cache_module.cpp" />
+    <ClCompile Include="src\hound\core\rendering\target\render_texture.cpp" />
   </ItemGroup>
 </Project>

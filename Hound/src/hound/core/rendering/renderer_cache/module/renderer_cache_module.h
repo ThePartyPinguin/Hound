@@ -22,32 +22,72 @@ TTargetType* renderer_cache_module::get_target_object(object_id id)
 	class Type : public renderer_cache_module
 
 
-#define HND_RENDER_CACHE_BASE_FUNC_DECL(Type, ObjectType)\
+#define HND_RENDER_CACHE_BASE_FUNC_DECL(Type)\
 	friend class ObjectType;\
 	public:\
-		ObjectType* create_##ObjectType();\
-		\
-		ObjectType* get_##ObjectType_instance(resource_id id);\
-		\
-		virtual void on_create_instance(ObjectType* instance) = 0;\
 		\
 		static Type* get_instance() { return s_instance_; };\
 		\
-	private:\
+	protected:\
 		static Type* s_instance_;
 
-#define HND_RENDER_CACHE_BASE_FUNC_IMPL(Type, ObjectType, DerivedObject)\
-	Type* Type::s_instance_ = nullptr;\
-	\
-	ObjectType* Type::create_##ObjectType()\
+#define HND_RENDER_CACHE_BASE_FUNC_IMPL(ModuleType)\
+		ModuleType* ModuleType::s_instance_ = nullptr;
+
+#define HND_RENDER_CACHE_GET_FUNC_DECL(ObjectType)\
+	ObjectType* get_##ObjectType##_instance(resource_id id);
+
+#define HND_RENDER_CACHE_GET_FUNC_IMPL(ModuleType, ObjectType)\
+	ObjectType* ModuleType::get_##ObjectType##_instance(resource_id id)\
+	{\
+		ObjectType* instance = object_database::get_instance()->get_object_instance<ObjectType>(id);\
+		if(!instance)\
+		{\
+			HND_CORE_LOG_WARN("Could not find instace of ", #ObjectType, " returning nullptr");\
+		}\
+		return instance;\
+	}
+
+#define HND_RENDER_CACHE_DEFAULT_DATA_STRUCT_DECL(ObjectType)\
+	protected:\
+		struct internal_##ObjectType##_data\
+		{\
+			resource_id id;\
+			ObjectType* handle;\
+		};\
+	private:
+
+#define HND_RENDER_CACHE_FRIEND_DECL(ObjectType)\
+	friend class ObjectType;
+
+#define HND_RENDER_CACHE_CREATE_FUNC_DECL(ObjectType)\
+	HND_RENDER_CACHE_FRIEND_DECL(ObjectType)\
+	protected:\
+		ObjectType* create_##ObjectType();\
+		\
+		virtual void on_create_instance(ObjectType* instance) = 0;\
+	private:
+
+#define HND_RENDER_CACHE_CREATE_FUNC_IMPL(ModuleType, ObjectType)\
+	ObjectType* ModuleType::create_##ObjectType()\
 	{\
 		ObjectType* instance = object_database::get_instance()->create_object_instance<ObjectType>();\
 		on_create_instance(instance);\
 		return instance;\
-	};\
-	\
-	ObjectType* Type::get_##ObjectType_instance(resource_id id)\
+	};
+
+#define HND_RENDER_CACHE_CREATE_FUNC_DECL_1(ObjectType, Param_1, Param_1_name)\
+	HND_RENDER_CACHE_FRIEND_DECL(ObjectType)\
+	protected:\
+		ObjectType* create_##ObjectType(Param_1 param_1);\
+		\
+		virtual void on_create_instance(ObjectType* instance, Param_1 Param_1_name) = 0;\
+	private:
+
+#define HND_RENDER_CACHE_CREATE_FUNC_IMPL_1(ModuleType, ObjectType, Param_1)\
+	ObjectType* ModuleType::create_##ObjectType(Param_1 param_1)\
 	{\
-		ObjectType* instance = object_database::get_instance()->get_object_instance<ObjectType>(id);\
+		ObjectType* instance = object_database::get_instance()->create_object_instance<ObjectType>();\
+		on_create_instance(instance, param_1);\
 		return instance;\
-	};\
+	}

@@ -74,21 +74,39 @@ typedef object_id resource_id;
 	class TypeCacheModule;\
 	class Type : public BaseType
 
+#define HND_OBJECT_CLASS_CACHE_FUNC_DECL(TypeCacheModule)\
+	private:\
+		TypeCacheModule* get_cache();
+
+#define HND_OBJECT_CLASS_CACHE_FUNC_IMPL(Type, TypeCacheModule)\
+	TypeCacheModule* Type::get_cache()\
+	{\
+		return TypeCacheModule::get_instance();\
+	}\
+
 #define HND_OBJECT_CLASS_FUNC_DECL(Type, TypeCacheModule)\
 	public:\
 		static Type* create();\
 	private:\
-		typedef TypeCacheModule cache;\
-		cache* get_cache();
+	HND_OBJECT_CLASS_CACHE_FUNC_DECL(TypeCacheModule)
 
 #define HND_OBJECT_CLASS_FUNC_IMPL(Type, TypeCacheModule)\
-		Type* Type::create()\
-		{\
-			return cache::get_instance()->create_##Type();\
-		}\
-		\
-		Type::cache* Type::get_cache()\
-		{\
-			return cache::get_instance();\
-		}
+	Type* Type::create()\
+	{\
+		return TypeCacheModule::get_instance()->create_##Type();\
+	}\
+	HND_OBJECT_CLASS_CACHE_FUNC_IMPL(Type, TypeCacheModule)
+
+#define HND_OBJECT_CLASS_FUNC_DECL_1(Type, TypeCacheModule, Param_1)\
+	public:\
+		static Type* create(Param_1);\
+	private:\
+	HND_OBJECT_CLASS_CACHE_FUNC_DECL(TypeCacheModule)
+
+#define HND_OBJECT_CLASS_FUNC_IMPL_1(Type, TypeCacheModule, Param_1)\
+	Type* Type::create(Param_1 param_1)\
+	{\
+		return TypeCacheModule::get_instance()->create_##Type(param_1);\
+	}\
+	HND_OBJECT_CLASS_CACHE_FUNC_IMPL(Type, TypeCacheModule)
 			

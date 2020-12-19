@@ -1,14 +1,23 @@
 #pragma once
 #include "hound/core/base.h"
 #include "hound/core/object/object.h"
-#include "hound/core/rendering/renderer_cache.h"
 
 HND_OBJECT_BASE_CLASS_DECL(render_target)
 {
 public:
-	HND_PROPERTY_READ_ONLY(size, vec2_i, renderer_cache::render_target_cache()->get_render_target_size(get_object_id()))
+	enum type
+	{
+		INVALID,
+		VIEWPORT,
+		RENDER_TEXTURE
+	};
+	
+	HND_PROPERTY_READ_ONLY(type, type, m_target_type_)
 	
 	virtual void begin_frame() = 0;
 	virtual void end_frame() = 0;
+
+protected:
+	type m_target_type_ = type::INVALID;
 };
 

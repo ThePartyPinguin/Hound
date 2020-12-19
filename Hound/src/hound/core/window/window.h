@@ -12,7 +12,7 @@ public:
 	HND_PROPERTY_READ_ONLY(window_id, window_id, m_window_id_)
 	HND_PROPERTY_READ_ONLY(monitor_id, monitor_id, m_monitor_id_)
 	
-	HND_PROPERTY_READ_ONLY(viewport, render_target_id, m_viewport_)
+	HND_PROPERTY_PTR_READ_ONLY(viewport, viewport, m_viewport_)
 
 	HND_PROPERTY_READ_ONLY(content_scale, vec2_f, m_content_scale_)
 	HND_PROPERTY_CALLBACK(rect, rect_i, m_rect_, on_set_rect)
@@ -75,7 +75,7 @@ protected:
 	bool m_is_always_on_top_;
 	window_border_style m_border_style_;
 
-	render_target_id m_viewport_;
+	viewport* m_viewport_;
 
 	void switch_mode(window_mode new_mode);
 	void restore_mode();

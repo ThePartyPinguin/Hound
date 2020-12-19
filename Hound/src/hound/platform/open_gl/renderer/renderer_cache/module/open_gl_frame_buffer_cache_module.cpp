@@ -2,24 +2,27 @@
 #include "open_gl_frame_buffer_cache_module.h"
 
 #include "hound/platform/open_gl/renderer/renderer_cache/open_gl_renderer_cache.h"
-#include "hound/platform/open_gl/renderer/render_target/open_gl_frame_buffer.h"
 #include "hound/core/object/mesh/mesh.h"
 #include "hound/core/object/mesh/mesh_surface_data.h"
+#include "hound/core/rendering/renderer_cache/module/frame_buffer_cache_module.h"
+#include "hound/core/rendering/target/frame_buffer.h"
 
-frame_buffer_id HND_GL_FBC::frame_buffer_create(const vec2_i& size)
+HND_RENDER_CACHE_BASE_FUNC_IMPL(frame_buffer_cache_module)
+HND_RENDER_CACHE_GET_FUNC_IMPL(frame_buffer_cache_module, frame_buffer)
+HND_RENDER_CACHE_CREATE_FUNC_IMPL_1(frame_buffer_cache_module, frame_buffer, const vec2_i&)
+
+void open_gl_frame_buffer_cache_module::on_create_instance(frame_buffer* instance, const vec2_i& size)
 {
 	auto* texture_module = open_gl_renderer_cache::gl_texture_cache();
-	
+
 	const texture_id buffer_color_buffer_texture = texture_module->texture_create_2d(size);
 
 	texture_module->texture_set_2d_filter_mode(buffer_color_buffer_texture, texture_cache_module::TEXTURE_FILTER_LINEAR);
-	
-	auto* buffer_instance = object_database::get_instance()->create_object_instance<open_gl_frame_buffer>();
 
-	const frame_buffer_id id = buffer_instance->get_object_id();
-	
+	const frame_buffer_id id = instance->get_object_id();
+
 	gl_frame_buffer_data& data = m_gl_frame_buffer_map_[id];
-	
+
 	data.color_buffer_texture_id = buffer_color_buffer_texture;
 
 	HND_GL_CALL(glGenFramebuffers, 1, &data.gl_frame_buffer_object_id);
@@ -37,16 +40,14 @@ frame_buffer_id HND_GL_FBC::frame_buffer_create(const vec2_i& size)
 	HND_GL_CALL(glBindRenderbuffer, GL_RENDERBUFFER, 0);
 
 	HND_GL_CALL(glFramebufferRenderbuffer, GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, data.gl_depth_stencil_object_id);
-	
+
 	const GLint frame_buffer_status = HND_GL_CALL(glCheckFramebufferStatus, GL_FRAMEBUFFER);
-	
+
 	if (frame_buffer_status != GL_FRAMEBUFFER_COMPLETE)
 	{
 		const char* status_msg = get_gl_frame_buffer_status_msg(frame_buffer_status);
 		HND_CORE_LOG_WARN("Framebuffer created but not complete!\tStatus:", status_msg);
 	}
-	
-	return buffer_instance->get_object_id();
 }
 
 void HND_GL_FBC::frame_buffer_set_size(frame_buffer_id frame_buffer, const vec2_i& size)
@@ -90,12 +91,12 @@ const HND_GL_FBC::gl_frame_buffer_data& HND_GL_FBC::get_gl_frame_buffer_data(fra
 	return m_gl_frame_buffer_map_[frame_buffer];
 }
 
-void open_gl_frame_buffer_cache_module::bind_gl_frame_buffer(frame_buffer_id frame_buffer)
+void open_gl_frame_buffer_cache_module::bind_frame_buffer(frame_buffer_id frame_buffer)
 {
 	HND_GL_CALL(glBindFramebuffer, GL_FRAMEBUFFER, get_gl_frame_buffer_data(frame_buffer).gl_frame_buffer_object_id);
 }
 
-void open_gl_frame_buffer_cache_module::un_bind_gl_frame_buffer(frame_buffer_id frame_buffer)
+void open_gl_frame_buffer_cache_module::un_bind_frame_buffer(frame_buffer_id frame_buffer)
 {
 	HND_GL_CALL(glBindFramebuffer, GL_FRAMEBUFFER, 0);
 }
@@ -107,6 +108,7 @@ mesh_id open_gl_frame_buffer_cache_module::get_frame_buffer_quad()
 
 HND_GL_FBC::open_gl_frame_buffer_cache_module()
 {
+	s_instance_ = this;
 	// m_frame_buffer_mesh_id_ = open_gl_renderer_cache::gl_mesh_cache()->mesh_create();
 
 	mesh* m = mesh::create();
