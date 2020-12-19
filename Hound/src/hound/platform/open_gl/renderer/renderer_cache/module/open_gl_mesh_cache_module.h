@@ -10,7 +10,6 @@ public:
 		gl_object_id gl_array_buffer_id;
 		gl_object_id gl_element_buffer_id;
 		mesh_data_id id;
-		mesh_data data;
 	};
 
 	struct gl_mesh_object

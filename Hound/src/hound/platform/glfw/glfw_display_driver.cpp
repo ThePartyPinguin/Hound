@@ -7,6 +7,7 @@
 #include "glfw_window.h"
 #include "hound/platform/glfw/glfw_callback_handler.h"
 #include "GLFW/glfw3.h"
+#include "hound/core/input/input_system.h"
 #include "hound/core/object/object_database.h"
 #include "hound/core/window/monitor.h"
 

@@ -32,7 +32,7 @@ frame_buffer_id HND_GL_FBC::frame_buffer_create(const vec2_i& size)
 	HND_GL_CALL(glGenRenderbuffers, 1, &data.gl_depth_stencil_object_id);
 	HND_GL_CALL(glBindRenderbuffer, GL_RENDERBUFFER, data.gl_depth_stencil_object_id);
 	HND_GL_CALL(glRenderbufferStorage, GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, size.get_x(), size.get_y());
-	HND_GL_CALL(glBindRenderbuffer, GL_RENDERBUFFER, data.gl_depth_stencil_object_id);
+	HND_GL_CALL(glBindRenderbuffer, GL_RENDERBUFFER, 0);
 
 	HND_GL_CALL(glFramebufferRenderbuffer, GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, data.gl_depth_stencil_object_id);
 	

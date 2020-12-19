@@ -193,7 +193,7 @@ void open_gl_shader_cache_module::create_standard_screen_shader()
 	const char* vert_shader_src = R"(
 	#version 430 core
 	layout(location = 0) in vec2 aPos;
-	layout(location = 1) in vec2 aTexCoords;
+	layout(location = 2) in vec2 aTexCoords;
 
 	out vec2 TexCoords;
 

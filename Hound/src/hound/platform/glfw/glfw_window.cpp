@@ -3,6 +3,7 @@
 
 #include <GLFW/glfw3.h>
 #include "hound/core/event/window_event.h"
+#include "hound/core/input/input_system.h"
 #include "hound/drivers/display_driver.h"
 #include "hound/platform/glfw/glfw_display_driver.h"
 
@@ -36,6 +37,11 @@ void glfw_window::init_window_values(const char* title, GLFWwindow* native_handl
 	
 	m_aspect_ = vec2_i::zero();
 	glfwSetWindowAspectRatio(native_handle_handle, GLFW_DONT_CARE, GLFW_DONT_CARE);
+
+	//Bind the input system to handle key events
+	subscribe<window_key_input_event>(input_system::get_instance());
+	subscribe<window_mouse_button_input_event>(input_system::get_instance());
+	subscribe<window_mouse_move_event>(input_system::get_instance());
 }
 
 void* glfw_window::get_native_handle()

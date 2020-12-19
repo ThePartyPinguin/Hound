@@ -32,17 +32,21 @@ void open_gl_renderer::render_indexed(shader_id shader, mesh_id mesh)
 	open_gl_mesh_cache_module* mesh_cache = open_gl_renderer_cache::gl_mesh_cache();
 
 	open_gl_mesh_cache_module::gl_mesh_object mesh_object = mesh_cache->get_gl_mesh_object(mesh);
+
+	const open_gl_mesh_cache_module::gl_mesh_object& data = mesh_cache->get_gl_mesh_object(mesh);
 	
-	const gl_object_id vertex_array_object = mesh_cache->get_gl_mesh_object(mesh).gl_vertex_array_id;
+	const gl_object_id vertex_array_object = data.gl_vertex_array_id;
 
 	shader_instance->use();
 		
 	if(shader_instance->get_name() == "FlatShader")
+	{
 		shader_instance->set_uniform_float("u_Time", glfwGetTime());
+	}
 
-
-	glBindVertexArray(vertex_array_object);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	HND_GL_CALL(glBindVertexArray, vertex_array_object);
+	HND_GL_CALL(glDrawElements, GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+	HND_GL_CALL(glBindVertexArray, 0);
 }
 
 void open_gl_renderer::end_frame(render_target_id render_target_id)
