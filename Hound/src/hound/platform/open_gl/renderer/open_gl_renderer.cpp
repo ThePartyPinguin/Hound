@@ -5,6 +5,7 @@
 #include "hound/core/object/shader/shader.h"
 #include "hound/core/rendering/renderer.h"
 #include "hound/core/rendering/target/render_target.h"
+#include "hound/core/rendering/target/frame_buffer.h"
 #include "hound/platform/open_gl/renderer/renderer_cache/module/open_gl_frame_buffer_cache_module.h"
 #include "hound/platform/open_gl/renderer/renderer_cache/module/open_gl_mesh_cache_module.h"
 #include "hound/platform/open_gl/renderer/renderer_cache/open_gl_renderer_cache.h"
@@ -28,6 +29,12 @@ void open_gl_renderer::begin_frame(render_target* render_target)
 void open_gl_renderer::end_frame(render_target* render_target)
 {
 	render_target->end_frame();
+
+	HND_GL_CALL(glDisable, GL_DEPTH_TEST);
+	HND_GL_CALL(glClearColor, 1.0f, 1.0f, 1.0f, 1.0f);
+	HND_GL_CALL(glClear, GL_COLOR_BUFFER_BIT);
+	
+	draw_frame_buffer(render_target);
 }
 
 void open_gl_renderer::render_indexed(shader_id shader_id, mesh_id mesh)
@@ -52,6 +59,21 @@ void open_gl_renderer::render_indexed(shader_id shader_id, mesh_id mesh)
 	HND_GL_CALL(glBindVertexArray, vertex_array_object);
 	HND_GL_CALL(glDrawElements, GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 	HND_GL_CALL(glBindVertexArray, 0);
+}
+
+void open_gl_renderer::draw_frame_buffer(render_target* render_target)
+{
+	frame_buffer* fb = render_target->get_frame_buffer();
+	const open_gl_frame_buffer_cache_module::gl_frame_buffer_data& fb_data = open_gl_renderer_cache::gl_frame_buffer_cache()->get_gl_frame_buffer_data(fb->get_object_id());
+
+	const open_gl_texture_cache_module::gl_texture_data& fb_tex_data = open_gl_renderer_cache::gl_texture_cache()->get_gl_texture_data(fb_data.color_buffer_texture_id);
+
+	HND_GL_CALL(glBindTexture, GL_TEXTURE_2D, fb_tex_data.gl_texture_object_id);
+	
+	shader_id shader = open_gl_renderer_cache::gl_shader_cache()->get_standard_screen_shader();
+	mesh_id fb_mesh = open_gl_renderer_cache::gl_frame_buffer_cache()->get_frame_buffer_quad();
+
+	render_indexed(shader, fb_mesh);
 }
 
 open_gl_renderer::open_gl_renderer()

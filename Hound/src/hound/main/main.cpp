@@ -65,8 +65,6 @@ void main::run()
 {
 	s_application_->init();
 	
-	mesh_cache_module* mesh_cache = renderer_cache::mesh_cache();
-	shader_cache_module* shader_cache = renderer_cache::shader_cache();
 	mesh* mesh = mesh::create();
 	
 	const mesh_surface_data data
@@ -85,8 +83,6 @@ void main::run()
 
 	shader* shader_instance = shader::create_from_absolute_path(R"(F:\SilverWolf\Test\Created\FlatShader.shad)");
 	
-	// object_id s_id = shader_cache->shader_create_from_absolute_file(R"(F:\SilverWolf\Test\Created\FlatShader.shad)");
-
 	renderer::get_instance()->set_clear_color({ 0.2f, 0.2f, 0.2f, 1.0 });
 	
 	while(true)
@@ -104,7 +100,7 @@ void main::run()
 		{
 			renderer::get_instance()->begin_frame(target);
 
-			renderer::get_instance()->render_indexed(shader_instance->get_object_id(), mesh->get_object_id());
+			// renderer::get_instance()->render_indexed(shader_instance->get_object_id(), mesh->get_object_id());
 
 			renderer::get_instance()->end_frame(target);
 
@@ -112,7 +108,6 @@ void main::run()
 			{
 				viewport* vp = static_cast<viewport*>(target);
 				window* window = vp->get_owner_window();
-				// const window_id window = renderer_cache::render_target_cache()->get_viewport_parent_window(target);
 				display_driver::get_instance()->redraw_window(window->get_window_id());
 			}
 		}

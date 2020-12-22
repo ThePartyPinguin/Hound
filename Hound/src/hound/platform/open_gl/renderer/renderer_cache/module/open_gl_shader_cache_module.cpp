@@ -24,6 +24,7 @@ void open_gl_shader_cache_module::on_create_instance_by_name(shader* instance, c
 	data.name = std::string(name);
 	data.gl_shader_program_id = program;
 	data.shader_object = instance;
+	data.name = std::string(name);
 }
 
 void open_gl_shader_cache_module::on_create_instance_from_absolute_path(shader* instance, const char* absolute_path)
@@ -323,7 +324,7 @@ void open_gl_shader_cache_module::create_standard_screen_shader()
 	    FragColor = texture(screenTexture, TexCoords);
 	})";
 
-	m_standard_screen_shader_ = create_by_name("Standard screen shader")->get_object_id();
+	m_standard_screen_shader_ = create_by_name("Standard screen shader\0")->get_object_id();
 	shader_set_source(m_standard_screen_shader_, shader_stage::SHADER_STAGE_VERTEX, vert_shader_src);
 	shader_set_source(m_standard_screen_shader_, shader_stage::SHADER_STAGE_FRAGMENT, frag_shader_src);
 	shader_finalize(m_standard_screen_shader_);
