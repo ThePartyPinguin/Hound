@@ -70,5 +70,7 @@ private:
 	monitor_id get_native_monitor(window_id window_id) override;
 	void add_window_to_monitor(window_id window, monitor_id monitor) override;
 	void remove_window_from_monitor(window_id window, monitor_id monitor) override;
+
+	void set_window_viewport(window_id window, viewport* viewport) override;
 };
 

@@ -1,45 +1,26 @@
 #pragma once
-#include "renderer_cache_module.h"
+#include "hound/core/math/math.h"
+#include "hound/core/rendering/renderer_cache/renderer_cache_module.h"
+#include "hound/core/rendering/renderer_cache/cache_module_functions.h"
 
-class render_target;
 class viewport;
+class render_texture;
 
-class render_target_cache_module : public renderer_cache_module
+RENDER_CACHE_CLASS(render_target_cache_module, render_target)
 {
+	RENDER_CACHE_CLASS_DECL(render_target_cache_module, render_target)
+	RENDER_CACHE_FRIEND_DECL(viewport)
+	RENDER_CACHE_CREATE_FUNC_DECL_P1(viewport, const vec2_i&, size)
+	RENDER_CACHE_DEFAULT_DATA_STRUCT_DECL(viewport)
+
+	RENDER_CACHE_FRIEND_DECL(render_texture)
+	RENDER_CACHE_CREATE_FUNC_DECL_P1(render_texture, const vec2_i&, size)
+	RENDER_CACHE_DEFAULT_DATA_STRUCT_DECL(render_texture)
+	
+
 public:
-	enum target_type
-	{
-		VIEWPORT,
-		TEXTURE
-	};
+	virtual std::set<render_target*> get_render_targets() = 0;
 	
-	struct render_target_data
-	{
-		render_target_id id;
-		target_type type;
-		render_target* target_object;
-		frame_buffer_id frame_buffer;
-		window_id parent_window;
-	};
-
-	virtual void render_target_set_frame_buffer_size(render_target_id render_target, vec2_i size) = 0;
-
-	virtual render_target* get_render_target(render_target_id render_target) = 0;
-	virtual viewport* get_viewport(render_target_id render_target) = 0;
-	virtual void set_viewport_parent_window(render_target_id viewport, window_id window) = 0;
-	virtual window_id get_viewport_parent_window(render_target_id viewport) = 0;
-	virtual bool viewport_has_parent_window(render_target_id viewport) = 0;
-	virtual void unset_viewport_parent_window(render_target_id viewport) = 0;
-	
-	virtual render_target_id create_render_target(target_type type, const vec2_i& size) = 0;
-	virtual frame_buffer_id get_target_frame_buffer(render_target_id target) = 0;
-	virtual const vec2_i& get_render_target_size(render_target_id render_target) = 0;
-
-	virtual std::set<render_target_id> get_render_targets() = 0;
-	
-protected:
-	render_target_cache_module() = default;
-	virtual ~render_target_cache_module() = default;
+private:
+	virtual void set_viewport_size(resource_id id, const vec2_i & size) = 0;
 };
-
-#define RTC render_target_cache_module

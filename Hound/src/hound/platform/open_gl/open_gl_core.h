@@ -1,5 +1,4 @@
 #pragma once
-#include "hound/core/base.h"
 #include <glad/glad.h>
 
 typedef unsigned int gl_object_id;
@@ -16,7 +15,7 @@ class hnd_internal_error_checker
 {
 public:
     template <class result_t, class... gl_args_t, class... args_t>
-    static result_t hnd_internal_context_gl_call_gl_func_error_checked(const char* file_name, const char* function_name, const int line_no,result_t(*fun)(gl_args_t...), args_t... args) {
+    static result_t hnd_internal_context_gl_call_gl_func_error_checked(const char* file_name, const char* function_name, const int line_no, result_t(*fun)(gl_args_t...), args_t... args) {
         if constexpr (!std::is_same_v<result_t, void>) {
             auto result = fun(std::forward<args_t>(args)...);
 

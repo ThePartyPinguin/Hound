@@ -6,21 +6,24 @@
 class open_gl_frame_buffer_cache_module : public frame_buffer_cache_module
 {
 public:
-	struct gl_frame_buffer_data : frame_buffer_data
+
+	struct gl_frame_buffer_data : internal_frame_buffer_data
 	{
 		gl_object_id gl_frame_buffer_object_id;
 		gl_object_id gl_depth_stencil_object_id;
 		texture_id color_buffer_texture_id;
+		vec2_i size;
 	};
 
-	frame_buffer_id frame_buffer_create(const vec2_i& size) override;
+	void on_create_instance(frame_buffer* instance, const vec2_i& size) override;
+
+	void bind_frame_buffer(frame_buffer_id frame_buffer) override;
+	void un_bind_frame_buffer(frame_buffer_id frame_buffer) override;
+
 	void frame_buffer_set_size(frame_buffer_id frame_buffer, const vec2_i& size) override;
 	const vec2_i& frame_buffer_get_size(frame_buffer_id frame_buffer) override;
 
 	const gl_frame_buffer_data& get_gl_frame_buffer_data(frame_buffer_id frame_buffer);
-
-	void bind_gl_frame_buffer(frame_buffer_id frame_buffer);
-	void un_bind_gl_frame_buffer(frame_buffer_id frame_buffer);
 
 	mesh_id get_frame_buffer_quad();
 	

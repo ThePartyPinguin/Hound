@@ -20,9 +20,9 @@ public:
 
 	virtual type_api get_api_type();
 
-	virtual void begin_frame(render_target_id render_target) = 0;
+	virtual void begin_frame(render_target* render_target) = 0;
 	virtual void render_indexed(shader_id shader, mesh_id mesh) = 0;
-	virtual void end_frame(render_target_id render_target) = 0;
+	virtual void end_frame(render_target* render_target) = 0;
 	
 protected:
 	static renderer* s_instance_;

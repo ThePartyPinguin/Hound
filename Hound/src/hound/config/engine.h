@@ -42,7 +42,7 @@ void engine::register_singleton()
 	}
 	HND_CORE_LOG_TRACE("Registered new singleton: ", id);
 
-	T* instance = object_database::get_instance()->create_object_instance<T>();
+	T* instance = object_database::create_object_instance<T>();
 	
 	s_instance_->m_singletons_[id] = instance;
 }
@@ -60,7 +60,7 @@ TImpl* engine::register_singleton()
 	}
 	HND_CORE_LOG_TRACE("Registered new singleton: ", id, " \r\n\t- Impl: ", typeid(TImpl).name());
 
-	TImpl* instance = object_database::get_instance()->create_object_instance<TImpl>();
+	TImpl* instance = object_database::create_object_instance<TImpl>();
 		
 	s_instance_->m_singletons_[id] = instance;
 

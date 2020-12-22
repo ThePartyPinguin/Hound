@@ -1,4 +1,5 @@
 #pragma once
+#include "hound/core/base.h"
 #include "hound/core/property.h"
 #include "hound/core/math/math.h"
 
@@ -59,3 +60,5 @@ private:
 	
 	object_id m_id_;
 };
+
+typedef object_id resource_id;	

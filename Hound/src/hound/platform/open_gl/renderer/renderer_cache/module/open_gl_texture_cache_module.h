@@ -9,8 +9,12 @@ public:
 	{
 		gl_object_id gl_texture_object_id;
 	};
+
+	void on_create_instance_from_size_2d(texture2d* instance, const vec2_i& size) override;
+	void on_create_instance_from_absolute_path_2d(texture2d* instance, const char* absolute_path) override;
+	void on_create_instance_from_asset_path_2d(texture2d* instance, const char* asset_path) override;
 	
-	texture_id texture_create_2d(const vec2_i& size) override;
+	// texture_id texture_create_2d(const vec2_i& size) override;
 	void texture_set_2d_size(texture_id texture, const vec2_i& size) override;
 	void texture_set_2d_filter_mode(texture_id texture, texture_filter_mode mode) override;
 	void texture_set_2d_wrap_mode(texture_id texture, texture_wrap_mode h, texture_wrap_mode v) override;
