@@ -25,8 +25,6 @@ public:
 protected:
 	bool m_has_owner_window_;
 	window* m_owner_window_;
-
-	frame_buffer* m_frame_buffer_;
 	
 	vec2_i m_size_;
 	
