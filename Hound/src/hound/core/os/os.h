@@ -6,9 +6,9 @@
 #include "hound/core/object/object.h"
 #include "hound/main/application.h"
 
+class file_handle;
 class window;
 class graphics_context;
-struct file_handle;
 
 class os : public object,
 	public event_handler<window_close_event>,
@@ -17,7 +17,6 @@ class os : public object,
 	public event_handler<input_event_mouse>
 {
 public:
-
 	enum class platform
 	{
 		unknown = 0x00,
@@ -36,6 +35,9 @@ public:
 	virtual bool initialize(ref<application> application);
 	virtual void run();	
 	virtual void clean_up();
+
+	virtual file_handle* file_handle_from_absolute_path(const char* path) = 0;
+	virtual file_handle* file_handle_from_asset_path(const char* path) = 0;
 	
 protected:
 	friend class main;

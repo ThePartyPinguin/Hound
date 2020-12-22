@@ -5,16 +5,17 @@
 #include "hound/core/window/window.h"
 #include "hound/core/input/input_system.h"
 #include "hound/drivers/graphics_context.h"
-#include "hound/file/shader/shader_file_handler.h"
 
 #include "hound/core/rendering/renderer.h"
 #include "hound/core/rendering/target/render_target.h"
 #include "hound/core/rendering/target/viewport.h"
-#include "hound/core/rendering/renderer_cache.h"
 
 #include "hound/core/object/mesh/mesh.h"
 #include "hound/core/object/mesh/mesh_surface_data.h"
 #include "hound/core/os/os.h"
+#include "hound/core/io/file/file_handle.h"
+#include "hound/core/rendering/renderer_cache/renderer_cache.h"
+#include "hound/core/object/shader/shader.h"
 
 // const char* vertexShaderSource = "#version 330 core\n"
 // "layout (location = 0) in vec3 aPos;\n"
@@ -37,7 +38,6 @@ error main::setup(const char* exec_path, int argc, char* argv[])
 	logger::init();
 	engine::init();
 	engine::register_singleton<input_system>();
-
 	application::s_startup_path_ = std::string(exec_path);
 	
 	return error::OK;
@@ -50,7 +50,11 @@ bool main::start(ref<application>& p_application)
 
 	//Create main window viewport
 	window* main_window = display_driver::get_instance()->get_window_handle(display_driver::MAIN_WINDOW_ID);
-	viewport* vp = viewport::create(main_window->get_rect().get_size());
+
+	const vec2_i& s = main_window->get_rect().get_size();
+	
+	viewport* vp = viewport::create(s);
+	vp->set_owner_window(main_window);
 	display_driver::get_instance()->set_window_viewport(main_window->get_window_id(), vp);
 	
 	os::get_instance()->m_main_window_ = main_window;
@@ -78,8 +82,10 @@ void main::run()
 	};
 	
 	mesh->add_surface_data(data);
+
+	shader* shader_instance = shader::create_from_absolute_path(R"(F:\SilverWolf\Test\Created\FlatShader.shad)");
 	
-	object_id s_id = shader_cache->shader_create_from_absolute_file(R"(F:\SilverWolf\Test\Created\FlatShader.shad)");
+	// object_id s_id = shader_cache->shader_create_from_absolute_file(R"(F:\SilverWolf\Test\Created\FlatShader.shad)");
 
 	renderer::get_instance()->set_clear_color({ 0.2f, 0.2f, 0.2f, 1.0 });
 	
@@ -98,7 +104,7 @@ void main::run()
 		{
 			renderer::get_instance()->begin_frame(target);
 
-			renderer::get_instance()->render_indexed(s_id, mesh->get_object_id());
+			renderer::get_instance()->render_indexed(shader_instance->get_object_id(), mesh->get_object_id());
 
 			renderer::get_instance()->end_frame(target);
 

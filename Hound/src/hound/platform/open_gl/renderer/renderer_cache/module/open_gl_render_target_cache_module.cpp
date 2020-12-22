@@ -5,9 +5,9 @@
 #include "hound/core/rendering/target/viewport.h"
 #include "hound/core/rendering/target/render_texture.h"
 
-HND_RENDER_CACHE_BASE_FUNC_IMPL(render_target_cache_module)
-HND_RENDER_CACHE_CREATE_FUNC_IMPL_1(render_target_cache_module, viewport, const vec2_i&)
-HND_RENDER_CACHE_CREATE_FUNC_IMPL_1(render_target_cache_module, render_texture, const vec2_i&)
+RENDER_CACHE_CLASS_IMPL(render_target_cache_module, render_target)
+RENDER_CACHE_CREATE_FUNC_IMPL_P1(viewport, render_target_cache_module, const vec2_i&, size)
+RENDER_CACHE_CREATE_FUNC_IMPL_P1(render_texture, render_target_cache_module, const vec2_i&, size)
 
 void open_gl_render_target_cache_module::on_create_instance(viewport* instance, const vec2_i& size)
 {
@@ -40,6 +40,7 @@ std::set<render_target*> open_gl_render_target_cache_module::get_render_targets(
 
 open_gl_render_target_cache_module::open_gl_render_target_cache_module()
 {
+	s_instance_ = this;
 }
 
 open_gl_render_target_cache_module::~open_gl_render_target_cache_module()

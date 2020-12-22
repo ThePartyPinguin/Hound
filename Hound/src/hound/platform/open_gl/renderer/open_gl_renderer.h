@@ -10,7 +10,7 @@ public:
 
 	void begin_frame(render_target* render_target) override;
 	void end_frame(render_target* render_target) override;
-	void render_indexed(shader_id shader, mesh_id mesh) override;
+	void render_indexed(shader_id shader_id, mesh_id mesh) override;
 	
 	open_gl_renderer();
 	virtual ~open_gl_renderer();

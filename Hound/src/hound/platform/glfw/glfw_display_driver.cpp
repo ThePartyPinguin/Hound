@@ -44,7 +44,7 @@ window_id glfw_display_driver::create_window(const char* title, const vec2_i& si
 	glfw_monitor_data& monitor_data = m_monitor_data_map_[monitor_id];
 	glfw_window_data& data = create_new_window_data();
 
-	glfw_window* window_handle = object_database::get_instance()->create_object_instance<glfw_window>();
+	glfw_window* window_handle = object_database::create_object_instance<glfw_window>();
 	data.object_handle = window_handle;
 	data.native_window_handle = create_native_window(title, size, parent_window_id);
 	data.parent = parent_window_id;
@@ -316,7 +316,7 @@ void glfw_display_driver::identify_monitors()
 		data.id = id;
 		data.native_monitor_handle_ = native_monitor;
 		
-		glfw_monitor* monitor_object = object_database::get_instance()->create_object_instance<glfw_monitor>();
+		glfw_monitor* monitor_object = object_database::create_object_instance<glfw_monitor>();
 
 		monitor_object->init(id, native_monitor);
 

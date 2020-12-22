@@ -1,7 +1,7 @@
 #pragma once
 #include "hound/core/object/object.h"
 #include "hound/core/object/object_database.h"
-#include "hound/core/rendering/renderer_cache/module/renderer_cache_module.h"
+#include "hound/core/rendering/renderer_cache/renderer_cache_module.h"
 #include "hound/core/rendering/renderer_cache/module/texture_cache_module.h"
 #include "hound/core/rendering/renderer_cache/module/shader_cache_module.h"
 #include "hound/core/rendering/renderer_cache/module/mesh_cache_module.h"
@@ -89,7 +89,7 @@ void renderer_cache::register_module()
 		return;
 	}
 
-	TModuleImpl* impl_instance = object_database::get_instance()->create_object_instance<TModuleImpl>();
+	TModuleImpl* impl_instance = object_database::create_object_instance<TModuleImpl>();
 
 	const module_id id = impl_instance->get_object_id();
 	

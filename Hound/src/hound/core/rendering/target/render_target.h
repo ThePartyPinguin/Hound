@@ -1,8 +1,7 @@
 #pragma once
-#include "hound/core/base.h"
-#include "hound/core/object/object.h"
+#include "hound/core/rendering/renderer_cache/cache_object_functions.h"
 
-HND_OBJECT_BASE_CLASS_DECL(render_target)
+CACHED_OBJECT(render_target, render_target_cache_module)
 {
 public:
 	enum type

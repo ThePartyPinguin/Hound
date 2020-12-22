@@ -207,16 +207,10 @@
     <ClInclude Include="src\hound\core\rendering\renderer.h">
       <Filter>core\rendering</Filter>
     </ClInclude>
-    <ClInclude Include="src\hound\core\rendering\renderer_cache.h">
-      <Filter>core\rendering</Filter>
-    </ClInclude>
     <ClInclude Include="src\hound\core\rendering\renderer_cache\module\frame_buffer_cache_module.h">
       <Filter>core\rendering\renderer_cache\module</Filter>
     </ClInclude>
     <ClInclude Include="src\hound\core\rendering\renderer_cache\module\mesh_cache_module.h">
-      <Filter>core\rendering\renderer_cache\module</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\renderer_cache_module.h">
       <Filter>core\rendering\renderer_cache\module</Filter>
     </ClInclude>
     <ClInclude Include="src\hound\core\rendering\renderer_cache\module\shader_cache_module.h">
@@ -249,18 +243,6 @@
     <ClInclude Include="src\hound\drivers\graphics_context.h">
       <Filter>drivers</Filter>
     </ClInclude>
-    <ClInclude Include="src\hound\file\file_handler.h">
-      <Filter>file</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hound\file\shader\raw\raw_shader.h">
-      <Filter>file\shader\raw</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hound\file\shader\raw\raw_shader_parser.h">
-      <Filter>file\shader\raw</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hound\file\shader\shader_file_handler.h">
-      <Filter>file\shader</Filter>
-    </ClInclude>
     <ClInclude Include="src\hound\hnd_pch.h" />
     <ClInclude Include="src\hound\logging\logger.h">
       <Filter>logging</Filter>
@@ -279,9 +261,6 @@
     </ClInclude>
     <ClInclude Include="src\hound\platform\open_gl\logging\open_gl_logger.h">
       <Filter>platform\open_gl\logging</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hound\platform\open_gl\object\shader\open_gl_shader.h">
-      <Filter>platform\open_gl\object\shader</Filter>
     </ClInclude>
     <ClInclude Include="src\hound\platform\open_gl\open_gl_core.h">
       <Filter>platform\open_gl</Filter>
@@ -321,6 +300,19 @@
     <ClInclude Include="src\hound\core\object\mesh\mesh_surface_data.h" />
     <ClInclude Include="src\hound\core\rendering\renderer_cache\module\render_target_cache_module.h" />
     <ClInclude Include="src\hound\core\rendering\target\render_texture.h" />
+    <ClInclude Include="src\hound\core\io\file\file_handle.h" />
+    <ClInclude Include="src\hound\platform\windows\io\file\windows_file_handle.h" />
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\cache_object_functions.h" />
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\renderer_cache.h">
+      <Filter>core\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\renderer_cache_module.h">
+      <Filter>core\rendering\renderer_cache\module</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\cache_module_functions.h" />
+    <ClInclude Include="src\hound\core\object\texture\texture2d.h" />
+    <ClInclude Include="src\hound\file\shader\raw\raw_shader.h" />
+    <ClInclude Include="src\hound\file\shader\raw\raw_shader_parser.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hound\config\engine.cpp">
@@ -359,9 +351,6 @@
     <ClCompile Include="src\hound\core\rendering\renderer.cpp">
       <Filter>core\rendering</Filter>
     </ClCompile>
-    <ClCompile Include="src\hound\core\rendering\renderer_cache.cpp">
-      <Filter>core\rendering</Filter>
-    </ClCompile>
     <ClCompile Include="src\hound\core\rendering\target\frame_buffer.cpp">
       <Filter>core\rendering\target</Filter>
     </ClCompile>
@@ -376,15 +365,6 @@
     </ClCompile>
     <ClCompile Include="src\hound\drivers\graphics_context.cpp">
       <Filter>drivers</Filter>
-    </ClCompile>
-    <ClCompile Include="src\hound\file\shader\raw\raw_shader.cpp">
-      <Filter>file\shader\raw</Filter>
-    </ClCompile>
-    <ClCompile Include="src\hound\file\shader\raw\raw_shader_parser.cpp">
-      <Filter>file\shader\raw</Filter>
-    </ClCompile>
-    <ClCompile Include="src\hound\file\shader\shader_file_handler.cpp">
-      <Filter>file\shader</Filter>
     </ClCompile>
     <ClCompile Include="src\hound\hnd_pch.cpp" />
     <ClCompile Include="src\hound\logging\logger.cpp">
@@ -404,9 +384,6 @@
     </ClCompile>
     <ClCompile Include="src\hound\platform\open_gl\logging\open_gl_logger.cpp">
       <Filter>platform\open_gl\logging</Filter>
-    </ClCompile>
-    <ClCompile Include="src\hound\platform\open_gl\object\shader\open_gl_shader.cpp">
-      <Filter>platform\open_gl\object\shader</Filter>
     </ClCompile>
     <ClCompile Include="src\hound\platform\open_gl\renderer\open_gl_renderer.cpp">
       <Filter>platform\open_gl\renderer</Filter>
@@ -440,5 +417,13 @@
     <ClCompile Include="src\hound\core\window\monitor.cpp" />
     <ClCompile Include="src\hound\platform\glfw\glfw_monitor.cpp" />
     <ClCompile Include="src\hound\core\rendering\target\render_texture.cpp" />
+    <ClCompile Include="src\hound\core\io\file\file_handle.cpp" />
+    <ClCompile Include="src\hound\platform\windows\io\file\windows_file_handle.cpp" />
+    <ClCompile Include="src\hound\core\rendering\renderer_cache\renderer_cache.cpp">
+      <Filter>core\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hound\core\object\texture\texture2d.cpp" />
+    <ClCompile Include="src\hound\file\shader\raw\raw_shader.cpp" />
+    <ClCompile Include="src\hound\file\shader\raw\raw_shader_parser.cpp" />
   </ItemGroup>
 </Project>

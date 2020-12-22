@@ -1,11 +1,22 @@
 #pragma once
 #include "hound/core/bit.h"
 #include "hound/core/object/object.h"
-#include "hound/core/rendering/renderer_cache/module/renderer_cache_module.h"
+#include "hound/core/rendering/renderer_cache/renderer_cache_module.h"
+#include "hound/core/rendering/renderer_cache/cache_module_functions.h"
 #include "hound/core/rendering/renderer_resource_id.h"
 
-class texture_cache_module : public renderer_cache_module
+RENDER_CACHE_CLASS(texture_cache_module, texture)
 {
+	RENDER_CACHE_CLASS_DECL(texture_cache_module, texture)
+	// RENDER_CACHE_CREATE_FUNC_DECL_NAMED_P1(texture, from_size_2d, const vec2_i&, size)
+	// RENDER_CACHE_CREATE_FUNC_DECL_NAMED_P1(texture, from_absolute_path_2d, const char*, absolute_path)
+	// RENDER_CACHE_CREATE_FUNC_DECL_NAMED_P1(texture, from_asset_path_2d, const char*, asset_path)
+
+	RENDER_CACHE_FRIEND_DECL(texture2d)
+	RENDER_CACHE_CREATE_FUNC_DECL_NAMED_P1(texture2d, from_size_2d, const vec2_i&, size)
+	RENDER_CACHE_CREATE_FUNC_DECL_NAMED_P1(texture2d, from_absolute_path_2d, const char*, absolute_path)
+	RENDER_CACHE_CREATE_FUNC_DECL_NAMED_P1(texture2d, from_asset_path_2d, const char*, asset_path)
+	
 public:
 	enum texture_type
 	{
@@ -45,7 +56,7 @@ public:
 		texture_wrap_mode wrap_horizontal;
 	};
 
-	virtual texture_id texture_create_2d(const vec2_i& size) = 0;
+	// virtual texture_id texture_create_2d(const vec2_i& size) = 0;
 	virtual void texture_set_2d_size(texture_id texture, const vec2_i& size) = 0;
 	virtual void texture_set_2d_filter_mode(texture_id texture, texture_filter_mode mode) = 0;
 	virtual void texture_set_2d_wrap_mode(texture_id texture, texture_wrap_mode h = TEXTURE_WRAP_REPEAT, texture_wrap_mode v = TEXTURE_WRAP_REPEAT) = 0;

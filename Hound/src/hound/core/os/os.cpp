@@ -3,7 +3,7 @@
 #include "hound/config/engine.h"
 #include "hound/config/platform_identifier.h"
 #include "hound/core/window/window.h"
-
+#include "hound/core/io/file/file_handle.h"
 os* os::s_instance_ = nullptr;
 
 os::platform os::get_platform()

@@ -1,14 +1,15 @@
 #pragma once
 #include "frame_buffer.h"
+#include "render_target.h"
 #include "hound/core/event/window_event.h"
-#include "hound/core/rendering/target/render_target.h"
+#include "hound/core/rendering/renderer_cache/cache_object_functions.h"
 
 class window;
 
-HND_OBJECT_DERIVED_CLASS_DECL(viewport, render_target, render_target_cache_module)
+CACHED_DERIVED_OBJECT(viewport, render_target, render_target_cache_module)
 {
-	friend class window;
-	HND_OBJECT_CLASS_FUNC_DECL_1(viewport, render_target_cache_module, const vec2_i&)
+	CACHED_OBJECT_DECL(viewport, render_target_cache_module)
+	CACHED_OBJECT_CREATE_FUNC_DECL_P1(viewport, const vec2_i&, size)
 	
 public:
 	HND_PROPERTY_PTR_READ_ONLY(owner_window, window, m_owner_window_)

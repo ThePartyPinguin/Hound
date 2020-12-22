@@ -5,9 +5,10 @@
 #include "hound/core/object/mesh/mesh.h"
 #include "hound/core/object/mesh/mesh_surface_data.h"
 
-HND_RENDER_CACHE_BASE_FUNC_IMPL(mesh_cache_module, mesh)
-HND_RENDER_CACHE_GET_FUNC_IMPL(mesh_cache_module, mesh)
-HND_RENDER_CACHE_CREATE_FUNC_IMPL(mesh_cache_module, mesh)
+RENDER_CACHE_CLASS_IMPL(mesh_cache_module, mesh)
+RENDER_CACHE_CREATE_FUNC_IMPL(mesh, mesh_cache_module)
+RENDER_CACHE_CREATE_FUNC_IMPL_NAMED_P1(mesh, mesh_cache_module, from_absolute_path, const char*, absolute_path)
+RENDER_CACHE_CREATE_FUNC_IMPL_NAMED_P1(mesh, mesh_cache_module, from_asset_path, const char*, asset_path)
 
 void open_gl_mesh_cache_module::on_create_instance(mesh* instance)
 {
@@ -17,16 +18,14 @@ void open_gl_mesh_cache_module::on_create_instance(mesh* instance)
 	m_gl_mesh_map_[instance->get_object_id()].gl_vertex_array_id = id;
 }
 
-mesh_id open_gl_mesh_cache_module::mesh_create()
+void open_gl_mesh_cache_module::on_create_instance_from_absolute_path(mesh* instance, const char* absolute_path)
 {
-	const mesh* mesh_instance = object_database::get_instance()->create_object_instance<mesh>();
+	HND_CORE_LOG_WARN("Creating a mesh from a source file is not supported yet!");
+}
 
-	gl_object_id id;
-	glGenVertexArrays(1, &id);
-
-	m_gl_mesh_map_[mesh_instance->get_object_id()].gl_vertex_array_id = id;
-
-	return mesh_instance->get_object_id();
+void open_gl_mesh_cache_module::on_create_instance_from_asset_path(mesh* instance, const char* asset_path)
+{
+	HND_CORE_LOG_WARN("Creating a mesh from a source file is not supported yet!");
 }
 
 mesh_data_id open_gl_mesh_cache_module::mesh_add_data(mesh_id mesh, const mesh_surface_data& data)
@@ -148,4 +147,9 @@ bool open_gl_mesh_cache_module::mesh_override_data(mesh_id mesh, mesh_data_id da
 const open_gl_mesh_cache_module::gl_mesh_object& open_gl_mesh_cache_module::get_gl_mesh_object(mesh_id mesh)
 {	
 	return m_gl_mesh_map_[mesh];
+}
+
+open_gl_mesh_cache_module::open_gl_mesh_cache_module()
+{
+	s_instance_ = this;
 }

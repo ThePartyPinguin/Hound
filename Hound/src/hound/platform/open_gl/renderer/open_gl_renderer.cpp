@@ -2,9 +2,9 @@
 #include "open_gl_renderer.h"
 
 #include "GLFW/glfw3.h"
+#include "hound/core/object/shader/shader.h"
 #include "hound/core/rendering/renderer.h"
 #include "hound/core/rendering/target/render_target.h"
-#include "hound/platform/open_gl/object/shader/open_gl_shader.h"
 #include "hound/platform/open_gl/renderer/renderer_cache/module/open_gl_frame_buffer_cache_module.h"
 #include "hound/platform/open_gl/renderer/renderer_cache/module/open_gl_mesh_cache_module.h"
 #include "hound/platform/open_gl/renderer/renderer_cache/open_gl_renderer_cache.h"
@@ -30,9 +30,9 @@ void open_gl_renderer::end_frame(render_target* render_target)
 	render_target->end_frame();
 }
 
-void open_gl_renderer::render_indexed(shader_id shader, mesh_id mesh)
+void open_gl_renderer::render_indexed(shader_id shader_id, mesh_id mesh)
 {
-	open_gl_shader* shader_instance = dynamic_cast<open_gl_shader*>(open_gl_renderer_cache::gl_shader_cache()->get_shader_object(shader));
+	shader* shader_instance = open_gl_renderer_cache::gl_shader_cache()->get_shader_object(shader_id);
 
 	open_gl_mesh_cache_module* mesh_cache = open_gl_renderer_cache::gl_mesh_cache();
 

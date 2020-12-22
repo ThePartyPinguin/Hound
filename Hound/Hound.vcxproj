@@ -140,9 +140,14 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\hound\core\io\file\file_handle.h" />
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\cache_module_functions.h" />
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\cache_object_functions.h" />
     <ClInclude Include="src\hound\core\rendering\target\render_texture.h" />
     <ClInclude Include="src\hound\core\rendering\renderer_cache\module\render_target_cache_module.h" />
     <ClInclude Include="src\hound\core\object\mesh\mesh_surface_data.h" />
+    <ClInclude Include="src\hound\file\shader\raw\raw_shader.h" />
+    <ClInclude Include="src\hound\file\shader\raw\raw_shader_parser.h" />
     <ClInclude Include="src\hound\platform\glfw\glfw_monitor.h" />
     <ClInclude Include="src\hound\core\window\monitor.h" />
     <ClInclude Include="src\hound\core\window\window_enum.h" />
@@ -177,10 +182,10 @@
     <ClInclude Include="src\hound\core\property.h" />
     <ClInclude Include="src\hound\core\rendering\camera\camera.h" />
     <ClInclude Include="src\hound\core\rendering\renderer.h" />
-    <ClInclude Include="src\hound\core\rendering\renderer_cache.h" />
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\renderer_cache.h" />
     <ClInclude Include="src\hound\core\rendering\renderer_cache\module\frame_buffer_cache_module.h" />
     <ClInclude Include="src\hound\core\rendering\renderer_cache\module\mesh_cache_module.h" />
-    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\renderer_cache_module.h" />
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\renderer_cache_module.h" />
     <ClInclude Include="src\hound\core\rendering\renderer_cache\module\shader_cache_module.h" />
     <ClInclude Include="src\hound\core\rendering\renderer_cache\module\texture_cache_module.h" />
     <ClInclude Include="src\hound\core\rendering\renderer_resource_id.h" />
@@ -191,10 +196,6 @@
     <ClInclude Include="src\hound\core\window\window.h" />
     <ClInclude Include="src\hound\drivers\display_driver.h" />
     <ClInclude Include="src\hound\drivers\graphics_context.h" />
-    <ClInclude Include="src\hound\file\file_handler.h" />
-    <ClInclude Include="src\hound\file\shader\raw\raw_shader.h" />
-    <ClInclude Include="src\hound\file\shader\raw\raw_shader_parser.h" />
-    <ClInclude Include="src\hound\file\shader\shader_file_handler.h" />
     <ClInclude Include="src\hound\hnd_pch.h" />
     <ClInclude Include="src\hound\logging\logger.h" />
     <ClInclude Include="src\hound\main\application.h" />
@@ -202,7 +203,6 @@
     <ClInclude Include="src\hound\platform\glfw\glfw_display_driver.h" />
     <ClInclude Include="src\hound\platform\open_gl\context\open_gl_context.h" />
     <ClInclude Include="src\hound\platform\open_gl\logging\open_gl_logger.h" />
-    <ClInclude Include="src\hound\platform\open_gl\object\shader\open_gl_shader.h" />
     <ClInclude Include="src\hound\platform\open_gl\open_gl_core.h" />
     <ClInclude Include="src\hound\platform\open_gl\renderer\open_gl_renderer.h" />
     <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_frame_buffer_cache_module.h" />
@@ -213,9 +213,14 @@
     <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\open_gl_renderer_cache.h" />
     <ClInclude Include="src\hound\platform\windows\os_windows.h" />
     <ClInclude Include="src\hound\platform\windows\window_glfw_helper.h" />
+    <ClInclude Include="src\hound\platform\windows\io\file\windows_file_handle.h" />
+    <ClInclude Include="src\hound\core\object\texture\texture2d.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\hound\core\io\file\file_handle.cpp" />
     <ClCompile Include="src\hound\core\rendering\target\render_texture.cpp" />
+    <ClCompile Include="src\hound\file\shader\raw\raw_shader.cpp" />
+    <ClCompile Include="src\hound\file\shader\raw\raw_shader_parser.cpp" />
     <ClCompile Include="src\hound\platform\glfw\glfw_monitor.cpp" />
     <ClCompile Include="src\hound\core\window\monitor.cpp" />
     <ClCompile Include="src\hound\platform\glfw\glfw_window.cpp" />
@@ -232,15 +237,12 @@
     <ClCompile Include="src\hound\core\os\os.cpp" />
     <ClCompile Include="src\hound\core\rendering\camera\camera.cpp" />
     <ClCompile Include="src\hound\core\rendering\renderer.cpp" />
-    <ClCompile Include="src\hound\core\rendering\renderer_cache.cpp" />
+    <ClCompile Include="src\hound\core\rendering\renderer_cache\renderer_cache.cpp" />
     <ClCompile Include="src\hound\core\rendering\target\frame_buffer.cpp" />
     <ClCompile Include="src\hound\core\rendering\target\render_target.cpp" />
     <ClCompile Include="src\hound\core\rendering\target\viewport.cpp" />
     <ClCompile Include="src\hound\core\window\window.cpp" />
     <ClCompile Include="src\hound\drivers\graphics_context.cpp" />
-    <ClCompile Include="src\hound\file\shader\raw\raw_shader.cpp" />
-    <ClCompile Include="src\hound\file\shader\raw\raw_shader_parser.cpp" />
-    <ClCompile Include="src\hound\file\shader\shader_file_handler.cpp" />
     <ClCompile Include="src\hound\hnd_pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -250,7 +252,6 @@
     <ClCompile Include="src\hound\platform\glfw\glfw_display_driver.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\context\open_gl_context.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\logging\open_gl_logger.cpp" />
-    <ClCompile Include="src\hound\platform\open_gl\object\shader\open_gl_shader.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\renderer\open_gl_renderer.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_frame_buffer_cache_module.cpp" />
     <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_mesh_cache_module.cpp" />
@@ -260,6 +261,8 @@
     <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\open_gl_renderer_cache.cpp" />
     <ClCompile Include="src\hound\platform\windows\os_windows.cpp" />
     <ClCompile Include="src\hound\platform\windows\window_glfw_helper.cpp" />
+    <ClCompile Include="src\hound\platform\windows\io\file\windows_file_handle.cpp" />
+    <ClCompile Include="src\hound\core\object\texture\texture2d.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\glfw\GLFW.vcxproj">

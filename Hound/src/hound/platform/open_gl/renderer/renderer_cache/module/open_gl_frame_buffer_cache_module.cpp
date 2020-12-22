@@ -3,20 +3,22 @@
 
 #include "hound/platform/open_gl/renderer/renderer_cache/open_gl_renderer_cache.h"
 #include "hound/core/object/mesh/mesh.h"
+#include "hound/core/object/texture/texture2d.h"
 #include "hound/core/object/mesh/mesh_surface_data.h"
 #include "hound/core/rendering/renderer_cache/module/frame_buffer_cache_module.h"
 #include "hound/core/rendering/target/frame_buffer.h"
 
-HND_RENDER_CACHE_BASE_FUNC_IMPL(frame_buffer_cache_module)
-HND_RENDER_CACHE_GET_FUNC_IMPL(frame_buffer_cache_module, frame_buffer)
-HND_RENDER_CACHE_CREATE_FUNC_IMPL_1(frame_buffer_cache_module, frame_buffer, const vec2_i&)
+RENDER_CACHE_CLASS_IMPL(frame_buffer_cache_module, frame_buffer)
+RENDER_CACHE_CREATE_FUNC_IMPL_P1(frame_buffer, frame_buffer_cache_module, const vec2_i&, size)
 
 void open_gl_frame_buffer_cache_module::on_create_instance(frame_buffer* instance, const vec2_i& size)
 {
 	auto* texture_module = open_gl_renderer_cache::gl_texture_cache();
 
-	const texture_id buffer_color_buffer_texture = texture_module->texture_create_2d(size);
+	texture2d* texture = texture::create_texture_2d(size);
 
+	const texture_id buffer_color_buffer_texture = texture->get_object_id();
+	
 	texture_module->texture_set_2d_filter_mode(buffer_color_buffer_texture, texture_cache_module::TEXTURE_FILTER_LINEAR);
 
 	const frame_buffer_id id = instance->get_object_id();
@@ -109,8 +111,7 @@ mesh_id open_gl_frame_buffer_cache_module::get_frame_buffer_quad()
 HND_GL_FBC::open_gl_frame_buffer_cache_module()
 {
 	s_instance_ = this;
-	// m_frame_buffer_mesh_id_ = open_gl_renderer_cache::gl_mesh_cache()->mesh_create();
-
+	
 	mesh* m = mesh::create();
 	
 	const mesh_surface_data data
@@ -128,7 +129,6 @@ HND_GL_FBC::open_gl_frame_buffer_cache_module()
 	};
 
 	m->add_surface_data(data);
-	// open_gl_renderer_cache::gl_mesh_cache()->mesh_add_data(m_frame_buffer_mesh_id_, data);
 	m_frame_buffer_mesh_id_ = m->get_object_id();
 }
 

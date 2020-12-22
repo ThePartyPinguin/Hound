@@ -2,10 +2,16 @@
 #include "open_gl_texture_cache_module.h"
 
 #include "hound/core/object/object_database.h"
-#include "hound/core/object/texture/texture.h"
+#include "hound/core/object/texture/texture2d.h"
+
+RENDER_CACHE_CLASS_IMPL(texture_cache_module, texture)
+RENDER_CACHE_CREATE_FUNC_IMPL_NAMED_P1(texture2d, texture_cache_module, from_size_2d, const vec2_i&, size)
+RENDER_CACHE_CREATE_FUNC_IMPL_NAMED_P1(texture2d, texture_cache_module, from_absolute_path_2d, const char*, absolute_path)
+RENDER_CACHE_CREATE_FUNC_IMPL_NAMED_P1(texture2d, texture_cache_module, from_asset_path_2d, const char*, asset_path)
 
 open_gl_texture_cache_module::open_gl_texture_cache_module()
 {
+	s_instance_ = this;
 }
 
 open_gl_texture_cache_module::~open_gl_texture_cache_module()
@@ -16,23 +22,47 @@ open_gl_texture_cache_module::~open_gl_texture_cache_module()
 	}
 }
 
-texture_id open_gl_texture_cache_module::texture_create_2d(const vec2_i& size)
+void open_gl_texture_cache_module::on_create_instance_from_absolute_path_2d(texture2d* instance, const char* absolute_path)
 {
-	texture* texture_instance = object_database::get_instance()->create_object_instance<texture>();
+	HND_CORE_LOG_WARN("Creating textures from source files is not supported yet!");
+}
 
+void open_gl_texture_cache_module::on_create_instance_from_asset_path_2d(texture2d* instance, const char* asset_path)
+{
+	HND_CORE_LOG_WARN("Creating textures from source files is not supported yet!");
+}
+
+void open_gl_texture_cache_module::on_create_instance_from_size_2d(texture2d* instance, const vec2_i& size)
+{
 	gl_object_id gl_texture_object;
 	glGenTextures(1, &gl_texture_object);
 
-	texture_id id = texture_instance->get_object_id();
-	
+	texture_id id = instance->get_object_id();
+
 	gl_texture_data& texture = m_gl_texture_map_[id];
 	texture.gl_texture_object_id = gl_texture_object;
 	texture.type = TEXTURE_TYPE_2D;
 
 	texture_set_2d_size(id, size);
-
-	return texture_instance->get_object_id();
 }
+//
+// texture_id open_gl_texture_cache_module::texture_create_2d(const vec2_i& size)
+// {
+// 	texture* texture_instance = object_database::create_object_instance<texture>();
+//
+// 	gl_object_id gl_texture_object;
+// 	glGenTextures(1, &gl_texture_object);
+//
+// 	texture_id id = texture_instance->get_object_id();
+// 	
+// 	gl_texture_data& texture = m_gl_texture_map_[id];
+// 	texture.gl_texture_object_id = gl_texture_object;
+// 	texture.type = TEXTURE_TYPE_2D;
+//
+// 	texture_set_2d_size(id, size);
+//
+// 	return texture_instance->get_object_id();
+// }
 
 void open_gl_texture_cache_module::texture_set_2d_size(texture_id texture, const vec2_i& size)
 {
