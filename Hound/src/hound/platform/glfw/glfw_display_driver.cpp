@@ -68,7 +68,6 @@ void glfw_display_driver::set_window_viewport(window_id window, viewport* viewpo
 	{
 		glfw_window* w_ptr = static_cast<glfw_window*>(m_window_data_map_[window].object_handle);
 		w_ptr->m_viewport_ = viewport;
-		viewport->set_owner_window(w_ptr);
 	}
 }
 

@@ -5,6 +5,7 @@
 #include "hound/core/event/window_event.h"
 #include "hound/core/input/input_system.h"
 #include "hound/drivers/display_driver.h"
+#include "hound/core/window/monitor.h"
 #include "hound/platform/glfw/glfw_display_driver.h"
 #include "hound/core/rendering/target/viewport.h"
 
@@ -38,7 +39,10 @@ void glfw_window::init_window_values(const char* title, GLFWwindow* native_handl
 	
 	m_aspect_ = vec2_i::zero();
 	glfwSetWindowAspectRatio(native_handle_handle, GLFW_DONT_CARE, GLFW_DONT_CARE);
-	
+
+	m_is_visible_ = glfwGetWindowAttrib(native_handle_handle, GLFW_VISIBLE);
+	m_is_minimized_ = glfwGetWindowAttrib(native_handle_handle, GLFW_ICONIFIED);
+	m_is_maximized_ = glfwGetWindowAttrib(native_handle_handle, GLFW_MAXIMIZED);
 	//Bind the input system to handle key events
 	subscribe<window_key_input_event>(input_system::get_instance());
 	subscribe<window_mouse_button_input_event>(input_system::get_instance());
@@ -85,6 +89,10 @@ void glfw_window::on_glfw_size_callback(const vec2_i& size)
 	e.set_rect(m_rect_);
 
 	publish_event(e);
+
+	char buffer[32];
+	sprintf(buffer, "(x:%i, y:%i)(w:%i, h%i)", m_rect_.get_x(), m_rect_.get_y(), m_rect_.get_width(), m_rect_.get_height());
+	set_title(buffer);
 }
 
 void glfw_window::on_glfw_frame_buffer_callback(const vec2_i& size)
@@ -131,26 +139,36 @@ void glfw_window::on_glfw_position_callback(const vec2_i& position)
 		return;
 	}
 
-	m_rect_.set_origin(position);
-
-	if (!display_driver::get_instance()->is_window_on_monitor(m_window_id_, m_monitor_id_))
+	//GLFW set the postion to -32000 when minimizing the window
+	//When minimizing it not needed to set a new monitor as this will stay the same
+	//We also don't need to publish  move event, seen as the window doesn't really move
+	if(position.get_x() != -32000 && position.get_y() != -32000)
 	{
-		const monitor_id new_monitor = display_driver::get_instance()->get_native_monitor(m_window_id_);
+		m_rect_.set_origin(position);
 
-		glfw_display_driver* driver = dynamic_cast<glfw_display_driver*>(display_driver::get_instance());
-		
-		driver->remove_window_from_monitor(m_window_id_, m_monitor_id_);
-		driver->add_window_to_monitor(m_window_id_, new_monitor);
-		
-		m_monitor_id_ = new_monitor;
-	}
-	
-	window_move_event e{};
-	e.set_window_id(m_window_id_);
-	e.set_window_object(this);
-	e.set_rect(m_rect_);
+		if (!display_driver::get_instance()->is_window_on_monitor(m_window_id_, m_monitor_id_))
+		{
+			const monitor_id new_monitor = display_driver::get_instance()->get_native_monitor(m_window_id_);
 
-	publish_event(e);
+			glfw_display_driver* driver = dynamic_cast<glfw_display_driver*>(display_driver::get_instance());
+
+			driver->remove_window_from_monitor(m_window_id_, m_monitor_id_);
+			driver->add_window_to_monitor(m_window_id_, new_monitor);
+						
+			m_monitor_id_ = new_monitor;
+		}
+
+		window_move_event e{};
+		e.set_window_id(m_window_id_);
+		e.set_window_object(this);
+		e.set_rect(m_rect_);
+
+		publish_event(e);
+
+		char buffer[32];
+		sprintf(buffer, "(x:%i, y:%i)(w:%i, h%i)", m_rect_.get_x(), m_rect_.get_y(), m_rect_.get_width(), m_rect_.get_height());
+		set_title(buffer);
+	}	
 }
 
 void glfw_window::on_glfw_iconified_callback(bool iconified)

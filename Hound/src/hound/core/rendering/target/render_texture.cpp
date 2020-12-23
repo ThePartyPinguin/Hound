@@ -18,3 +18,8 @@ void render_texture::begin_frame()
 void render_texture::end_frame()
 {
 }
+
+bool render_texture::should_render()
+{
+	return true;
+}

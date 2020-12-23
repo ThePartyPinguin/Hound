@@ -19,7 +19,8 @@ public:
 	
 	virtual void begin_frame() = 0;
 	virtual void end_frame() = 0;
-
+	virtual bool should_render() = 0;
+	
 protected:
 
 	render_target();

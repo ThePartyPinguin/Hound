@@ -15,6 +15,7 @@ public:
 	HND_PROPERTY_PTR_READ_ONLY(viewport, viewport, m_viewport_)
 
 	HND_PROPERTY_READ_ONLY(content_scale, vec2_f, m_content_scale_)
+	HND_PROPERTY_CALLBACK(title, std::string, m_title_, on_set_title)
 	HND_PROPERTY_CALLBACK(rect, rect_i, m_rect_, on_set_rect)
 	HND_PROPERTY_CALLBACK(min_size, vec2_i, m_min_size_, on_set_min_size)
 	HND_PROPERTY_CALLBACK(max_size, vec2_i, m_max_size_, on_set_max_size)

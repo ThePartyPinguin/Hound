@@ -104,11 +104,15 @@ void main::run()
 
 			renderer::get_instance()->end_frame(target);
 
-			if(target->get_type() == render_target::VIEWPORT)
+			if(target->should_render() && target->get_type() == render_target::VIEWPORT)
 			{
 				viewport* vp = static_cast<viewport*>(target);
 				window* window = vp->get_owner_window();
 				display_driver::get_instance()->redraw_window(window->get_window_id());
+			}
+			else
+			{
+				HND_CORE_LOG_WARN("Skipped target!");
 			}
 		}
 	}
