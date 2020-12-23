@@ -64,8 +64,8 @@ public:
 protected:
 	virtual void on_event(const TEvent& e);
 
-private:
-	event_publisher* m_publisher_;
+protected:
+	event_publisher* m_publisher_ = nullptr;
 };
 
 template <typename TEvent>

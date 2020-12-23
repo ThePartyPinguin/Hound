@@ -20,7 +20,10 @@ void open_gl_renderer::begin_frame(render_target* render_target)
 	const vec4_f& clear_color = get_clear_color();
 	
 	render_target->begin_frame();
+	const vec2_i& size = render_target->get_frame_buffer()->get_size();
 
+	HND_GL_CALL(glViewport, 0, 0, size.get_x(), size.get_y());
+	
 	HND_GL_CALL(glEnable, GL_DEPTH_TEST);
 	HND_GL_CALL(glClearColor, clear_color.get_x(), clear_color.get_y(), clear_color.get_z(), clear_color.get_w());
 	HND_GL_CALL(glClear, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -73,6 +76,8 @@ void open_gl_renderer::draw_frame_buffer(render_target* render_target)
 	shader_id shader = open_gl_renderer_cache::gl_shader_cache()->get_standard_screen_shader();
 	mesh_id fb_mesh = open_gl_renderer_cache::gl_frame_buffer_cache()->get_frame_buffer_quad();
 
+	HND_GL_CALL(glViewport, 0, 0, fb_data.size.get_x(), fb_data.size.get_y());
+	
 	render_indexed(shader, fb_mesh);
 }
 

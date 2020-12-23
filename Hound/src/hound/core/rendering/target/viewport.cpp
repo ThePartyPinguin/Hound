@@ -11,6 +11,7 @@ void viewport::set_owner_window(window* window)
 {
 	m_owner_window_ = window;
 	m_size_ = m_owner_window_->get_rect().get_size();
+	
 	if(m_frame_buffer_ == nullptr)
 	{
 		m_frame_buffer_ = frame_buffer::create(m_size_);
@@ -19,6 +20,11 @@ void viewport::set_owner_window(window* window)
 	{
 		m_frame_buffer_->set_size(m_size_);
 	}
+
+	if(m_publisher_ != nullptr)
+		m_publisher_->un_subscribe(this);
+
+	window->subscribe<window_frame_buffer_resize_event>(this);
 }
 
 void viewport::begin_frame()
@@ -31,6 +37,16 @@ void viewport::end_frame()
 {
 	m_owner_window_->end_frame();
 	m_frame_buffer_->un_bind();
+}
+
+bool viewport::should_render()
+{
+	return m_owner_window_ != nullptr && m_owner_window_->get_is_visible() && !m_owner_window_->get_is_minimized();
+}
+
+void viewport::on_event(const window_frame_buffer_resize_event& e)
+{
+	m_frame_buffer_->set_size(e.get_rect().get_size());
 }
 
 viewport::viewport()

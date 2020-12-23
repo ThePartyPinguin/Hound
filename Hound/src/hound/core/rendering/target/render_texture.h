@@ -13,5 +13,6 @@ public:
 
 	void begin_frame() override;
 	void end_frame() override;
+	bool should_render() override;
 };
 

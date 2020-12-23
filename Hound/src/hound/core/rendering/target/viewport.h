@@ -1,12 +1,13 @@
 #pragma once
 #include "frame_buffer.h"
 #include "render_target.h"
+#include "hound/core/event/event.h"
 #include "hound/core/event/window_event.h"
 #include "hound/core/rendering/renderer_cache/cache_object_functions.h"
 
 class window;
 
-CACHED_DERIVED_OBJECT(viewport, render_target, render_target_cache_module)
+CACHED_DERIVED_OBJECT(viewport, render_target, render_target_cache_module), public event_handler<window_frame_buffer_resize_event>
 {
 	CACHED_OBJECT_DECL(viewport, render_target_cache_module)
 	CACHED_OBJECT_CREATE_FUNC_DECL_P1(viewport, const vec2_i&, size)
@@ -30,6 +31,9 @@ protected:
 	
 	void begin_frame() override;
 	void end_frame() override;
+	bool should_render() override;
+	
+	void on_event(const window_frame_buffer_resize_event& e) override;
 	
 private:
 	void on_set_size(const vec2_i& size);

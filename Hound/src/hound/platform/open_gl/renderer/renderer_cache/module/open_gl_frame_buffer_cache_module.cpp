@@ -26,7 +26,9 @@ void open_gl_frame_buffer_cache_module::on_create_instance(frame_buffer* instanc
 	gl_frame_buffer_data& data = m_gl_frame_buffer_map_[id];
 
 	data.color_buffer_texture_id = buffer_color_buffer_texture;
-
+	data.handle = instance;
+	data.size = size;
+	
 	HND_GL_CALL(glGenFramebuffers, 1, &data.gl_frame_buffer_object_id);
 	HND_GL_CALL(glBindFramebuffer, GL_FRAMEBUFFER, data.gl_frame_buffer_object_id);
 
@@ -60,6 +62,12 @@ void HND_GL_FBC::frame_buffer_set_size(frame_buffer_id frame_buffer, const vec2_
 		return;
 	}
 
+	if (size.get_x() <= 0 || size.get_y() <= 0)
+	{
+		HND_CORE_LOG_WARN("Not setting framebuffer size, size is not valid!");
+		return;
+	}
+
 	gl_frame_buffer_data& buffer_data = m_gl_frame_buffer_map_[frame_buffer];
 	buffer_data.size = size;
 
@@ -69,11 +77,18 @@ void HND_GL_FBC::frame_buffer_set_size(frame_buffer_id frame_buffer, const vec2_
 
 	texture_module->texture_set_2d_size(buffer_data.color_buffer_texture_id, size);
 
+	HND_GL_CALL(glBindRenderbuffer, GL_RENDERBUFFER, buffer_data.gl_depth_stencil_object_id);
+	HND_GL_CALL(glRenderbufferStorage, GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, size.get_x(), size.get_y());
+	HND_GL_CALL(glBindRenderbuffer, GL_RENDERBUFFER, 0);
+	
 	HND_GL_CALL(glBindTexture, GL_TEXTURE_2D, 0);
 
-	if (HND_GL_CALL(glCheckFramebufferStatus, GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	const GLint frame_buffer_status = HND_GL_CALL(glCheckFramebufferStatus, GL_FRAMEBUFFER);
+	
+	if (frame_buffer_status != GL_FRAMEBUFFER_COMPLETE)
 	{
-		HND_CORE_LOG_WARN("Framebuffer size set but not complete!");
+		const char* status_msg = get_gl_frame_buffer_status_msg(frame_buffer_status);
+		HND_CORE_LOG_WARN("Framebuffer size set but an error occurred!\tStatus:", status_msg);
 	}
 }
 
