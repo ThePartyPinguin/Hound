@@ -4,6 +4,7 @@
 #include "GLFW/glfw3.h"
 #include "hound/core/object/shader/shader.h"
 #include "hound/core/rendering/renderer.h"
+#include "hound/core/rendering/camera/camera.h"
 #include "hound/core/rendering/target/render_target.h"
 #include "hound/core/rendering/target/frame_buffer.h"
 #include "hound/platform/open_gl/renderer/renderer_cache/module/open_gl_frame_buffer_cache_module.h"
@@ -18,9 +19,10 @@ renderer::type_api open_gl_renderer::get_api_type()
 void open_gl_renderer::begin_frame(render_target* render_target)
 {
 	const vec4_f& clear_color = get_clear_color();
-	
-	render_target->begin_frame();
-	const vec2_i& size = render_target->get_frame_buffer()->get_size();
+
+	m_current_render_target_ = render_target;
+	m_current_render_target_->begin_frame();
+	const vec2_i& size = m_current_render_target_->get_frame_buffer()->get_size();
 
 	HND_GL_CALL(glViewport, 0, 0, size.get_x(), size.get_y());
 	
@@ -31,13 +33,13 @@ void open_gl_renderer::begin_frame(render_target* render_target)
 
 void open_gl_renderer::end_frame(render_target* render_target)
 {
-	render_target->end_frame();
+	m_current_render_target_->end_frame();
 
 	HND_GL_CALL(glDisable, GL_DEPTH_TEST);
 	HND_GL_CALL(glClearColor, 1.0f, 1.0f, 1.0f, 1.0f);
 	HND_GL_CALL(glClear, GL_COLOR_BUFFER_BIT);
 	
-	draw_frame_buffer(render_target);
+	draw_frame_buffer(m_current_render_target_);
 }
 
 void open_gl_renderer::render_indexed(shader_id shader_id, mesh_id mesh)
@@ -56,7 +58,9 @@ void open_gl_renderer::render_indexed(shader_id shader_id, mesh_id mesh)
 		
 	if(shader_instance->get_name() == "FlatShader")
 	{
-		shader_instance->set_uniform_float("u_Time", glfwGetTime());
+		float time = glfwGetTime();
+		shader_instance->set_uniform_float("u_Time", time);
+		shader_instance->set_uniform_mat4_f("model", mat4_f::create_identity() * mat4_f::from_translation({ 0.0f,0.0f,1.0f }));
 	}
 
 	HND_GL_CALL(glBindVertexArray, vertex_array_object);
@@ -76,7 +80,8 @@ void open_gl_renderer::draw_frame_buffer(render_target* render_target)
 	shader_id shader = open_gl_renderer_cache::gl_shader_cache()->get_standard_screen_shader();
 	mesh_id fb_mesh = open_gl_renderer_cache::gl_frame_buffer_cache()->get_frame_buffer_quad();
 
-	HND_GL_CALL(glViewport, 0, 0, fb_data.size.get_x(), fb_data.size.get_y());
+	// HND_GL_CALL(glPolygonMode, GL_FRONT_AND_BACK, GL_LINE);
+	
 	
 	render_indexed(shader, fb_mesh);
 }

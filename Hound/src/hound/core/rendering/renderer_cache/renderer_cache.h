@@ -32,12 +32,16 @@ protected:
 
 	template<typename TModule>
 	static TModule* get_module();
+
+	virtual void init() = 0;
 	
 	renderer_cache();
 	virtual ~renderer_cache();
 
-private:
+protected:
 	std::unordered_map<module_id, renderer_cache_module*> m_modules_;
+
+private:
 	std::unordered_map<const char*, module_id> m_base_type_module_id_map_;
 	std::unordered_map<const char*, module_id> m_impl_type_module_id_map_;
 

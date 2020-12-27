@@ -10,12 +10,11 @@ class window;
 CACHED_DERIVED_OBJECT(viewport, render_target, render_target_cache_module), public event_handler<window_frame_buffer_resize_event>
 {
 	CACHED_OBJECT_DECL(viewport, render_target_cache_module)
-	CACHED_OBJECT_CREATE_FUNC_DECL_P1(viewport, const vec2_i&, size)
+	CACHED_OBJECT_CREATE_FUNC_DECL_P1(viewport, const rect_i&, size)
 	
 public:
 	HND_PROPERTY_PTR_READ_ONLY(owner_window, window, m_owner_window_)
 	HND_PROPERTY_PTR_READ_ONLY(frame_buffer, frame_buffer, m_frame_buffer_)
-	HND_PROPERTY_CALLBACK(size, vec2_i, m_size_, on_set_size)
 	
 	void set_owner_window(window* window);
 
@@ -27,8 +26,6 @@ protected:
 	bool m_has_owner_window_;
 	window* m_owner_window_;
 	
-	vec2_i m_size_;
-	
 	void begin_frame() override;
 	void end_frame() override;
 	bool should_render() override;
@@ -36,5 +33,5 @@ protected:
 	void on_event(const window_frame_buffer_resize_event& e) override;
 	
 private:
-	void on_set_size(const vec2_i& size);
+	void on_set_rect(const rect_i& rect) override;
 };

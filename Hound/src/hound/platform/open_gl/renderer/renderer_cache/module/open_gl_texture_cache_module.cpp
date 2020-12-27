@@ -82,8 +82,8 @@ void open_gl_texture_cache_module::texture_set_2d_size(texture_id texture, const
 
 	data.size = size;
 
-	glBindTexture(GL_TEXTURE_2D, data.gl_texture_object_id);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, data.size.get_x(), data.size.get_y(), 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+	HND_GL_CALL(glBindTexture, GL_TEXTURE_2D, data.gl_texture_object_id);
+	HND_GL_CALL(glTexImage2D, GL_TEXTURE_2D, 0, GL_RGB, data.size.get_x(), data.size.get_y(), 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 }
 
 void open_gl_texture_cache_module::texture_set_2d_filter_mode(texture_id texture, texture_filter_mode mode)
@@ -263,6 +263,10 @@ void open_gl_texture_cache_module::un_bind_texture(texture_id texture)
 const open_gl_texture_cache_module::gl_texture_data& open_gl_texture_cache_module::get_gl_texture_data(texture_id texture)
 {
 	return m_gl_texture_map_[texture];
+}
+
+void open_gl_texture_cache_module::init()
+{
 }
 
 GLint open_gl_texture_cache_module::texture_get_gl_text_type(texture_type type)

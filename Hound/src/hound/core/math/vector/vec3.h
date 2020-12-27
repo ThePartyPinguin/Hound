@@ -42,10 +42,10 @@ public:
 	value_type& operator[](index_type index);
 	const value_type& operator[](index_type index) const;
 
-	[[nodiscard]] float_type magnitude();
-	float_type sqr_magnitude();
+	[[nodiscard]] float_type magnitude() const;
+	float_type sqr_magnitude() const;
 
-	this_type normalized();
+	this_type normalized() const;
 
 	this_type operator+(const this_type& v) const;
 	this_type& operator+=(const this_type& v);
@@ -168,19 +168,19 @@ const typename vec3<T>::value_type& vec3<T>::operator[](index_type index) const
 }
 
 template <typename T>
-typename vec3<T>::float_type vec3<T>::magnitude()
+typename vec3<T>::float_type vec3<T>::magnitude() const
 {
 	return math::sqrt(sqr_magnitude());
 }
 
 template <typename T>
-typename vec3<T>::float_type vec3<T>::sqr_magnitude()
+typename vec3<T>::float_type vec3<T>::sqr_magnitude() const
 {
 	return math::square(m_x_) + math::square(m_y_) + math::square(m_z_);
 }
 
 template <typename T>
-typename vec3<T>::this_type vec3<T>::normalized()
+typename vec3<T>::this_type vec3<T>::normalized() const
 {
 	float_type mag = magnitude();
 	value_type n_x = m_x_ / mag;

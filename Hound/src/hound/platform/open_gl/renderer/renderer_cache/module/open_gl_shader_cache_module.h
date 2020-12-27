@@ -38,6 +38,9 @@ public:
 
 	void use_shader(shader_id shader) override;
 	void set_uniform_float(shader_id shader, const char* name, float value) override;
+	void set_uniform_mat4_f(shader_id shader, const char* name, const mat4_f& value) override;
+	
+	void init() override;
 	
 	open_gl_shader_cache_module();
 	virtual ~open_gl_shader_cache_module();

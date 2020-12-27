@@ -123,12 +123,11 @@ mesh_id open_gl_frame_buffer_cache_module::get_frame_buffer_quad()
 	return m_frame_buffer_mesh_id_;
 }
 
-HND_GL_FBC::open_gl_frame_buffer_cache_module()
+void open_gl_frame_buffer_cache_module::init()
 {
-	s_instance_ = this;
-	
+	//Create defuault framebuffer quad mesh
 	mesh* m = mesh::create();
-	
+
 	const mesh_surface_data data
 	{
 		{
@@ -145,6 +144,11 @@ HND_GL_FBC::open_gl_frame_buffer_cache_module()
 
 	m->add_surface_data(data);
 	m_frame_buffer_mesh_id_ = m->get_object_id();
+}
+
+HND_GL_FBC::open_gl_frame_buffer_cache_module()
+{
+	s_instance_ = this;
 }
 
 HND_GL_FBC::~open_gl_frame_buffer_cache_module()

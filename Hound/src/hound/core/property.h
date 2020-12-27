@@ -2,7 +2,7 @@
 
 #define HND_PROP_GET_REF_FUNC(name, type, var) inline const type& get_##name() const { return var; }
 #define HND_PROP_SET_FUNC(name, type, var) inline void set_##name(const type& value) { var = value; }
-#define HND_PROP_SET_CALLBACK_FUNC(name, type, var, func) inline void set_##name(const type& value) { func(value);}
+#define HND_PROP_SET_CALLBACK_FUNC(name, type, var, func) inline void set_##name(const type& value) { var = value; func(value);}
 
 #define HND_PROP_GET_RTR_FUNC(name, type, var) inline type* get_##name() const { return var; }
 #define HND_PROP_SET_RTR_FUNC(name, type, var) inline void set_##name(type* value) { var = value; }

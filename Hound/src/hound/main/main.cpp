@@ -15,6 +15,8 @@
 #include "hound/core/os/os.h"
 #include "hound/core/io/file/file_handle.h"
 #include "hound/core/rendering/renderer_cache/renderer_cache.h"
+#include "hound/core/rendering/camera/camera.h"
+#include "hound/core/rendering/camera/camera_projection_settings.h"
 #include "hound/core/object/shader/shader.h"
 
 // const char* vertexShaderSource = "#version 330 core\n"
@@ -51,12 +53,23 @@ bool main::start(ref<application>& p_application)
 	//Create main window viewport
 	window* main_window = display_driver::get_instance()->get_window_handle(display_driver::MAIN_WINDOW_ID);
 
-	const vec2_i& s = main_window->get_rect().get_size();
+	const rect_i& rect = main_window->get_rect();
 	
-	viewport* vp = viewport::create(s);
+	viewport* vp = viewport::create({0, 0, rect.get_size()});
 	vp->set_owner_window(main_window);
 	display_driver::get_instance()->set_window_viewport(main_window->get_window_id(), vp);
+
+	orthographic_projection_settings projection_settings;
+	projection_settings.projection = camera_projection::ORTHOGRAPHIC;
+	projection_settings.viewport_size = vec2_f(vp->get_rect().get_width(), vp->get_rect().get_height());
+	projection_settings.z_near = 0.0f;
+	projection_settings.z_far = 10.0f;
+	projection_settings.size = 8;
 	
+	camera* main_cam = camera::create_as_orthographic(vp, projection_settings);
+
+	vp->set_camera(main_cam);
+
 	os::get_instance()->m_main_window_ = main_window;
 	return true;
 }
@@ -66,8 +79,8 @@ void main::run()
 	s_application_->init();
 	
 	mesh* mesh = mesh::create();
-	
-	const mesh_surface_data data
+		
+	const mesh_surface_data trienagle_data
 	{
 		{
 			{ {0.0f,  0.5f, 0.0f}, {}, {}},
@@ -78,8 +91,22 @@ void main::run()
 			0, 1, 2
 		}
 	};
+
+	const mesh_surface_data quad_data
+	{
+		{
+			{ { 0.5f,  0.5f, 0.0f}, {}, {}},
+			{ {0.5f, -0.5f, 0.0f}, {}, {}},
+			{ {-0.5f, -0.5f, 0.0f}, {}, {}},
+			{ {-0.5f,  0.5f, 0.0f}, {}, {}},
+		},
+		{
+			0, 1, 3,
+			1, 2, 3
+		}
+	};
 	
-	mesh->add_surface_data(data);
+	mesh->add_surface_data(quad_data);
 
 	shader* shader_instance = shader::create_from_absolute_path(R"(F:\SilverWolf\Test\Created\FlatShader.shad)");
 	
@@ -100,7 +127,7 @@ void main::run()
 		{
 			renderer::get_instance()->begin_frame(target);
 
-			// renderer::get_instance()->render_indexed(shader_instance->get_object_id(), mesh->get_object_id());
+			renderer::get_instance()->render_indexed(shader_instance->get_object_id(), mesh->get_object_id());
 
 			renderer::get_instance()->end_frame(target);
 
@@ -109,10 +136,6 @@ void main::run()
 				viewport* vp = static_cast<viewport*>(target);
 				window* window = vp->get_owner_window();
 				display_driver::get_instance()->redraw_window(window->get_window_id());
-			}
-			else
-			{
-				HND_CORE_LOG_WARN("Skipped target!");
 			}
 		}
 	}

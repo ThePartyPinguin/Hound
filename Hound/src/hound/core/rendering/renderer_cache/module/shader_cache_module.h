@@ -41,6 +41,7 @@ public:
 
 	virtual void use_shader(shader_id shader) = 0;
 	virtual void set_uniform_float(shader_id shader, const char* name, float value) = 0;
+	virtual void set_uniform_mat4_f(shader_id shader, const char* name, const mat4_f& value) = 0;
 	
 protected:
 

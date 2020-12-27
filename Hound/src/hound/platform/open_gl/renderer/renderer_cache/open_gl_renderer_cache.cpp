@@ -1,10 +1,22 @@
 #include "hound/hnd_pch.h"
 #include "open_gl_renderer_cache.h"
+
 #include "hound/platform/open_gl/renderer/renderer_cache/module/open_gl_texture_cache_module.h"
 #include "hound/platform/open_gl/renderer/renderer_cache/module/open_gl_mesh_cache_module.h"
 #include "hound/platform/open_gl/renderer/renderer_cache/module/open_gl_frame_buffer_cache_module.h"
 #include "hound/platform/open_gl/renderer/renderer_cache/module/open_gl_shader_cache_module.h"
 #include "hound/platform/open_gl/renderer/renderer_cache/module/open_gl_render_target_cache_module.h"
+#include "hound/platform/open_gl/renderer/renderer_cache/module/open_gl_camera_cache_module.h"
+
+void open_gl_renderer_cache::init()
+{
+	get_module<open_gl_mesh_cache_module>()->init();
+	get_module<open_gl_texture_cache_module>()->init();
+	get_module<open_gl_shader_cache_module>()->init();
+	get_module<open_gl_frame_buffer_cache_module>()->init();
+	get_module<open_gl_render_target_cache_module>()->init();
+	get_module<open_gl_camera_cache_module>()->init();
+}
 
 open_gl_renderer_cache::open_gl_renderer_cache()
 {
@@ -15,6 +27,7 @@ open_gl_renderer_cache::open_gl_renderer_cache()
 	register_module<shader_cache_module, open_gl_shader_cache_module>();
 	register_module<frame_buffer_cache_module, open_gl_frame_buffer_cache_module>();
 	register_module<render_target_cache_module, open_gl_render_target_cache_module>();
+	register_module<camera_cache_module, open_gl_camera_cache_module>();
 }
 
 open_gl_renderer_cache::~open_gl_renderer_cache()
