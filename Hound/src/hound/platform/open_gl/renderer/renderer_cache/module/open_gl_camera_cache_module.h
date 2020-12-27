@@ -9,14 +9,15 @@ public:
 	struct gl_camera_matrix_data
 	{
 									//base alignment	//alignment offset
-		mat4_f view_matrix;			//4 * 16 (4 * vec4)	//0
 		mat4_f projection_matrix;	//4 * 16 (4 * vec4)	//64
-									//Total size to reserve in ubo (4 * 16) + (4 * 16) = 128
-		const static size_t gl_reserve_size = 128;
-		const static size_t view_matrix_offset = 0;
-		const static size_t view_matrix_size = 64;
-		const static size_t projection_matrix_offset = 64;
-		const static size_t projection_matrix_size = 64;
+		mat4_f view_matrix;			//4 * 16 (4 * vec4)	//0
+									//Total size to reserve in ubo (4 * 4) + (4 * 4) = 32
+		const static size_t gl_reserve_size = sizeof(mat4_f) * 2;
+		const static size_t projection_matrix_offset = 0;
+		const static size_t projection_matrix_size = sizeof(mat4_f);
+		const static size_t view_matrix_offset = sizeof(mat4_f);
+		const static size_t view_matrix_size = sizeof(mat4_f);
+		
 	};
 	
 	struct gl_camera_data : internal_camera_data
@@ -43,7 +44,7 @@ public:
 private:
 	gl_camera_data& get_camera_data(resource_id camera);
 
-	void set_gl_ubo_data(resource_id camera, size_t offset, size_t size, void* data);
+	void set_gl_ubo_data(resource_id camera, size_t offset, size_t size, const void* data);
 	
 	std::unordered_map<resource_id, gl_camera_data> m_camera_data_map_;
 };

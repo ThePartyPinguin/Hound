@@ -15,16 +15,16 @@ void open_gl_camera_cache_module::on_create_instance_as_orthographic(camera* ins
 	gl_data.id = instance->get_object_id();
 	gl_data.handle = instance;
 	gl_data.render_target = instance->get_render_target();
-	gl_data.matrix_data = { instance->get_view_matrix(), instance->get_projection_matrix() };
+	gl_data.matrix_data = { instance->get_projection_matrix(), instance->get_view_matrix() };
 
 	//Create uniform buffer and reserve buffer size
 	HND_GL_CALL(glGenBuffers, 1, &gl_data.gl_matrix_ubo_id);
 	HND_GL_CALL(glBindBuffer, GL_UNIFORM_BUFFER, gl_data.gl_matrix_ubo_id);
-	// glBufferData(GL_UNIFORM_BUFFER, gl_camera_matrix_data::gl_reserve_size, NULL, GL_DYNAMIC_DRAW);
-	HND_GL_CALL(glBufferData, GL_UNIFORM_BUFFER, gl_camera_matrix_data::gl_reserve_size, nullptr, GL_DYNAMIC_DRAW);
+	HND_GL_CALL(glBufferData, GL_UNIFORM_BUFFER, sizeof(gl_camera_matrix_data), nullptr, GL_DYNAMIC_DRAW);
 	HND_GL_CALL(glBindBuffer, GL_UNIFORM_BUFFER, 0);
 
-	set_gl_ubo_data(gl_data.id, 0, gl_camera_matrix_data::gl_reserve_size, &gl_data.matrix_data);	
+	set_gl_ubo_data(gl_data.id, gl_camera_matrix_data::projection_matrix_offset, gl_camera_matrix_data::projection_matrix_size, gl_data.matrix_data.projection_matrix.get_value_ptr());
+	set_gl_ubo_data(gl_data.id, gl_camera_matrix_data::view_matrix_offset, gl_camera_matrix_data::view_matrix_size, gl_data.matrix_data.view_matrix.get_value_ptr());	
 }
 
 void open_gl_camera_cache_module::on_create_instance_as_perspective(camera* instance, render_target* target, const perspective_projection_settings& settings)
@@ -81,7 +81,7 @@ open_gl_camera_cache_module::gl_camera_data& open_gl_camera_cache_module::get_ca
 	return m_camera_data_map_[camera];
 }
 
-void open_gl_camera_cache_module::set_gl_ubo_data(resource_id camera, size_t offset, size_t size, void* data)
+void open_gl_camera_cache_module::set_gl_ubo_data(resource_id camera, size_t offset, size_t size, const void* data)
 {
 	const gl_camera_data& gl_data = get_camera_data(camera);
 	HND_GL_CALL(glBindBuffer, GL_UNIFORM_BUFFER, gl_data.gl_matrix_ubo_id);

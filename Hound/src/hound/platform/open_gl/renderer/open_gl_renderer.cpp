@@ -29,7 +29,6 @@ void open_gl_renderer::begin_frame(render_target* render_target)
 	HND_GL_CALL(glEnable, GL_DEPTH_TEST);
 	HND_GL_CALL(glClearColor, clear_color.get_x(), clear_color.get_y(), clear_color.get_z(), clear_color.get_w());
 	HND_GL_CALL(glClear, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	HND_GL_CALL(glDisable, GL_CULL_FACE);
 }
 
 void open_gl_renderer::end_frame(render_target* render_target)
@@ -60,10 +59,7 @@ void open_gl_renderer::render_indexed(shader_id shader_id, mesh_id mesh)
 	if(shader_instance->get_name() == "FlatShader")
 	{
 		float time = glfwGetTime();
-		shader_instance->set_uniform_float("u_Time", glfwGetTime());
-		shader_instance->set_uniform_mat4_f("cam_proj", m_current_render_target_->get_camera()->get_projection_matrix());
-		shader_instance->set_uniform_mat4_f("cam_view", m_current_render_target_->get_camera()->get_view_matrix());
-		// shader_instance->set_uniform_mat4_f("model", mat4_f::create_identity() * mat4_f::from_translation({ -5.0f,-5.0f,1.0f }) * mat4_f::from_translation({ time,time,1.0f }));
+		shader_instance->set_uniform_float("u_Time", time);
 		shader_instance->set_uniform_mat4_f("model", mat4_f::create_identity() * mat4_f::from_translation({ 0.0f,0.0f,1.0f }));
 	}
 

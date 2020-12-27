@@ -70,8 +70,6 @@ bool main::start(ref<application>& p_application)
 
 	vp->set_camera(main_cam);
 
-	main_window->maximize();
-	
 	os::get_instance()->m_main_window_ = main_window;
 	return true;
 }
