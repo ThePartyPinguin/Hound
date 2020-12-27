@@ -64,9 +64,7 @@
 #define RENDER_CACHE_CREATE_FUNC_IMPL(ObjectType, CacheModule)\
 	ObjectType* CacheModule::create_##ObjectType()\
 	{\
-		ObjectType* instance = object_database::create_object_instance<ObjectType>();\
-		on_create_instance(instance);\
-		return instance;\
+		return object_database::create_object_instance<ObjectType>();\
 	}
 
 #define RENDER_CACHE_CREATE_FUNC_DECL_P1(ObjectType, P1, P1_Name)\
@@ -79,9 +77,7 @@
 #define RENDER_CACHE_CREATE_FUNC_IMPL_P1(ObjectType, CacheModule, P1, P1_Name)\
 	ObjectType* CacheModule::create_##ObjectType(P1 P1_Name)\
 	{\
-		ObjectType* instance = object_database::create_object_instance<ObjectType>();\
-		on_create_instance(instance, P1_Name);\
-		return instance;\
+		return object_database::create_object_instance<ObjectType>();\
 	}
 
 #define RENDER_CACHE_CREATE_FUNC_DECL_NAMED(ObjectType, FuncName)\
@@ -94,9 +90,7 @@
 #define RENDER_CACHE_CREATE_FUNC_IMPL_NAMED(ObjectType, CacheModule, FuncName)\
 	ObjectType* CacheModule::create_##FuncName()\
 	{\
-		ObjectType* instance = object_database::create_object_instance<ObjectType>();\
-		on_create_instance_##FuncName(instance);\
-		return instance;\
+		return object_database::create_object_instance<ObjectType>();\
 	}
 
 #define RENDER_CACHE_CREATE_FUNC_DECL_NAMED_P1(ObjectType, FuncName, P1, P1_Name)\
@@ -109,9 +103,20 @@
 #define RENDER_CACHE_CREATE_FUNC_IMPL_NAMED_P1(ObjectType, CacheModule, FuncName, P1, P1_Name)\
 	ObjectType* CacheModule::create_##FuncName(P1 P1_Name)\
 	{\
-		ObjectType* instance = object_database::create_object_instance<ObjectType>();\
-		on_create_instance_##FuncName(instance, P1_Name);\
-		return instance;\
+		return object_database::create_object_instance<ObjectType>();\
+	}
+
+#define RENDER_CACHE_CREATE_FUNC_DECL_NAMED_P2(ObjectType, FuncName, P1, P1_Name, P2, P2_Name)\
+	public:\
+		ObjectType* create_##FuncName(P1 P1_Name, P2 P2_Name);\
+	protected:\
+		virtual void on_create_instance_##FuncName(ObjectType* instance, P1 P1_Name, P2 P2_Name) = 0;\
+	private:
+
+#define RENDER_CACHE_CREATE_FUNC_IMPL_NAMED_P2(ObjectType, CacheModule, FuncName, P1, P1_Name, P2, P2_Name)\
+	ObjectType* CacheModule::create_##FuncName(P1 P1_Name, P2 P2_Name)\
+	{\
+		return object_database::create_object_instance<ObjectType>();\
 	}
 
 #endif

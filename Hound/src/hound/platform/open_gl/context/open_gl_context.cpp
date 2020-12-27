@@ -46,7 +46,8 @@ open_gl_context::~open_gl_context()
 void initialize_graphics_context()
 {
 	engine::register_singleton<graphics_context, open_gl_context>();
-	engine::register_singleton<renderer_cache, open_gl_renderer_cache>();
+	open_gl_renderer_cache* cache = engine::register_singleton<renderer_cache, open_gl_renderer_cache>();
+	cache->init();
 	engine::register_singleton<renderer, open_gl_renderer>();
 }
 

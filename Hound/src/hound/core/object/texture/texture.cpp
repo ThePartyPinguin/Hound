@@ -5,6 +5,8 @@
 
 GET_CACHE_FUNC_IMPL(texture, texture_cache_module)
 
+
+
 texture2d* texture::create_texture_2d(const vec2_i& size)
 {
 	return texture2d::create_from_size_2d(size);

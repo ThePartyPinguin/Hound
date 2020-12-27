@@ -313,6 +313,10 @@
     <ClInclude Include="src\hound\core\object\texture\texture2d.h" />
     <ClInclude Include="src\hound\file\shader\raw\raw_shader.h" />
     <ClInclude Include="src\hound\file\shader\raw\raw_shader_parser.h" />
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\camera_cache_module.h" />
+    <ClInclude Include="src\hound\core\rendering\camera\camera_projection_settings.h" />
+    <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_camera_cache_module.h" />
+    <ClInclude Include="src\hound\platform\open_gl\open_gl_constants.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\hound\config\engine.cpp">
@@ -425,5 +429,6 @@
     <ClCompile Include="src\hound\core\object\texture\texture2d.cpp" />
     <ClCompile Include="src\hound\file\shader\raw\raw_shader.cpp" />
     <ClCompile Include="src\hound\file\shader\raw\raw_shader_parser.cpp" />
+    <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_camera_cache_module.cpp" />
   </ItemGroup>
 </Project>

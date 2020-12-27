@@ -5,6 +5,12 @@
 GET_CACHE_FUNC_IMPL(frame_buffer, frame_buffer_cache_module)
 CACHED_OBJECT_CREATE_FUNC_IMPL_P1(frame_buffer, frame_buffer_cache_module, const vec2_i&, size)
 
+void frame_buffer::init(const vec2_i& size)
+{
+	m_size_ = size;
+}
+
+
 void frame_buffer::bind()
 {
 	get_cache()->bind_frame_buffer(get_object_id());

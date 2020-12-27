@@ -26,6 +26,8 @@ public:
 	const gl_frame_buffer_data& get_gl_frame_buffer_data(frame_buffer_id frame_buffer);
 
 	mesh_id get_frame_buffer_quad();
+
+	void init() override;
 	
 	open_gl_frame_buffer_cache_module();
 	virtual ~open_gl_frame_buffer_cache_module();

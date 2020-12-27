@@ -9,10 +9,13 @@ CACHED_OBJECT(shader, shader_cache_module)
 	CACHED_OBJECT_CREATE_FUNC_DECL_NAMED_P1(shader, from_asset_path, const char*, asset_path)
 	
 public:
-	HND_PROPERTY_READ_ONLY(name, std::string, m_name_)
+	// HND_PROPERTY_READ_ONLY(name, std::string, m_name_)
 
 	void use();	
 	void set_uniform_float(const char* u_name, float value);
+	void set_uniform_mat4_f(const char* u_name, const mat4_f& value);
+
+	const std::string& get_name();
 	
 protected:
 	std::string m_name_;

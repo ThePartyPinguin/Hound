@@ -16,5 +16,8 @@ public:
 	
 	open_gl_renderer();
 	virtual ~open_gl_renderer();
+
+private:
+	render_target* m_current_render_target_;
 };
 

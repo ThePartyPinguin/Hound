@@ -282,10 +282,21 @@ void open_gl_shader_cache_module::set_uniform_float(shader_id shader, const char
 	glUniform1f(location, value);
 }
 
+void open_gl_shader_cache_module::set_uniform_mat4_f(shader_id shader, const char* name, const mat4_f& value)
+{
+	const gl_object_id program = m_gl_shader_map_[shader].gl_shader_program_id;
+	const GLint location = glGetUniformLocation(program, name);
+	glUniformMatrix4fv(location, 1, GL_FALSE, value.get_value_ptr());
+}
+
+void open_gl_shader_cache_module::init()
+{
+	create_standard_screen_shader();
+}
+
 open_gl_shader_cache_module::open_gl_shader_cache_module()
 {
 	s_instance_ = this;
-	create_standard_screen_shader();
 }
 
 open_gl_shader_cache_module::~open_gl_shader_cache_module()
@@ -303,6 +314,12 @@ void open_gl_shader_cache_module::create_standard_screen_shader()
 	layout(location = 0) in vec2 aPos;
 	layout(location = 2) in vec2 aTexCoords;
 
+	layout (std140, binding = 0) uniform Matrices
+	{
+		mat4 projection;
+		mat4 view;
+	};
+	
 	out vec2 TexCoords;
 
 	void main()
@@ -314,7 +331,8 @@ void open_gl_shader_cache_module::create_standard_screen_shader()
 	const char* frag_shader_src = R"(
 	#version 430 core
 	out vec4 FragColor;
-  
+
+	in vec3 color;
 	in vec2 TexCoords;
 
 	uniform sampler2D screenTexture;
@@ -324,7 +342,7 @@ void open_gl_shader_cache_module::create_standard_screen_shader()
 	    FragColor = texture(screenTexture, TexCoords);
 	})";
 
-	m_standard_screen_shader_ = create_by_name("Standard screen shader\0")->get_object_id();
+	m_standard_screen_shader_ = shader::create_by_name("Standard screen shader\0")->get_object_id();
 	shader_set_source(m_standard_screen_shader_, shader_stage::SHADER_STAGE_VERTEX, vert_shader_src);
 	shader_set_source(m_standard_screen_shader_, shader_stage::SHADER_STAGE_FRAGMENT, frag_shader_src);
 	shader_finalize(m_standard_screen_shader_);

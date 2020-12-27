@@ -140,9 +140,13 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\hound\platform\open_gl\open_gl_constants.h" />
+    <ClInclude Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_camera_cache_module.h" />
     <ClInclude Include="src\hound\core\io\file\file_handle.h" />
+    <ClInclude Include="src\hound\core\rendering\camera\camera_projection_settings.h" />
     <ClInclude Include="src\hound\core\rendering\renderer_cache\cache_module_functions.h" />
     <ClInclude Include="src\hound\core\rendering\renderer_cache\cache_object_functions.h" />
+    <ClInclude Include="src\hound\core\rendering\renderer_cache\module\camera_cache_module.h" />
     <ClInclude Include="src\hound\core\rendering\target\render_texture.h" />
     <ClInclude Include="src\hound\core\rendering\renderer_cache\module\render_target_cache_module.h" />
     <ClInclude Include="src\hound\core\object\mesh\mesh_surface_data.h" />
@@ -217,6 +221,7 @@
     <ClInclude Include="src\hound\core\object\texture\texture2d.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\hound\platform\open_gl\renderer\renderer_cache\module\open_gl_camera_cache_module.cpp" />
     <ClCompile Include="src\hound\core\io\file\file_handle.cpp" />
     <ClCompile Include="src\hound\core\rendering\target\render_texture.cpp" />
     <ClCompile Include="src\hound\file\shader\raw\raw_shader.cpp" />

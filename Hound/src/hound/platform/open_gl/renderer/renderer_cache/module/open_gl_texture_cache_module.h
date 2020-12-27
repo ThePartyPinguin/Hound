@@ -28,6 +28,8 @@ public:
 	
 	const gl_texture_data& get_gl_texture_data(texture_id texture);
 
+	void init() override;
+	
 	open_gl_texture_cache_module();
 	virtual ~open_gl_texture_cache_module();
 	

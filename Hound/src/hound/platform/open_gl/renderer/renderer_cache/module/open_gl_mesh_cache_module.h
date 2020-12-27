@@ -5,6 +5,7 @@
 
 class open_gl_mesh_cache_module : public mesh_cache_module
 {
+	friend class open_gl_renderer_cache;
 public:
 	struct gl_mesh_data : mesh_surface_data
 	{
@@ -29,6 +30,8 @@ public:
 	bool mesh_override_data(mesh_id mesh, mesh_data_id data_id, const mesh_surface_data& data) override;
 	const gl_mesh_object& get_gl_mesh_object(mesh_id mesh);
 
+	void init() override;
+	
 	open_gl_mesh_cache_module();
 	~open_gl_mesh_cache_module() = default;
 	

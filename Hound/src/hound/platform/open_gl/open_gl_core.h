@@ -76,24 +76,3 @@ private:
 #endif
 
 
-
-
-
-
-// #if HND_DEBUG
-// #define HND_GL_CALL(x) x;\
-// 		{\
-// 			GLenum err;\
-// 			while((err = glGetError()) != GL_NO_ERROR)\
-// 			{\
-// 				char message[128];\
-// 				sprintf_s(message, 128, "%s %s:%o", #x, __FILE__, __LINE__);\
-// 				HND_CORE_LOG_ERROR("GL::ERROR ", message);\
-// 				glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_ERROR, 0, GL_DEBUG_SEVERITY_HIGH, 128, message);\
-// 				__debugbreak();\
-// 			}\
-// 		}
-// #else
-// #define HND_GL_CALL(x) x;
-// #endif
-

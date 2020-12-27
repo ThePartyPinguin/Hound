@@ -35,7 +35,7 @@ void glfw_display_driver::init()
 	identify_monitors();
 
 	//Create main window
-	const window_id main_window = create_window("Main window", { 1280, 720 }, INVALID_WINDOW_ID, MAIN_MONITOR_ID);
+	const window_id main_window = create_window("Main window", { 1920, 1080 }, INVALID_WINDOW_ID, MAIN_MONITOR_ID);
 	set_window_active_context(main_window);
 }
 

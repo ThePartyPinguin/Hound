@@ -49,6 +49,8 @@ public:
 
 	mat4() = default;
 
+	void set_identity();
+	
 	const col_type& operator[](index_type index) const;
 	col_type& operator[](index_type index);
 
@@ -70,6 +72,8 @@ public:
 
 	this_type operator/(const scalar_type& s) const;
 	this_type& operator/=(const scalar_type& s);
+
+	const value_type* get_value_ptr() const;
 };
 
 template <typename T>
@@ -137,8 +141,8 @@ typename mat4<T>::this_type mat4<T>::from_translation(const vec3_type& trans)
 {
 	this_type mat = create_identity();
 	mat[3][0] = trans.get_x();
-	mat[3][0] = trans.get_y();
-	mat[3][0] = trans.get_z();
+	mat[3][1] = trans.get_y();
+	mat[3][2] = trans.get_z();
 	return mat;
 }
 
@@ -247,6 +251,30 @@ mat4<T>::mat4(	value_type _00, value_type _01, value_type _02, value_type _03,
 }
 
 template <typename T>
+void mat4<T>::set_identity()
+{
+	m_values_[0][0] = static_cast<value_type>(1);
+	m_values_[0][1] = static_cast<value_type>(0);
+	m_values_[0][2] = static_cast<value_type>(0);
+	m_values_[0][3] = static_cast<value_type>(0);
+
+	m_values_[1][0] = static_cast<value_type>(0);
+	m_values_[1][1] = static_cast<value_type>(1);
+	m_values_[1][2] = static_cast<value_type>(0);
+	m_values_[1][3] = static_cast<value_type>(0);
+
+	m_values_[2][0] = static_cast<value_type>(0);
+	m_values_[2][1] = static_cast<value_type>(0);
+	m_values_[2][2] = static_cast<value_type>(1);
+	m_values_[2][3] = static_cast<value_type>(0);
+
+	m_values_[3][0] = static_cast<value_type>(0);
+	m_values_[3][1] = static_cast<value_type>(0);
+	m_values_[3][2] = static_cast<value_type>(0);
+	m_values_[3][3] = static_cast<value_type>(1);
+}
+
+template <typename T>
 const typename mat4<T>::col_type& mat4<T>::operator[](index_type index) const
 {
 	return m_values_[index];
@@ -323,16 +351,18 @@ typename mat4<T>::vec4_type mat4<T>::operator*(const vec4_type& v) const
 {
 	vec4_type mov0(v[0]);
 	vec4_type mov1(v[1]);
-	vec4_type mul0 = mov0 * m_values_[0];
-	vec4_type mul1 = mov1 * m_values_[1];
+	vec4_type mul0 = m_values_[0] * mov0;
+	vec4_type mul1 = m_values_[1] * mov1;
 	vec4_type add0 = mul0 + mul1;
 
 	vec4_type mov2(v[2]);
 	vec4_type mov3(v[3]);
-	vec4_type mul2 = mov2 * m_values_[2];
-	vec4_type mul3 = mov3 * m_values_[3];
+	vec4_type mul2 = m_values_[2] * mov2;
+	vec4_type mul3 = m_values_[3] * mov3;
 	vec4_type add1 = mul2 + mul3;
+	
 	vec4_type add2 = add0 + add1;
+	
 	return add2;
 }
 
@@ -378,4 +408,10 @@ typename mat4<T>::this_type& mat4<T>::operator/=(const scalar_type& s)
 	m_values_[2] /= s;
 	m_values_[3] /= s;
 	return *this;
+}
+
+template <typename T>
+const typename mat4<T>::value_type* mat4<T>::get_value_ptr() const
+{
+	return reinterpret_cast<const value_type*>(this);
 }
